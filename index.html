@@ -6,25 +6,61 @@
 <title>GSNS - Game Ranking Platform</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
-body{background:#0f172a;color:#e2e8f0;}
-header{padding:40px;text-align:center;background:#111827;position:sticky;top:0;z-index:10;}
+
+/* 다크 모드 (기본) */
+:root{
+  --bg:#0f172a;
+  --header-bg:#111827;
+  --text:#e2e8f0;
+  --sub:#94a3b8;
+  --control-bg:#1e293b;
+  --control-color:#ffffff;
+  --card-bg:linear-gradient(180deg,#1e293b,#111827);
+  --card-shadow:rgba(0,0,0,.35);
+  --rank-color:#38bdf8;
+  --tag-bg:#2563eb;
+  --footer-color:#94a3b8;
+  --toggle-bg:#334155;
+  --toggle-color:#f8fafc;
+}
+
+/* 라이트 모드 */
+body.light{
+  --bg:#f1f5f9;
+  --header-bg:#ffffff;
+  --text:#1e293b;
+  --sub:#64748b;
+  --control-bg:#e2e8f0;
+  --control-color:#1e293b;
+  --card-bg:linear-gradient(180deg,#ffffff,#f1f5f9);
+  --card-shadow:rgba(0,0,0,.10);
+  --rank-color:#2563eb;
+  --tag-bg:#3b82f6;
+  --footer-color:#64748b;
+  --toggle-bg:#e2e8f0;
+  --toggle-color:#1e293b;
+}
+
+body{background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
+header{padding:40px;text-align:center;background:var(--header-bg);position:sticky;top:0;z-index:10;transition:background .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
 h1{font-size:2.5rem;}
-.sub{color:#94a3b8;margin-top:10px;}
+.sub{color:var(--sub);margin-top:10px;}
 .container{max-width:1400px;margin:auto;padding:30px;}
 .controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;justify-content:center;}
 button,select,input{
   padding:12px 16px;border:none;border-radius:10px;
-  background:#1e293b;color:white;cursor:pointer;
+  background:var(--control-bg);color:var(--control-color);cursor:pointer;transition:background .3s,color .3s;
 }
 .section-title{font-size:1.8rem;margin:25px 0;}
 .rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
 .card{
-  background:linear-gradient(180deg,#1e293b,#111827);
+  background:var(--card-bg);
   border-radius:20px;padding:20px;
-  box-shadow:0 8px 20px rgba(0,0,0,.35);
+  box-shadow:0 8px 20px var(--card-shadow);
+  transition:background .3s,box-shadow .3s;
 }
-.rank{font-size:1.3rem;font-weight:bold;color:#38bdf8;}
-.tag{display:inline-block;background:#2563eb;padding:5px 10px;border-radius:20px;margin:10px 0;}
+.rank{font-size:1.3rem;font-weight:bold;color:var(--rank-color);}
+.tag{display:inline-block;background:var(--tag-bg);color:#fff;padding:5px 10px;border-radius:20px;margin:10px 0;}
 .game-logo{
   width:100%;
   height:140px;
@@ -32,13 +68,24 @@ button,select,input{
   border-radius:15px;
   margin-bottom:15px;
 }
-footer{text-align:center;padding:30px;color:#94a3b8;}
+footer{text-align:center;padding:30px;color:var(--footer-color);}
+
+/* 다크/라이트 토글 버튼 */
+.theme-toggle{
+  position:absolute;right:30px;top:50%;transform:translateY(-50%);
+  background:var(--toggle-bg);color:var(--toggle-color);
+  border:none;border-radius:50px;padding:10px 18px;
+  cursor:pointer;font-size:1rem;transition:background .3s,color .3s;
+  display:flex;align-items:center;gap:8px;
+}
+header{position:relative;}
 </style>
 </head>
 <body>
 <header>
   <h1>🎮 GSNS</h1>
   <p class="sub">한국 게임 & 글로벌 게임 실시간 랭킹 플랫폼</p>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙 다크모드</button>
 </header>
 
 <div class="container">
@@ -277,7 +324,23 @@ function searchGame(){
   renderGames(currentList.filter(game=>game.name.toLowerCase().includes(keyword)));
 }
 
+function toggleTheme(){
+  const body = document.body;
+  const btn = document.getElementById('themeBtn');
+  body.classList.toggle('light');
+  const isLight = body.classList.contains('light');
+  btn.textContent = isLight ? '🌙 다크모드' : '☀️ 라이트모드';
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+
 window.onload = () => {
+  const saved = localStorage.getItem('theme');
+  if(saved === 'light'){
+    document.body.classList.add('light');
+    document.getElementById('themeBtn').textContent = '🌙 다크모드';
+  } else {
+    document.getElementById('themeBtn').textContent = '☀️ 라이트모드';
+  }
   renderGames(currentList);
   fetchKoreanRankings();
 };
