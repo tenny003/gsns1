@@ -56,22 +56,23 @@ header{padding:28px 40px;text-align:center;background:var(--header-bg);position:
 .nav-btn:hover{opacity:.85;transform:translateY(calc(-50% - 2px));}
 /* CTA 배너 */
 .cta-section{
-  text-align:center;padding:10px 20px;
+  text-align:center;padding:6px 20px;
   background:linear-gradient(135deg,#0f2744,#1e3a5f);
+  display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;
 }
 body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
-.cta-title{font-size:2rem;font-weight:800;margin-bottom:12px;}
-.cta-sub{color:var(--sub);margin-bottom:32px;font-size:1rem;}
+.cta-title{font-size:.95rem;font-weight:700;margin:0;}
+.cta-sub{color:var(--sub);font-size:.78rem;margin:0;}
 .cta-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:16px 40px;border-radius:50px;border:none;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:6px 16px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
-  color:#fff;font-size:1rem;font-weight:700;
+  color:#fff;font-size:.78rem;font-weight:700;
   cursor:pointer;letter-spacing:.03em;text-decoration:none;
   transition:opacity .2s,transform .2s;
-  box-shadow:0 6px 28px rgba(56,189,248,.4);
+  box-shadow:0 3px 12px rgba(56,189,248,.4);white-space:nowrap;
 }
-.cta-btn:hover{opacity:.85;transform:translateY(-3px);}
+.cta-btn:hover{opacity:.85;transform:translateY(-2px);}
 h1{font-size:2.5rem;}
 .sub{color:var(--sub);margin-top:10px;}
 .container{max-width:1400px;margin:auto;padding:30px;}
