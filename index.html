@@ -209,7 +209,7 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 const L = (name,genre,platform,site) => ({name,genre,platform,site,logo:logoMap[name]||''});
 
 const logoMap = {
-  // ── Steam 공식 (App ID 검증 완료) ──
+  // ── Steam CDN (App ID 검증 완료) ──
   "PUBG: Battlegrounds": "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
   "MapleStory":          "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/header.jpg",
   "Lost Ark":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/header.jpg",
@@ -239,16 +239,18 @@ const logoMap = {
   "Path of Exile":       "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/header.jpg",
   "Palworld":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/header.jpg",
 
-  // ── Steam 외 공식 CDN ──
-  "League of Legends":   "https://www.leagueoflegends.com/static/open-graph-b580f0e35edd7e6891f5d4aa8c5c0543.jpg",
-  "Valorant":            "https://playvalorant.com/opengraph.jpg",
-  "Fortnite":            "https://cdn2.unrealengine.com/en-14br-social-1200x630-1200x630-372856386.jpg",
-  "World of Warcraft":   "https://bnetcmsus-a.akamaihd.net/cms/blog_thumbnail/ci/CIHG7VHIVQ9P1507307354541.jpg",
-  "Minecraft":           "https://www.minecraft.net/content/dam/games/minecraft/key-art/MC-Vanilla_1200x628.jpg",
-  "FC Online":           "https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg",
-  "Sudden Attack":       "https://ssl.nexon.com/s2/game/sa/main/og_img.jpg",
-  "Lineage":             "https://lineage.plaync.com/resource/common/img/common/og_image.png",
-  "Free Fire":           "https://staticg.garena.com/garena/modules/freefireHome/pages/homepage/assets/game-banner.png"
+  // ── Wikimedia (안정적 CDN, 검증된 URL) ──
+  "League of Legends":   "https://upload.wikimedia.org/wikipedia/en/c/ca/League_of_Legends_Screenshot_2018.png",
+  "Valorant":            "https://upload.wikimedia.org/wikipedia/en/b/ba/Valorant_cover.jpg",
+  "Fortnite":            "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg.png",
+  "World of Warcraft":   "https://upload.wikimedia.org/wikipedia/en/6/65/World_of_Warcraft.png",
+  "Minecraft":           "https://upload.wikimedia.org/wikipedia/en/2/20/Minecraft_cover.png",
+  "Lineage":             "https://upload.wikimedia.org/wikipedia/en/b/bc/Lineage_cover.jpg",
+  "Free Fire":           "https://upload.wikimedia.org/wikipedia/en/0/09/Free_Fire_Chrono.png",
+  "Sudden Attack":       "https://upload.wikimedia.org/wikipedia/en/3/3c/Suddenattacklogo.PNG",
+
+  // ── Nexon 공식 CDN ──
+  "FC Online":           "https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg"
 };
 
 const gameData = {
