@@ -42,7 +42,36 @@ body.light{
 }
 
 body{background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
-header{padding:40px;text-align:center;background:var(--header-bg);position:sticky;top:0;z-index:10;transition:background .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+header{padding:28px 40px;text-align:center;background:var(--header-bg);position:sticky;top:0;z-index:10;transition:background .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+.nav-btn{
+  position:absolute;left:30px;top:50%;transform:translateY(-50%);
+  padding:10px 22px;border-radius:50px;border:none;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;font-size:.85rem;font-weight:700;
+  cursor:pointer;letter-spacing:.04em;text-transform:uppercase;
+  transition:opacity .2s,transform .2s;
+  box-shadow:0 4px 16px rgba(56,189,248,.35);
+  text-decoration:none;display:flex;align-items:center;gap:6px;
+}
+.nav-btn:hover{opacity:.85;transform:translateY(calc(-50% - 2px));}
+/* CTA 배너 */
+.cta-section{
+  text-align:center;padding:70px 20px;
+  background:linear-gradient(135deg,#0f2744,#1e3a5f);
+}
+body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
+.cta-title{font-size:2rem;font-weight:800;margin-bottom:12px;}
+.cta-sub{color:var(--sub);margin-bottom:32px;font-size:1rem;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:16px 40px;border-radius:50px;border:none;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;font-size:1rem;font-weight:700;
+  cursor:pointer;letter-spacing:.03em;text-decoration:none;
+  transition:opacity .2s,transform .2s;
+  box-shadow:0 6px 28px rgba(56,189,248,.4);
+}
+.cta-btn:hover{opacity:.85;transform:translateY(-3px);}
 h1{font-size:2.5rem;}
 .sub{color:var(--sub);margin-top:10px;}
 .container{max-width:1400px;margin:auto;padding:30px;}
@@ -70,38 +99,6 @@ button,select,input{
 }
 footer{text-align:center;padding:30px;color:var(--footer-color);}
 
-/* 제휴 문의 폼 */
-.contact-section{background:var(--header-bg);padding:60px 0;transition:background .3s;}
-.contact-sub{color:var(--sub);margin-bottom:35px;font-size:1rem;}
-.contact-form{
-  max-width:720px;margin:0 auto;
-  display:flex;flex-direction:column;gap:20px;
-}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
-.form-group{display:flex;flex-direction:column;gap:8px;}
-.form-group label{font-size:.85rem;font-weight:600;color:var(--sub);letter-spacing:.04em;text-transform:uppercase;}
-.contact-form input,
-.contact-form select,
-.contact-form textarea{
-  padding:14px 16px;border-radius:12px;border:1.5px solid transparent;
-  background:var(--control-bg);color:var(--control-color);
-  font-size:.95rem;transition:border-color .2s,background .3s;
-  outline:none;resize:vertical;
-}
-.contact-form input:focus,
-.contact-form select:focus,
-.contact-form textarea:focus{border-color:#38bdf8;}
-.submit-btn{
-  align-self:flex-start;
-  padding:14px 36px;border-radius:50px;border:none;
-  background:linear-gradient(135deg,#38bdf8,#2563eb);
-  color:#fff;font-size:1rem;font-weight:700;
-  cursor:pointer;letter-spacing:.03em;
-  transition:opacity .2s,transform .2s;
-  box-shadow:0 4px 20px rgba(56,189,248,.35);
-}
-.submit-btn:hover{opacity:.88;transform:translateY(-2px);}
 
 /* 테마 토글 */
 header{position:relative;}
@@ -139,6 +136,7 @@ body.light .toggle-icon{transform:rotate(20deg);}
 </head>
 <body>
 <header>
+  <a class="nav-btn" href="contact.html">🤝 Partnership</a>
   <h1>🎮 GSNS</h1>
   <p class="sub">한국 게임 & 글로벌 게임 실시간 랭킹 플랫폼</p>
   <div class="theme-toggle" onclick="toggleTheme()">
@@ -167,42 +165,11 @@ body.light .toggle-icon{transform:rotate(20deg);}
   <div class="rank-grid" id="rankGrid"></div>
 </div>
 
-<!-- 제휴 문의 섹션 -->
-<section class="contact-section">
-  <div class="container">
-    <h2 class="section-title">Partnership Inquiry</h2>
-    <p class="contact-sub">게임사 및 브랜드 제휴 문의를 남겨주세요. 빠르게 검토 후 연락드립니다.</p>
-    <form class="contact-form" action="https://formspree.io/f/xzdorzoj" method="POST">
-      <div class="form-row">
-        <div class="form-group">
-          <label>이름 / Name</label>
-          <input type="text" name="name" placeholder="홍길동" required />
-        </div>
-        <div class="form-group">
-          <label>이메일 / Email</label>
-          <input type="email" name="email" placeholder="example@email.com" required />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>회사명 / Company</label>
-        <input type="text" name="company" placeholder="회사명을 입력해주세요" />
-      </div>
-      <div class="form-group">
-        <label>문의 유형 / Type</label>
-        <select name="type">
-          <option value="게임사 제휴">게임사 제휴</option>
-          <option value="광고 문의">광고 문의</option>
-          <option value="콘텐츠 협업">콘텐츠 협업</option>
-          <option value="기타">기타</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>문의 내용 / Message</label>
-        <textarea name="message" rows="5" placeholder="문의 내용을 자유롭게 작성해주세요." required></textarea>
-      </div>
-      <button type="submit" class="submit-btn">문의 보내기 →</button>
-    </form>
-  </div>
+<!-- CTA 배너 -->
+<section class="cta-section">
+  <h2 class="cta-title">함께 성장할 파트너를 찾고 있나요?</h2>
+  <p class="cta-sub">게임사, 브랜드, 콘텐츠 크리에이터 등 다양한 제휴를 환영합니다.</p>
+  <a class="cta-btn" href="contact.html">제휴 문의하기 →</a>
 </section>
 
 <footer>
