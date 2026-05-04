@@ -134,7 +134,8 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .img-fallback .fi{font-size:2.8rem;font-weight:900;color:#38bdf8;line-height:1;}
 .img-fallback .fn{font-size:.7rem;font-weight:700;color:#94a3b8;text-align:center;padding:0 8px;}
 .card h3{font-size:1rem;margin-bottom:6px;}
-.card p{font-size:.83rem;color:var(--sub);margin-bottom:12px;}
+.card p{font-size:.83rem;color:var(--sub);margin-bottom:6px;}
+.pub-text{font-size:.77rem;color:var(--sub);margin-bottom:12px;opacity:.8;}
 .site-btn{
   width:100%;padding:9px;border-radius:10px;border:none;
   background:var(--control-bg);color:var(--control-color);
@@ -231,7 +232,93 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 
 <script>
 const GAMES_PER_PAGE = 10;
-const L = (name,genre,platform,site) => ({name,genre,platform,site,logo:logoMap[name]||''});
+
+const pubMap = {
+  "League of Legends":         "Riot Games",
+  "Valorant":                  "Riot Games",
+  "PUBG: Battlegrounds":       "Krafton",
+  "Genshin Impact":            "HoYoverse",
+  "FC Online":                 "Nexon",
+  "Lost Ark":                  "Amazon Games",
+  "MapleStory":                "Nexon",
+  "Dungeon & Fighter":         "Nexon",
+  "Lineage":                   "NCSOFT",
+  "Overwatch 2":               "Blizzard Entertainment",
+  "Sudden Attack":             "Nexon",
+  "Counter-Strike 2":          "Valve",
+  "Dota 2":                    "Valve",
+  "Free Fire":                 "Garena",
+  "Apex Legends":              "Electronic Arts",
+  "Call of Duty":              "Activision",
+  "Rainbow Six Siege":         "Ubisoft",
+  "Destiny 2":                 "Bungie",
+  "Battlefield 2042":          "Electronic Arts",
+  "Fortnite":                  "Epic Games",
+  "Minecraft":                 "Mojang / Microsoft",
+  "World of Warcraft":         "Blizzard Entertainment",
+  "Final Fantasy XIV":         "Square Enix",
+  "Black Desert":              "Pearl Abyss",
+  "Blade & Soul":              "NCSOFT",
+  "Elder Scrolls Online":      "Bethesda Softworks",
+  "New World":                 "Amazon Games",
+  "Guild Wars 2":              "NCSoft",
+  "Baldur's Gate 3":           "Larian Studios",
+  "Starfield":                 "Bethesda Softworks",
+  "Halo Infinite":             "Xbox Game Studios",
+  "Terraria":                  "Re-Logic",
+  "Valheim":                   "Coffee Stain Studios",
+  "RuneScape":                 "Jagex",
+  "The Witcher 3":             "CD Projekt Red",
+  "Path of Exile":             "Grinding Gear Games",
+  "Palworld":                  "Pocketpair",
+  "Honkai: Star Rail":         "HoYoverse",
+  "Monster Hunter: World":     "Capcom",
+  "Devil May Cry 5":           "Capcom",
+  "Sekiro":                    "FromSoftware",
+  "God of War":                "Sony Interactive Entertainment",
+  "Red Dead Redemption 2":     "Rockstar Games",
+  "Assassin's Creed Odyssey":  "Ubisoft",
+  "Civilization VI":           "2K Games",
+  "Age of Empires IV":         "Xbox Game Studios",
+  "Hearts of Iron IV":         "Paradox Interactive",
+  "XCOM 2":                    "2K Games",
+  "Escape from Tarkov":        "Battlestate Games",
+  "StarCraft II":              "Blizzard Entertainment",
+  "Clash of Clans":            "Supercell",
+  "Total War: Warhammer III":  "Sega",
+  "Rocket League":             "Epic Games",
+  "NBA 2K25":                  "2K Sports",
+  "F1 24":                     "Electronic Arts",
+  "Euro Truck Simulator 2":    "SCS Software",
+  "Farming Simulator 22":      "GIANTS Software",
+  "Microsoft Flight Simulator":"Xbox Game Studios",
+  "Cities: Skylines":          "Paradox Interactive",
+  "Stardew Valley":            "ConcernedApe",
+  "The Sims 4":                "Electronic Arts",
+  "Control":                   "505 Games",
+  "Need for Speed Heat":       "Electronic Arts",
+  "Ragnarok Online":           "Gravity",
+  "Among Us":                  "Innersloth",
+  "EA Sports FC 25":           "Electronic Arts",
+  "Dark Souls III":            "Bandai Namco",
+  "Warframe":                  "Digital Extremes",
+  "Deep Rock Galactic":        "Coffee Stain Studios",
+  "Hollow Knight":             "Team Cherry",
+  "Resident Evil Village":     "Capcom",
+  "Sea of Thieves":            "Xbox Game Studios",
+  "No Man's Sky":              "Hello Games",
+  "Subnautica":                "Unknown Worlds Entertainment",
+  "Planet Zoo":                "Frontier Developments",
+  "Madden NFL 25":             "Electronic Arts",
+  "Animal Crossing":           "Nintendo",
+  "Elden Ring":                "Bandai Namco",
+  "Diablo IV":                 "Blizzard Entertainment",
+  "Cyberpunk 2077":            "CD Projekt Red",
+  "The Elder Scrolls V: Skyrim":"Bethesda Softworks",
+  "Diablo IV":                 "Blizzard Entertainment"
+};
+
+const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||''});
 
 const logoMap = {
   // ── Steam CDN ──
@@ -296,7 +383,7 @@ const logoMap = {
   "No Man's Sky":             "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/logo.png",
   "Subnautica":               "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/logo.png",
   "Planet Zoo":               "https://cdn.cloudflare.steamstatic.com/steam/apps/703080/logo.png",
-  "Madden NFL 25":            "https://cdn.cloudflare.steamstatic.com/steam/apps/2386440/logo.png",
+  "Madden NFL 25":            "https://cdn.cloudflare.steamstatic.com/steam/apps/2582560/logo.png",
   // ── Wikimedia ──
   "League of Legends":        "https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
   "Valorant":                 "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg",
@@ -313,10 +400,10 @@ const logoMap = {
   "Genshin Impact":           "https://upload.wikimedia.org/wikipedia/commons/a/a4/Genshin_Impact_wordmark.svg",
   "Counter-Strike 2":         "https://upload.wikimedia.org/wikipedia/commons/b/b8/Counter-Strike_2_logo.svg",
   "Cyberpunk 2077":           "https://upload.wikimedia.org/wikipedia/commons/e/e6/Cyberpunk_2077_logo.svg",
-  "StarCraft II":             "https://upload.wikimedia.org/wikipedia/en/2/20/StarCraft_II_-_Box_Art.jpg",
-  "Clash of Clans":           "https://upload.wikimedia.org/wikipedia/en/2/2a/Clash_of_Clans_April_2021_Logo.png",
-  "Animal Crossing":          "https://upload.wikimedia.org/wikipedia/commons/5/57/Animal_Crossing_New_Horizons.png",
-  "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/2d/Escape_from_Tarkov_Logo.png"
+  "StarCraft II":             "https://upload.wikimedia.org/wikipedia/en/9/90/StarCraft_II_Logo.webp",
+  "Clash of Clans":           "https://upload.wikimedia.org/wikipedia/en/5/59/Clash_of_Clans_Logo.png",
+  "Animal Crossing":          "https://upload.wikimedia.org/wikipedia/en/9/9e/Animal_Crossing_Logo.png",
+  "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/20/Escape_from_Tarkov.jpg"
 };
 
 const gameData = {
@@ -326,7 +413,7 @@ const gameData = {
       L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
       L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
       L('FC Online','Sports','PC','https://fconline.nexon.com/'),
-      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/'),
+      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/','Smilegate RPG'),
       L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
       L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
       L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
@@ -335,7 +422,7 @@ const gameData = {
     ],
     '롤플레잉': [
       L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
-      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/'),
+      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/','Smilegate RPG'),
       L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
       L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
       L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
@@ -750,6 +837,7 @@ function renderGames(list) {
         <div class="tag">${game.genre}</div>
         <h3>${game.name}</h3>
         <p>플랫폼: ${game.platform}</p>
+        <p class="pub-text">배급사: ${game.publisher}</p>
         <button class="site-btn" onclick="window.open('${game.site}','_blank')">공식 사이트 이동</button>
       </div>`;
   });
