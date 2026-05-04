@@ -8,53 +8,38 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
 :root{
-  --bg:#0f172a;
-  --header-bg:#111827;
-  --text:#e2e8f0;
-  --sub:#94a3b8;
-  --control-bg:#1e293b;
-  --control-color:#ffffff;
+  --bg:#0f172a;--header-bg:#111827;--text:#e2e8f0;--sub:#94a3b8;
+  --control-bg:#1e293b;--control-color:#ffffff;
   --card-bg:linear-gradient(180deg,#1e293b,#111827);
-  --card-shadow:rgba(0,0,0,.35);
-  --rank-color:#38bdf8;
-  --tag-bg:#2563eb;
-  --footer-color:#94a3b8;
-  --toggle-color:#f8fafc;
+  --card-shadow:rgba(0,0,0,.35);--rank-color:#38bdf8;
+  --tag-bg:#2563eb;--footer-color:#94a3b8;--toggle-color:#f8fafc;
+  --border:#334155;
 }
 body.light{
-  --bg:#f1f5f9;
-  --header-bg:#ffffff;
-  --text:#1e293b;
-  --sub:#64748b;
-  --control-bg:#e2e8f0;
-  --control-color:#1e293b;
+  --bg:#f1f5f9;--header-bg:#ffffff;--text:#1e293b;--sub:#64748b;
+  --control-bg:#e2e8f0;--control-color:#1e293b;
   --card-bg:linear-gradient(180deg,#ffffff,#f1f5f9);
-  --card-shadow:rgba(0,0,0,.10);
-  --rank-color:#2563eb;
-  --tag-bg:#3b82f6;
-  --footer-color:#64748b;
-  --toggle-color:#1e293b;
+  --card-shadow:rgba(0,0,0,.10);--rank-color:#2563eb;
+  --tag-bg:#3b82f6;--footer-color:#64748b;--toggle-color:#1e293b;
+  --border:#cbd5e1;
 }
 
 body{background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
 
 /* 헤더 */
 header{
-  padding:28px 40px;text-align:center;
-  background:var(--header-bg);position:sticky;top:0;z-index:10;
+  padding:28px 40px;text-align:center;background:var(--header-bg);
+  position:sticky;top:0;z-index:10;
   transition:background .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);
-  position:relative;
 }
 h1{font-size:2.5rem;}
-.sub{color:var(--sub);margin-top:10px;}
-
+.sub-text{color:var(--sub);margin-top:8px;}
 .nav-btn{
   position:absolute;left:30px;top:50%;transform:translateY(-50%);
   padding:10px 22px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
-  color:#fff;font-size:.85rem;font-weight:700;
-  cursor:pointer;letter-spacing:.04em;
-  transition:opacity .2s,transform .2s;
+  color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;
+  letter-spacing:.04em;transition:opacity .2s,transform .2s;
   box-shadow:0 4px 16px rgba(56,189,248,.35);
   text-decoration:none;display:flex;align-items:center;gap:6px;
 }
@@ -86,43 +71,61 @@ body.light .toggle-icon{transform:rotate(20deg);}
   transition:color .3s;min-width:72px;
 }
 
-/* 컨트롤 */
-.container{max-width:1400px;margin:auto;padding:30px;}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px;justify-content:center;align-items:center;}
+/* 컨테이너 */
+.container{max-width:1400px;margin:auto;padding:30px 30px 0;}
 
-button,select,input{
-  padding:12px 16px;border:none;border-radius:10px;
-  background:var(--control-bg);color:var(--control-color);
-  cursor:pointer;transition:background .3s,color .3s;
-}
-
-/* 대륙 탭 버튼 — 색 통일 */
-.rank-btn{
+/* 탭 공통 스타일 */
+.tab-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:14px;}
+.tab-btn{
   padding:10px 22px;border-radius:50px;
-  background:transparent;
-  border:2px solid #334155;
-  color:var(--sub);
-  font-size:.88rem;font-weight:700;letter-spacing:.03em;
-  cursor:pointer;transition:all .22s;
+  background:transparent;border:2px solid var(--border);
+  color:var(--sub);font-size:.88rem;font-weight:700;
+  letter-spacing:.03em;cursor:pointer;transition:all .22s;
 }
-body.light .rank-btn{border-color:#cbd5e1;}
-.rank-btn:hover{border-color:#38bdf8;color:#38bdf8;}
-.rank-btn.active{
+.tab-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+.tab-btn.active{
   background:linear-gradient(135deg,#38bdf8,#2563eb);
   border-color:transparent;color:#fff;
   box-shadow:0 4px 18px rgba(56,189,248,.4);
 }
 
-.section-title{font-size:1.8rem;margin:25px 0;}
-.rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+/* 검색 */
+.search-row{display:flex;justify-content:center;margin-bottom:28px;}
+.search-row input{
+  width:100%;max-width:400px;padding:11px 18px;
+  border-radius:50px;border:2px solid var(--border);
+  background:var(--control-bg);color:var(--control-color);
+  font-size:.9rem;outline:none;transition:border-color .2s,background .3s;
+}
+.search-row input:focus{border-color:#38bdf8;}
+
+/* 구분선 */
+.divider{height:1px;background:var(--border);margin:0 0 28px;opacity:.5;}
+
+.section-title{font-size:1.8rem;margin-bottom:20px;}
+.rank-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;padding-bottom:40px;
+}
 .card{
   background:var(--card-bg);border-radius:20px;padding:20px;
   box-shadow:0 8px 20px var(--card-shadow);
-  transition:background .3s,box-shadow .3s;
+  transition:background .3s,box-shadow .3s,transform .2s;
 }
+.card:hover{transform:translateY(-4px);}
 .rank{font-size:1.3rem;font-weight:bold;color:var(--rank-color);}
-.tag{display:inline-block;background:var(--tag-bg);color:#fff;padding:5px 10px;border-radius:20px;margin:10px 0;}
-.game-logo{width:100%;height:140px;object-fit:cover;border-radius:15px;margin-bottom:15px;}
+.tag{display:inline-block;background:var(--tag-bg);color:#fff;padding:4px 12px;border-radius:20px;margin:8px 0;font-size:.82rem;}
+.game-logo{width:100%;height:140px;object-fit:cover;border-radius:14px;margin-bottom:14px;background:var(--control-bg);}
+.card h3{font-size:1rem;margin-bottom:6px;}
+.card p{font-size:.83rem;color:var(--sub);margin-bottom:12px;}
+.site-btn{
+  width:100%;padding:9px;border-radius:10px;border:none;
+  background:var(--control-bg);color:var(--control-color);
+  font-size:.83rem;font-weight:600;cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.site-btn:hover{background:#2563eb;color:#fff;}
 
 /* CTA 배너 */
 .cta-section{
@@ -138,7 +141,7 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
   padding:6px 16px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
   color:#fff;font-size:.78rem;font-weight:700;
-  cursor:pointer;letter-spacing:.03em;text-decoration:none;
+  cursor:pointer;text-decoration:none;
   transition:opacity .2s,transform .2s;
   box-shadow:0 3px 12px rgba(56,189,248,.4);white-space:nowrap;
 }
@@ -148,10 +151,11 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 </style>
 </head>
 <body>
+
 <header>
   <a class="nav-btn" href="contact.html">🤝 Partnership</a>
   <h1>🎮 GSNS</h1>
-  <p class="sub">한국 게임 & 글로벌 게임 실시간 랭킹 플랫폼</p>
+  <p class="sub-text">한국 게임 & 글로벌 게임 실시간 랭킹 플랫폼</p>
   <div class="theme-toggle" onclick="toggleTheme()">
     <span class="toggle-icon" id="toggleIcon">🌙</span>
     <div class="toggle-track"><div class="toggle-thumb"></div></div>
@@ -160,26 +164,24 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 </header>
 
 <div class="container">
-  <div class="controls">
-    <button class="rank-btn active" id="btnAsia"   onclick="showRankings('asia')">🌏 아시아</button>
-    <button class="rank-btn"        id="btnNA"     onclick="showRankings('na')">🌎 북미</button>
-    <button class="rank-btn"        id="btnEurope" onclick="showRankings('europe')">🌍 유럽</button>
-    <button class="rank-btn"        id="btnGlobal" onclick="showRankings('global')">🌐 글로벌</button>
-    <select id="genreFilter" onchange="filterByGenre()">
-      <option value="all">전체 장르</option>
-      <option value="MMORPG">MMORPG</option>
-      <option value="RPG">RPG</option>
-      <option value="FPS">FPS</option>
-      <option value="MOBA">MOBA</option>
-      <option value="Battle Royale">Battle Royale</option>
-      <option value="Sandbox">Sandbox</option>
-      <option value="Sports">Sports</option>
-      <option value="Action RPG">Action RPG</option>
-    </select>
-    <input type="text" id="searchInput" placeholder="게임 검색" onkeyup="searchGame()" />
+  <!-- 대륙 탭 -->
+  <div class="tab-row" id="continentTabs">
+    <button class="tab-btn active" onclick="setContinent('asia')">🌏 아시아</button>
+    <button class="tab-btn"        onclick="setContinent('na')">🌎 북미</button>
+    <button class="tab-btn"        onclick="setContinent('europe')">🌍 유럽</button>
+    <button class="tab-btn"        onclick="setContinent('global')">🌐 글로벌</button>
   </div>
 
-  <h2 class="section-title" id="sectionTitle">아시아 TOP 10</h2>
+  <!-- 장르 탭 -->
+  <div class="tab-row" id="genreTabs"></div>
+
+  <!-- 검색 -->
+  <div class="search-row">
+    <input type="text" id="searchInput" placeholder="🔍  게임 검색" oninput="searchGame()" />
+  </div>
+
+  <div class="divider"></div>
+  <h2 class="section-title" id="sectionTitle"></h2>
   <div class="rank-grid" id="rankGrid"></div>
 </div>
 
@@ -195,133 +197,334 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 </footer>
 
 <script>
+const L = (name,genre,platform,site) => ({name,genre,platform,site,logo:logoMap[name]||''});
+
 const logoMap = {
-  "League of Legends":"https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
+  "League of Legends":  "https://cdn.cloudflare.steamstatic.com/steam/apps/1818750/header.jpg",
   "PUBG: Battlegrounds":"https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
-  "Valorant":"https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg",
-  "FC Online":"https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg",
-  "MapleStory":"https://cdn.cloudflare.steamstatic.com/steam/apps/216150/header.jpg",
-  "Lost Ark":"https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/header.jpg",
-  "Sudden Attack":"https://ssl.nexon.com/s2/game/sa/main/logo.png",
-  "Dungeon & Fighter":"https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/header.jpg",
-  "Lineage":"https://upload.wikimedia.org/wikipedia/en/2/24/Lineage_logo.png",
-  "Overwatch 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg",
-  "Genshin Impact":"https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg",
-  "Fortnite":"https://cdn2.unrealengine.com/en-14br-social-1200x630-1200x630-372856386.jpg",
-  "Minecraft":"https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg",
-  "Call of Duty":"https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/header.jpg",
-  "Elden Ring":"https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
-  "World of Warcraft":"https://bnetcmsus-a.akamaihd.net/cms/template_resource/GLHF8PLKZXZX1509744317072.jpg",
-  "Counter-Strike 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
-  "Dota 2":"https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg",
-  "Final Fantasy XIV":"https://cdn.cloudflare.steamstatic.com/steam/apps/39210/header.jpg",
-  "Apex Legends":"https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg",
-  "Diablo IV":"https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg",
-  "Cyberpunk 2077":"https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
-  "FIFA Online 4":"https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg",
-  "Path of Exile":"https://cdn.cloudflare.steamstatic.com/steam/apps/238960/header.jpg"
+  "Valorant":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2217430/header.jpg",
+  "FC Online":          "https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg",
+  "MapleStory":         "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/header.jpg",
+  "Lost Ark":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/header.jpg",
+  "Sudden Attack":      "https://ssl.nexon.com/s2/game/sa/main/logo.png",
+  "Dungeon & Fighter":  "https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/header.jpg",
+  "Lineage":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1089350/header.jpg",
+  "Overwatch 2":        "https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg",
+  "Genshin Impact":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg",
+  "Fortnite":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1685790/header.jpg",
+  "Minecraft":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1672970/header.jpg",
+  "Call of Duty":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/header.jpg",
+  "Elden Ring":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+  "World of Warcraft":  "https://cdn.cloudflare.steamstatic.com/steam/apps/2835570/header.jpg",
+  "Counter-Strike 2":   "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
+  "Genshin Impact":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1971870/header.jpg",
+  "Dota 2":             "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg",
+  "Final Fantasy XIV":  "https://cdn.cloudflare.steamstatic.com/steam/apps/39210/header.jpg",
+  "Apex Legends":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg",
+  "Diablo IV":          "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg",
+  "Cyberpunk 2077":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+  "Black Desert":       "https://cdn.cloudflare.steamstatic.com/steam/apps/582660/header.jpg",
+  "Blade & Soul":       "https://cdn.cloudflare.steamstatic.com/steam/apps/2800680/header.jpg",
+  "Elder Scrolls Online":"https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header.jpg",
+  "New World":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1063730/header.jpg",
+  "Guild Wars 2":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1284210/header.jpg",
+  "Baldur's Gate 3":    "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg",
+  "Starfield":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
+  "Halo Infinite":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/header.jpg",
+  "Terraria":           "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg",
+  "Valheim":            "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg",
+  "RuneScape":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1343400/header.jpg",
+  "The Witcher 3":      "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
+  "Path of Exile":      "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/header.jpg",
+  "Free Fire":          "https://cdn.cloudflare.steamstatic.com/steam/apps/2058790/header.jpg",
+  "Palworld":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/header.jpg"
 };
 
-const rankings = {
-  asia: [
-    {rank:1, name:'League of Legends',   genre:'MOBA',       platform:'PC',        site:'https://www.leagueoflegends.com/ko-kr/'},
-    {rank:2, name:'PUBG: Battlegrounds', genre:'Battle Royale',platform:'PC',       site:'https://pubg.com/ko/'},
-    {rank:3, name:'Genshin Impact',      genre:'RPG',        platform:'PC/Mobile',  site:'https://genshin.hoyoverse.com/'},
-    {rank:4, name:'FC Online',           genre:'Sports',     platform:'PC',         site:'https://fconline.nexon.com/'},
-    {rank:5, name:'Lost Ark',            genre:'MMORPG',     platform:'PC',         site:'https://lostark.game.onstove.com/'},
-    {rank:6, name:'MapleStory',          genre:'RPG',        platform:'PC',         site:'https://maplestory.nexon.com/'},
-    {rank:7, name:'Valorant',            genre:'FPS',        platform:'PC',         site:'https://playvalorant.com/ko-kr/'},
-    {rank:8, name:'Dungeon & Fighter',   genre:'Action RPG', platform:'PC',         site:'https://df.nexon.com/'},
-    {rank:9, name:'Lineage',             genre:'MMORPG',     platform:'PC',         site:'https://lineage.plaync.com/'},
-    {rank:10,name:'Overwatch 2',         genre:'FPS',        platform:'PC/Console', site:'https://overwatch.blizzard.com/ko-kr/'}
-  ],
-  na: [
-    {rank:1, name:'Fortnite',            genre:'Battle Royale',platform:'PC/Console',site:'https://www.fortnite.com/'},
-    {rank:2, name:'Call of Duty',        genre:'FPS',        platform:'PC/Console', site:'https://www.callofduty.com/'},
-    {rank:3, name:'Minecraft',           genre:'Sandbox',    platform:'PC/Mobile',  site:'https://www.minecraft.net/'},
-    {rank:4, name:'Apex Legends',        genre:'Battle Royale',platform:'PC/Console',site:'https://www.ea.com/games/apex-legends'},
-    {rank:5, name:'Counter-Strike 2',   genre:'FPS',        platform:'PC',         site:'https://www.counter-strike.net/cs2'},
-    {rank:6, name:'World of Warcraft',   genre:'MMORPG',     platform:'PC',         site:'https://worldofwarcraft.blizzard.com/'},
-    {rank:7, name:'Overwatch 2',         genre:'FPS',        platform:'PC/Console', site:'https://overwatch.blizzard.com/'},
-    {rank:8, name:'Valorant',            genre:'FPS',        platform:'PC',         site:'https://playvalorant.com/'},
-    {rank:9, name:'Diablo IV',           genre:'Action RPG', platform:'PC/Console', site:'https://diablo4.blizzard.com/'},
-    {rank:10,name:'Elden Ring',          genre:'RPG',        platform:'PC/Console', site:'https://en.bandainamcoent.eu/elden-ring/'}
-  ],
-  europe: [
-    {rank:1, name:'Counter-Strike 2',   genre:'FPS',        platform:'PC',         site:'https://www.counter-strike.net/cs2'},
-    {rank:2, name:'League of Legends',  genre:'MOBA',       platform:'PC',         site:'https://www.leagueoflegends.com/'},
-    {rank:3, name:'Minecraft',          genre:'Sandbox',    platform:'PC/Mobile',  site:'https://www.minecraft.net/'},
-    {rank:4, name:'Dota 2',             genre:'MOBA',       platform:'PC',         site:'https://www.dota2.com/'},
-    {rank:5, name:'World of Warcraft',  genre:'MMORPG',     platform:'PC',         site:'https://worldofwarcraft.blizzard.com/'},
-    {rank:6, name:'Fortnite',           genre:'Battle Royale',platform:'PC/Console',site:'https://www.fortnite.com/'},
-    {rank:7, name:'Elden Ring',         genre:'RPG',        platform:'PC/Console', site:'https://en.bandainamcoent.eu/elden-ring/'},
-    {rank:8, name:'Cyberpunk 2077',     genre:'RPG',        platform:'PC/Console', site:'https://www.cyberpunk.net/'},
-    {rank:9, name:'Final Fantasy XIV',  genre:'MMORPG',     platform:'PC',         site:'https://na.finalfantasyxiv.com/'},
-    {rank:10,name:'Apex Legends',       genre:'Battle Royale',platform:'PC/Console',site:'https://www.ea.com/games/apex-legends'}
-  ],
-  global: [
-    {rank:1, name:'Minecraft',          genre:'Sandbox',    platform:'PC/Mobile',  site:'https://www.minecraft.net/'},
-    {rank:2, name:'Fortnite',           genre:'Battle Royale',platform:'PC/Console',site:'https://www.fortnite.com/'},
-    {rank:3, name:'League of Legends',  genre:'MOBA',       platform:'PC',         site:'https://www.leagueoflegends.com/'},
-    {rank:4, name:'Counter-Strike 2',  genre:'FPS',        platform:'PC',         site:'https://www.counter-strike.net/cs2'},
-    {rank:5, name:'Genshin Impact',     genre:'RPG',        platform:'PC/Mobile',  site:'https://genshin.hoyoverse.com/'},
-    {rank:6, name:'Valorant',           genre:'FPS',        platform:'PC',         site:'https://playvalorant.com/'},
-    {rank:7, name:'PUBG: Battlegrounds',genre:'Battle Royale',platform:'PC',       site:'https://pubg.com/'},
-    {rank:8, name:'Call of Duty',       genre:'FPS',        platform:'PC/Console', site:'https://www.callofduty.com/'},
-    {rank:9, name:'World of Warcraft',  genre:'MMORPG',     platform:'PC',         site:'https://worldofwarcraft.blizzard.com/'},
-    {rank:10,name:'Apex Legends',       genre:'Battle Royale',platform:'PC/Console',site:'https://www.ea.com/games/apex-legends'}
-  ]
+const gameData = {
+  asia: {
+    'TOP 10': [
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/ko-kr/'),
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
+      L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+      L('FC Online','Sports','PC','https://fconline.nexon.com/'),
+      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/'),
+      L('MapleStory','RPG','PC','https://maplestory.nexon.com/'),
+      L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
+      L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+      L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/')
+    ],
+    'MMORPG': [
+      L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/'),
+      L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
+      L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
+      L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
+      L('Blade & Soul','MMORPG','PC','https://bns.plaync.com/'),
+      L('Final Fantasy XIV','MMORPG','PC','https://na.finalfantasyxiv.com/')
+    ],
+    'RPG': [
+      L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+      L('MapleStory','RPG','PC','https://maplestory.nexon.com/'),
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Final Fantasy XIV','RPG','PC','https://na.finalfantasyxiv.com/'),
+      L('Path of Exile','RPG','PC','https://www.pathofexile.com/')
+    ],
+    'FPS': [
+      L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
+      L('PUBG: Battlegrounds','FPS','PC','https://pubg.com/ko/'),
+      L('Sudden Attack','FPS','PC','https://sa.nexon.com/'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2')
+    ],
+    'MOBA': [
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/ko-kr/'),
+      L('Dota 2','MOBA','PC','https://www.dota2.com/')
+    ],
+    'Battle Royale': [
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/')
+    ],
+    'Sports': [
+      L('FC Online','Sports','PC','https://fconline.nexon.com/')
+    ],
+    'Action RPG': [
+      L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+      L('Black Desert','Action RPG','PC','https://www.naeu.playblackdesert.com/'),
+      L('Lost Ark','Action RPG','PC','https://lostark.game.onstove.com/'),
+      L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/')
+    ]
+  },
+  na: {
+    'TOP 10': [
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
+      L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/')
+    ],
+    'MMORPG': [
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Final Fantasy XIV','MMORPG','PC','https://na.finalfantasyxiv.com/'),
+      L('Elder Scrolls Online','MMORPG','PC/Console','https://www.elderscrollsonline.com/'),
+      L('New World','MMORPG','PC','https://www.newworld.com/'),
+      L('Guild Wars 2','MMORPG','PC','https://www.guildwars2.com/'),
+      L('Lost Ark','MMORPG','PC','https://www.playlostark.com/')
+    ],
+    'RPG': [
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
+      L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
+      L("Baldur's Gate 3",'RPG','PC/Console','https://baldursgate3.game/'),
+      L('Starfield','RPG','PC/Console','https://bethesda.net/game/starfield'),
+      L('Path of Exile','RPG','PC','https://www.pathofexile.com/')
+    ],
+    'FPS': [
+      L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('Apex Legends','FPS','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
+      L('Halo Infinite','FPS','PC/Console','https://www.halowaypoint.com/')
+    ],
+    'MOBA': [
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+      L('Dota 2','MOBA','PC','https://www.dota2.com/')
+    ],
+    'Battle Royale': [
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+      L('Call of Duty','Battle Royale','PC/Console','https://www.callofduty.com/')
+    ],
+    'Sandbox': [
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Terraria','Sandbox','PC','https://terraria.org/'),
+      L('Valheim','Sandbox','PC','https://www.valheimgame.com/'),
+      L('Palworld','Sandbox','PC/Console','https://www.pocketpair.jp/palworld')
+    ]
+  },
+  europe: {
+    'TOP 10': [
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Dota 2','MOBA','PC','https://www.dota2.com/'),
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
+      L('Final Fantasy XIV','MMORPG','PC','https://eu.finalfantasyxiv.com/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
+    ],
+    'MMORPG': [
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Final Fantasy XIV','MMORPG','PC','https://eu.finalfantasyxiv.com/'),
+      L('Elder Scrolls Online','MMORPG','PC/Console','https://www.elderscrollsonline.com/'),
+      L('Guild Wars 2','MMORPG','PC','https://www.guildwars2.com/'),
+      L('RuneScape','MMORPG','PC','https://www.runescape.com/'),
+      L('New World','MMORPG','PC','https://www.newworld.com/')
+    ],
+    'RPG': [
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
+      L("Baldur's Gate 3",'RPG','PC/Console','https://baldursgate3.game/'),
+      L('The Witcher 3','RPG','PC/Console','https://www.thewitcher.com/'),
+      L('Path of Exile','RPG','PC','https://www.pathofexile.com/')
+    ],
+    'FPS': [
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
+      L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+      L('Apex Legends','FPS','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/')
+    ],
+    'MOBA': [
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+      L('Dota 2','MOBA','PC','https://www.dota2.com/')
+    ],
+    'Battle Royale': [
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
+    ],
+    'Sandbox': [
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Valheim','Sandbox','PC','https://www.valheimgame.com/'),
+      L('Terraria','Sandbox','PC','https://terraria.org/'),
+      L('Palworld','Sandbox','PC/Console','https://www.pocketpair.jp/palworld')
+    ]
+  },
+  global: {
+    'TOP 10': [
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+      L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
+    ],
+    'MMORPG': [
+      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+      L('Final Fantasy XIV','MMORPG','PC','https://na.finalfantasyxiv.com/'),
+      L('Lost Ark','MMORPG','PC','https://www.playlostark.com/'),
+      L('Elder Scrolls Online','MMORPG','PC/Console','https://www.elderscrollsonline.com/'),
+      L('Guild Wars 2','MMORPG','PC','https://www.guildwars2.com/'),
+      L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/')
+    ],
+    'RPG': [
+      L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+      L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
+      L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
+      L("Baldur's Gate 3",'RPG','PC/Console','https://baldursgate3.game/'),
+      L('The Witcher 3','RPG','PC/Console','https://www.thewitcher.com/')
+    ],
+    'FPS': [
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
+      L('Apex Legends','FPS','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
+      L('PUBG: Battlegrounds','FPS','PC','https://pubg.com/')
+    ],
+    'MOBA': [
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+      L('Dota 2','MOBA','PC','https://www.dota2.com/')
+    ],
+    'Battle Royale': [
+      L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+      L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+      L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+      L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/')
+    ],
+    'Sandbox': [
+      L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+      L('Terraria','Sandbox','PC','https://terraria.org/'),
+      L('Valheim','Sandbox','PC','https://www.valheimgame.com/'),
+      L('Palworld','Sandbox','PC/Console','https://www.pocketpair.jp/palworld')
+    ]
+  }
 };
 
-const titles = {
-  asia:'아시아 TOP 10', na:'북미 TOP 10', europe:'유럽 TOP 10', global:'글로벌 TOP 10'
-};
-const btnIds = {
-  asia:'btnAsia', na:'btnNA', europe:'btnEurope', global:'btnGlobal'
-};
+const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};
+let currentContinent = 'asia';
+let currentGenre = 'TOP 10';
 
-let currentRegion = 'asia';
-let currentList = rankings.asia.map(g=>({...g, logo:logoMap[g.name]||''}));
-
-function renderGames(list){
+function renderGames(list) {
   const grid = document.getElementById('rankGrid');
   grid.innerHTML = '';
-  list.forEach(game=>{
+  if(!list || list.length === 0){
+    grid.innerHTML = '<p style="color:var(--sub);padding:20px">해당 장르의 게임 데이터가 없습니다.</p>';
+    return;
+  }
+  list.forEach((game, i) => {
     grid.innerHTML += `
       <div class="card">
         <img src="${game.logo}" class="game-logo" alt="${game.name}" onerror="this.style.display='none'">
-        <div class="rank">#${game.rank}</div>
+        <div class="rank">#${i + 1}</div>
         <div class="tag">${game.genre}</div>
         <h3>${game.name}</h3>
         <p>플랫폼: ${game.platform}</p>
-        <button onclick="window.open('${game.site}','_blank')">공식 사이트 이동</button>
+        <button class="site-btn" onclick="window.open('${game.site}','_blank')">공식 사이트 이동</button>
       </div>`;
   });
 }
 
-function showRankings(region){
-  currentRegion = region;
-  currentList = rankings[region].map(g=>({...g, logo:logoMap[g.name]||''}));
-  document.getElementById('sectionTitle').innerText = titles[region];
-  document.querySelectorAll('.rank-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(btnIds[region]).classList.add('active');
-  document.getElementById('genreFilter').value = 'all';
-  renderGames(currentList);
+function updateGenreTabs() {
+  const genres = Object.keys(gameData[currentContinent]);
+  const container = document.getElementById('genreTabs');
+  container.innerHTML = genres.map(g =>
+    `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : g}</button>`
+  ).join('');
 }
 
-function filterByGenre(){
-  const genre = document.getElementById('genreFilter').value;
-  const base = rankings[currentRegion].map(g=>({...g, logo:logoMap[g.name]||''}));
-  renderGames(genre === 'all' ? base : base.filter(g=>g.genre===genre));
+function updateSectionTitle() {
+  const emoji = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
+  document.getElementById('sectionTitle').textContent =
+    `${emoji[currentContinent]} ${continentLabels[currentContinent]} — ${currentGenre}`;
 }
 
-function searchGame(){
+function setContinent(region) {
+  currentContinent = region;
+  const genres = Object.keys(gameData[region]);
+  currentGenre = genres.includes(currentGenre) ? currentGenre : 'TOP 10';
+
+  document.querySelectorAll('#continentTabs .tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['asia','na','europe','global'][i] === region);
+  });
+
+  document.getElementById('searchInput').value = '';
+  updateGenreTabs();
+  updateSectionTitle();
+  renderGames(gameData[currentContinent][currentGenre]);
+}
+
+function setGenre(genre) {
+  currentGenre = genre;
+  updateGenreTabs();
+  updateSectionTitle();
+  document.getElementById('searchInput').value = '';
+  renderGames(gameData[currentContinent][currentGenre]);
+}
+
+function searchGame() {
   const kw = document.getElementById('searchInput').value.toLowerCase();
-  const base = rankings[currentRegion].map(g=>({...g, logo:logoMap[g.name]||''}));
-  renderGames(base.filter(g=>g.name.toLowerCase().includes(kw)));
+  const base = gameData[currentContinent][currentGenre];
+  renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
 }
 
-function toggleTheme(){
+function toggleTheme() {
   document.body.classList.toggle('light');
   const isLight = document.body.classList.contains('light');
   document.getElementById('toggleIcon').textContent = isLight ? '☀️' : '🌙';
@@ -331,7 +534,7 @@ function toggleTheme(){
 
 window.onload = () => {
   const saved = localStorage.getItem('theme');
-  if(saved === 'light'){
+  if (saved === 'light') {
     document.body.classList.add('light');
     document.getElementById('toggleIcon').textContent = '☀️';
     document.getElementById('themeBtn').textContent   = 'Light Mode';
@@ -339,7 +542,9 @@ window.onload = () => {
     document.getElementById('toggleIcon').textContent = '🌙';
     document.getElementById('themeBtn').textContent   = 'Dark Mode';
   }
-  renderGames(currentList);
+  updateGenreTabs();
+  updateSectionTitle();
+  renderGames(gameData[currentContinent][currentGenre]);
 };
 </script>
 </body>
