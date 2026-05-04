@@ -1,9 +1,9 @@
 name: Update Game Rankings
 
-# 3시간마다 자동 실행 + 수동 실행 가능
+# 매주 월요일 00:00 UTC 자동 실행 + 수동 실행 가능
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '0 0 * * 1'
   workflow_dispatch:
 
 permissions:

@@ -7,7 +7,7 @@
  *   - 비Steam 게임  : 공개 플레이어 수 기반 추정값 (Riot, Epic, Nintendo 등)
  *
  * 실행: node scripts/update-rankings.js
- * 출력: data/rankings.json  (3시간마다 GitHub Actions 자동 갱신)
+ * 출력: data/rankings.json  (매주 월요일 GitHub Actions 자동 갱신)
  */
 
 const https = require('https');
