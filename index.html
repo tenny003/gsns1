@@ -216,21 +216,15 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 const L = (name,genre,platform,site) => ({name,genre,platform,site,logo:logoMap[name]||''});
 
 const logoMap = {
-  // ── Steam 공식 logo.png (투명 배경 로고) ──
+  // ── Steam 공식 logo.png ──
   "PUBG: Battlegrounds": "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/logo.png",
   "MapleStory":          "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/logo.png",
-  "Lost Ark":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/logo.png",
-  "Dungeon & Fighter":   "https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/logo.png",
-  "Overwatch 2":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/logo.png",
-  "Genshin Impact":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1283830/logo.png",
   "Call of Duty":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/logo.png",
   "Elden Ring":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/logo.png",
-  "Counter-Strike 2":    "https://cdn.cloudflare.steamstatic.com/steam/apps/730/logo.png",
   "Dota 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/570/logo.png",
   "Final Fantasy XIV":   "https://cdn.cloudflare.steamstatic.com/steam/apps/39210/logo.png",
   "Apex Legends":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/logo.png",
   "Diablo IV":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/logo.png",
-  "Cyberpunk 2077":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/logo.png",
   "Black Desert":        "https://cdn.cloudflare.steamstatic.com/steam/apps/582660/logo.png",
   "Blade & Soul":        "https://cdn.cloudflare.steamstatic.com/steam/apps/3669060/logo.png",
   "Elder Scrolls Online":"https://cdn.cloudflare.steamstatic.com/steam/apps/306130/logo.png",
@@ -246,16 +240,22 @@ const logoMap = {
   "Path of Exile":       "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/logo.png",
   "Palworld":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/logo.png",
 
-  // ── Wikimedia 공식 로고 (Steam 비출시 게임) ──
+  // ── Wikimedia 공식 로고 ──
   "League of Legends":   "https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
   "Valorant":            "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg",
   "Fortnite":            "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg",
-  "World of Warcraft":   "https://upload.wikimedia.org/wikipedia/en/6/65/World_of_Warcraft_logo.svg",
-  "Minecraft":           "https://upload.wikimedia.org/wikipedia/commons/4/4d/Minecraft_logo.svg",
-  "Lineage":             "https://upload.wikimedia.org/wikipedia/en/2/24/Lineage_logo.png",
+  "World of Warcraft":   "https://upload.wikimedia.org/wikipedia/en/6/65/World_of_Warcraft.png",
+  "Minecraft":           "https://upload.wikimedia.org/wikipedia/commons/c/cb/Minecraft_Logo-en.svg",
+  "Lineage":             "https://upload.wikimedia.org/wikipedia/en/d/db/Lineage_logo.png",
   "Free Fire":           "https://upload.wikimedia.org/wikipedia/en/3/38/Free_Fire_New_Logo.svg",
   "Sudden Attack":       "https://upload.wikimedia.org/wikipedia/en/3/3c/Suddenattacklogo.PNG",
-  "FC Online":           "https://upload.wikimedia.org/wikipedia/en/d/df/EA_Sports_FC_logo.svg"
+  "FC Online":           "https://upload.wikimedia.org/wikipedia/commons/3/31/EA_Sports_FC_logo.svg",
+  "Lost Ark":            "https://upload.wikimedia.org/wikipedia/commons/b/be/Lost_Ark_logo.png",
+  "Dungeon & Fighter":   "https://upload.wikimedia.org/wikipedia/commons/8/8f/DFO_Logo.svg",
+  "Overwatch 2":         "https://upload.wikimedia.org/wikipedia/commons/7/72/Overwatch_2_full_logo.svg",
+  "Genshin Impact":      "https://upload.wikimedia.org/wikipedia/commons/a/a4/Genshin_Impact_wordmark.svg",
+  "Counter-Strike 2":    "https://upload.wikimedia.org/wikipedia/commons/b/b8/Counter-Strike_2_logo.svg",
+  "Cyberpunk 2077":      "https://upload.wikimedia.org/wikipedia/commons/e/e6/Cyberpunk_2077_logo.svg"
 };
 
 const gameData = {
