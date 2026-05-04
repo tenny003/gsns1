@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GSNS - Game Ranking Platform</title>
+<title>GSNS - 게임 주간 랭킹 플랫폼 | 아시아·북미·유럽·글로벌</title>
+<meta name="description" content="GSNS는 아시아, 북미, 유럽, 글로벌 지역별 주간 게임 순위를 제공하는 랭킹 플랫폼입니다. 롤플레잉, 슈팅, 전략, 액션, 스포츠 장르별 인기 게임을 확인하세요." />
+<meta name="keywords" content="게임 랭킹, 게임 순위, 인기 게임, MMORPG 순위, FPS 순위, 아시아 게임, 글로벌 게임 순위, 주간 게임 차트" />
+<meta property="og:title" content="GSNS - 게임 주간 랭킹 플랫폼" />
+<meta property="og:description" content="아시아, 북미, 유럽, 글로벌 지역별 주간 게임 순위. 롤플레잉·슈팅·전략·액션 장르별 인기 게임 확인." />
+<meta property="og:type" content="website" />
+<meta name="robots" content="index, follow" />
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
@@ -175,6 +181,41 @@ body.light .toggle-icon{transform:rotate(20deg);}
   transition:all .2s;}
 .refresh-btn:hover{border-color:#38bdf8;color:#38bdf8;}
 
+/* 게임 설명 텍스트 */
+.desc-text{
+  font-size:.77rem;color:var(--sub);margin-bottom:10px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* 데이터 출처 */
+.rank-source{font-size:.78rem;color:var(--sub);margin-bottom:20px;opacity:.75;}
+
+/* 푸터 링크 */
+.footer-links{display:flex;align-items:center;justify-content:center;gap:16px;
+  flex-wrap:wrap;margin-bottom:8px;}
+.footer-links button,.footer-links a{background:none;border:none;
+  color:var(--footer-color);font-size:.83rem;cursor:pointer;text-decoration:none;
+  transition:color .2s;padding:0;font-family:inherit;}
+.footer-links button:hover,.footer-links a:hover{color:#38bdf8;}
+.footer-sep{color:var(--border);}
+.footer-source{font-size:.75rem;color:var(--sub);margin-bottom:6px;opacity:.65;}
+
+/* 모달 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--header-bg);border-radius:20px;padding:32px;
+  max-width:560px;width:100%;position:relative;max-height:82vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);border:1px solid var(--border);}
+.modal-close{position:absolute;top:16px;right:16px;background:transparent;
+  border:none;color:var(--sub);font-size:1.4rem;cursor:pointer;line-height:1;
+  transition:color .2s;}
+.modal-close:hover{color:var(--text);}
+.modal-box h3{font-size:1.25rem;margin-bottom:16px;}
+.modal-box p,.modal-box li{font-size:.87rem;color:var(--sub);line-height:1.75;margin-bottom:8px;}
+.modal-box ul{padding-left:20px;margin-bottom:8px;}
+.modal-box strong{color:var(--text);}
+
 /* CTA 배너 */
 .cta-section{
   text-align:center;padding:6px 20px;
@@ -235,6 +276,7 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 
   <div class="divider"></div>
   <h2 class="section-title" id="sectionTitle"></h2>
+  <p class="rank-source" id="rankSource"></p>
   <div class="rank-grid" id="rankGrid"></div>
   <div class="pagination" id="paginationContainer"></div>
 </div>
@@ -246,7 +288,23 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <a class="cta-btn" href="contact.html">제휴 문의하기 →</a>
 </section>
 
+<!-- 모달 -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
 <footer>
+  <div class="footer-links">
+    <button onclick="showModal('about')">서비스 소개</button>
+    <span class="footer-sep">|</span>
+    <button onclick="showModal('privacy')">개인정보처리방침</button>
+    <span class="footer-sep">|</span>
+    <a href="contact.html">제휴 문의</a>
+  </div>
+  <p class="footer-source">순위 데이터: SteamSpy CCU + 지역 가중치 | 매주 월요일 자동 업데이트</p>
   <p>© 2026 GSNS - Game Social Network Service</p>
 </footer>
 
@@ -338,7 +396,91 @@ const pubMap = {
   "Diablo IV":                 "Blizzard Entertainment"
 };
 
-const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||''});
+const descMap = {
+  "League of Legends":          "Riot Games의 5v5 전략 MOBA. 전 세계 1억 명 이상이 즐기는 경쟁 게임.",
+  "PUBG: Battlegrounds":        "100인 생존 배틀로얄의 원조. Krafton이 개발한 한국산 글로벌 히트작.",
+  "Genshin Impact":             "오픈 월드 탐험 무료 RPG. HoYoverse의 애니메이션 스타일 액션 게임.",
+  "FC Online":                  "한국 최대 온라인 축구 게임. Nexon이 서비스하는 PC 전용 풋볼 시뮬레이션.",
+  "Lost Ark":                   "대규모 오픈 월드 MMO 액션 RPG. Smilegate RPG 개발의 한국 대표 MMORPG.",
+  "MapleStory":                 "넥슨의 2D 횡스크롤 MMORPG. 20년 이상 서비스 중인 한국 게임 아이콘.",
+  "Valorant":                   "전략 스킬 기반 5v5 전술 슈팅. Riot Games의 PC 전용 경쟁 FPS.",
+  "Dungeon & Fighter":          "넥슨의 격투 스타일 액션 RPG. 중국에서 수억 명이 플레이하는 글로벌 히트작.",
+  "Lineage":                    "엔씨소프트의 클래식 MMORPG. 한국 온라인 게임 역사의 시초.",
+  "Overwatch 2":                "블리자드의 팀 기반 영웅 슈팅. 다양한 영웅으로 즐기는 전략적 팀플레이.",
+  "Counter-Strike 2":           "세계 최고 인기 전술 FPS. Valve CS 시리즈의 최신작.",
+  "Dota 2":                     "Valve의 복잡한 전략 MOBA. 매년 수천만 달러 규모의 대회가 열리는 e스포츠 명가.",
+  "Fortnite":                   "Epic Games의 배틀로얄 + 크리에이티브 모드. 전 세계 3억 명 이상 등록.",
+  "Minecraft":                  "블록으로 세상을 창조하는 샌드박스. 역사상 가장 많이 팔린 게임.",
+  "World of Warcraft":          "블리자드의 MMORPG 전설. 20년간 서구권 온라인 RPG 장르를 정의한 작품.",
+  "Free Fire":                  "Garena의 모바일 배틀로얄. 동남아·남미에서 폭발적 인기를 끈 글로벌 히트작.",
+  "Apex Legends":               "EA의 빠른 템포 팀 배틀로얄. 독창적 캐릭터 스킬과 핑 시스템.",
+  "Call of Duty":               "Activision의 밀리터리 FPS 메가 프랜차이즈. 전 세계 최다 판매 슈팅 시리즈.",
+  "Elden Ring":                 "FromSoftware의 오픈 월드 액션 RPG. 조지 R.R. 마틴 원작 감수, GOTY 2022.",
+  "Cyberpunk 2077":             "근미래 나이트시티 배경의 오픈 월드 RPG. CD Projekt Red 개발.",
+  "The Witcher 3":              "게럴트의 마지막 모험을 담은 오픈 월드 RPG. 수십 개의 GOTY 수상.",
+  "Baldur's Gate 3":            "D&D 5판 기반 턴제 RPG. Larian Studios의 GOTY 수상작.",
+  "Starfield":                  "베데스다의 우주 탐험 오픈 월드 RPG. 1000개 이상의 행성을 탐험.",
+  "Final Fantasy XIV":          "스퀘어에닉스의 구독형 MMORPG. 대규모 스토리 확장팩으로 극적 재기에 성공.",
+  "Honkai: Star Rail":          "HoYoverse의 턴제 우주 SF RPG. 원신에 이어 글로벌 흥행을 이어간 작품.",
+  "Diablo IV":                  "블리자드의 오픈 월드 핵 앤 슬래시. 다크한 분위기의 액션 RPG.",
+  "Black Desert":               "펄어비스의 액션 MMORPG. 정교한 캐릭터 커스터마이징과 실시간 전투.",
+  "Blade & Soul":               "엔씨소프트의 무협 MMORPG. 화려한 콤보 기반 실시간 전투 시스템.",
+  "Elder Scrolls Online":       "베데스다의 MMORPG. 탐림 대륙 전체를 탐험할 수 있는 광대한 오픈 월드.",
+  "New World":                  "Amazon Games의 MMORPG. 미지의 섬을 개척하는 식민지 시대 배경.",
+  "Guild Wars 2":               "NCSoft의 정액제 없는 MMORPG. 독특한 이벤트 기반 월드 퀘스트 시스템.",
+  "RuneScape":                  "Jagex의 클래식 MMORPG. 20년 이상 서비스 중인 서구권 장수 온라인 RPG.",
+  "StarCraft II":               "블리자드의 SF 실시간 전략. 한국 e스포츠 문화를 만든 전략 게임의 전설.",
+  "Clash of Clans":             "Supercell의 모바일 전략 게임. 마을 건설과 클랜 전쟁으로 전 세계 인기.",
+  "Age of Empires IV":          "Xbox의 정통 RTS. 역사 속 문명과 제국을 이끄는 전략 게임.",
+  "Civilization VI":            "2K의 턴제 문명 전략. 역사 속 지도자로 인류 문명을 이끌어라.",
+  "Hearts of Iron IV":          "Paradox의 2차 세계대전 그랜드 전략. 역대 최고의 전쟁 시뮬레이션.",
+  "Total War: Warhammer III":   "Sega의 실시간 전투 + 턴제 전략. 워해머 판타지 세계관.",
+  "XCOM 2":                     "2K의 SF 턴제 전략. 외계인 지배 지구를 해방하는 저항군 지휘 게임.",
+  "Halo Infinite":              "Xbox의 대표 FPS. 마스터 치프의 새로운 오픈 월드 어드벤처.",
+  "Rocket League":              "Epic Games의 차량 + 축구 스포츠. 독특한 물리 엔진 기반 경쟁 게임.",
+  "NBA 2K25":                   "2K Sports의 NBA 농구 시뮬레이션. 가장 현실적인 농구 게임.",
+  "EA Sports FC 25":            "EA의 축구 시뮬레이션. 구 FIFA 프랜차이즈의 새 이름으로 출시.",
+  "F1 24":                      "EA의 공식 F1 레이싱 게임. 실제 드라이버와 서킷을 완벽 재현.",
+  "Euro Truck Simulator 2":     "SCS Software의 유럽 트럭 운전 시뮬레이션. 유럽에서 특히 높은 인기.",
+  "Farming Simulator 22":       "GIANTS Software의 농장 경영 시뮬레이션. 실제 농기계 브랜드 라이선스.",
+  "Microsoft Flight Simulator": "Xbox의 항공 시뮬레이션. 실제 지구 전체를 비행할 수 있는 압도적 스케일.",
+  "Cities: Skylines":           "Paradox의 도시 건설 시뮬레이션. 도시 설계와 교통·경제 관리.",
+  "The Sims 4":                 "EA의 생활 시뮬레이션. 나만의 캐릭터와 집을 자유롭게 꾸미는 게임.",
+  "Stardew Valley":             "1인 개발 인디의 전설. 농장 경영 + 마을 사람들과의 따뜻한 관계 RPG.",
+  "Animal Crossing":            "닌텐도의 힐링 생활 시뮬레이션. Nintendo Switch 역대 최다 판매작 중 하나.",
+  "Planet Zoo":                 "Frontier의 동물원 경영 시뮬레이션. 사실적인 동물 행동 AI 적용.",
+  "Palworld":                   "Pocketpair의 오픈 월드 생존 게임. 출시 초 폭발적 인기를 끈 화제작.",
+  "Valheim":                    "바이킹 테마 오픈 월드 생존 게임. 신화 속 세계를 탐험하며 건설.",
+  "Terraria":                   "Re-Logic의 2D 오픈 월드 샌드박스. 3000만 장 이상 판매된 인디 명작.",
+  "Path of Exile":              "Grinding Gear Games의 무료 다크 판타지 액션 RPG. 방대한 빌드 시스템.",
+  "God of War":                 "크레이토스의 북유럽 신화 여정. Sony의 GOTY 수상 액션 RPG.",
+  "Red Dead Redemption 2":      "Rockstar의 오픈 월드 서부극. 역사상 가장 아름다운 오픈 월드 중 하나.",
+  "Monster Hunter: World":      "Capcom의 몬스터 사냥 액션 RPG. 동료와 협력하는 헌팅 어드벤처.",
+  "Devil May Cry 5":            "Capcom의 스타일리시 액션. 화려한 콤보와 연출로 시리즈 최고작 평가.",
+  "Sekiro":                     "FromSoftware의 전국 시대 일본 배경 액션. 칼싸움 특화 고난도 게임.",
+  "Dark Souls III":             "FromSoftware의 다크 판타지 액션 RPG. 소울라이크 장르의 정점.",
+  "Hollow Knight":              "Team Cherry의 메트로배니아 인디 명작. 벌레 왕국 할로우네스트 탐험.",
+  "Resident Evil Village":      "Capcom의 1인칭 생존 공포. 호화로운 마을을 배경으로 한 시리즈 8편.",
+  "Deep Rock Galactic":         "1~4인 협동 FPS. 은하계 드워프 광부들의 벌레 소탕 협동 게임.",
+  "Warframe":                   "Digital Extremes의 무료 닌자 스타일 TPS. 방대한 프레임·무기 수집 요소.",
+  "Sea of Thieves":             "Xbox의 오픈 월드 해적 어드벤처. 친구들과 즐기는 협동 항해 게임.",
+  "No Man's Sky":               "Hello Games의 무한 우주 샌드박스. 꾸준한 무료 업데이트로 극적 부활.",
+  "Among Us":                   "우주선 속 배신자를 찾는 소셜 추리 게임. 팬데믹 기간 글로벌 메가 히트.",
+  "Subnautica":                 "Unknown Worlds의 해저 생존 탐험. 아름답고 신비로운 외계 바다.",
+  "Control":                    "505 Games의 초자연 현상 액션 어드벤처. 독특한 SCP 분위기의 작품.",
+  "Destiny 2":                  "Bungie의 루트 슈팅 FPS. 동료와 함께하는 우주 영웅 서사.",
+  "Rainbow Six Siege":          "Ubisoft의 전술 팀 FPS. 치밀한 파괴 물리와 오퍼레이터 전략.",
+  "Battlefield 2042":           "EA의 대규모 전장 FPS. 128인 전투와 다이나믹 날씨 시스템.",
+  "Need for Speed Heat":        "EA의 거리 레이싱. 낮에는 합법 레이스, 밤에는 경찰과 추격전.",
+  "Escape from Tarkov":         "BSG의 초고난도 리얼리스틱 FPS. 루팅과 생존 중심의 독특한 플레이.",
+  "Ragnarok Online":            "Gravity의 클래식 MMORPG. 동남아·한국에서 오랜 팬층을 보유한 장수 게임.",
+  "Assassin's Creed Odyssey":   "Ubisoft의 고대 그리스 오픈 월드 액션 RPG.",
+  "The Elder Scrolls V: Skyrim":"베데스다의 북부 대륙 오픈 월드 RPG. 역사상 가장 많이 팔린 RPG 중 하나.",
+  "Madden NFL 25":              "EA의 공식 NFL 미식축구 시뮬레이션. 북미에서 압도적 인기의 스포츠 게임.",
+  "Sudden Attack":              "넥슨의 PC 전용 밀리터리 FPS. 국내 슈팅 게임 시장을 오랫동안 주도한 작품.",
+};
+
+const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
 
 const logoMap = {
   // ── Steam CDN ──
@@ -856,6 +998,7 @@ function renderGames(list) {
         <div class="rank">#${rank}</div>
         <div class="tag">${game.genre}</div>
         <h3>${game.name}</h3>
+        ${game.desc ? `<p class="desc-text">${game.desc}</p>` : ''}
         <p>플랫폼: ${game.platform}</p>
         <p class="pub-text">배급사: ${game.publisher}</p>
         <button class="site-btn" onclick="window.open('${game.site}','_blank')">공식 사이트 이동</button>
@@ -898,6 +1041,10 @@ function updateSectionTitle() {
   const emoji = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
   document.getElementById('sectionTitle').textContent =
     `${emoji[currentContinent]} ${continentLabels[currentContinent]} — ${currentGenre}`;
+  document.getElementById('rankSource').textContent =
+    currentGenre === 'TOP 10'
+      ? '순위 산정: SteamSpy 동시접속자(CCU) + 지역별 인기 가중치 기반 | 매주 월요일 업데이트'
+      : '장르별 인기 게임 목록 | 데이터 출처: SteamSpy · Riot Games · 각 게임사 공개 지표';
 }
 
 function setContinent(region) {
@@ -929,6 +1076,57 @@ function searchGame() {
   currentPage = 1;
   renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
 }
+
+const MODAL_CONTENT = {
+  about: `
+    <h3>🎮 GSNS 서비스 소개</h3>
+    <p>GSNS(Game Social Network Service)는 전 세계 게임 트렌드를 한눈에 볼 수 있는 <strong>게임 주간 랭킹 플랫폼</strong>입니다.</p>
+    <ul>
+      <li><strong>대상 지역</strong>: 아시아, 북미, 유럽, 글로벌 4개 권역</li>
+      <li><strong>장르 분류</strong>: 롤플레잉, 슈팅, 전략, 액션, 스포츠·레이싱, 어드벤처, 시뮬레이션</li>
+      <li><strong>업데이트 주기</strong>: 매주 월요일 자동 갱신</li>
+    </ul>
+    <p><strong>순위 산정 방식</strong></p>
+    <ul>
+      <li>Steam 게임: SteamSpy API 동시접속자(CCU) + 누적 소유자 수 기반</li>
+      <li>비Steam 게임: Riot Games, Epic Games 등 공개 플레이어 수 추정치</li>
+      <li>각 지역별 인기 가중치를 적용해 권역 맞춤 순위 제공</li>
+    </ul>
+    <p>제휴 및 광고 문의는 <a href="contact.html" style="color:#38bdf8">파트너십 페이지</a>를 이용해 주세요.</p>`,
+  privacy: `
+    <h3>🔒 개인정보처리방침</h3>
+    <p><strong>수집하는 정보</strong></p>
+    <p>GSNS는 서비스 제공을 위해 아래와 같은 정보를 수집할 수 있습니다.</p>
+    <ul>
+      <li>자동 수집: 접속 IP, 브라우저 종류, 방문 일시, 서비스 이용 기록</li>
+      <li>선택 입력: 제휴 문의 시 이름, 이메일 주소</li>
+    </ul>
+    <p><strong>정보 이용 목적</strong></p>
+    <ul>
+      <li>서비스 제공 및 개선</li>
+      <li>제휴 문의 응대</li>
+      <li>불법 이용 방지 및 보안 유지</li>
+    </ul>
+    <p><strong>제3자 서비스</strong></p>
+    <ul>
+      <li>Google AdSense: 맞춤 광고 제공 목적으로 쿠키 사용 가능</li>
+      <li>Cloudflare: CDN 및 보안 서비스 제공</li>
+    </ul>
+    <p><strong>보유 및 파기</strong>: 수집 목적 달성 후 지체 없이 파기합니다.</p>
+    <p>개인정보 관련 문의: <a href="contact.html" style="color:#38bdf8">제휴 문의 페이지</a>를 이용해 주세요.</p>
+    <p style="margin-top:12px;font-size:.75rem;opacity:.6">최종 수정일: 2026년 5월</p>`
+};
+
+function showModal(type) {
+  document.getElementById('modalContent').innerHTML = MODAL_CONTENT[type] || '';
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 async function loadRankings() {
   try {
