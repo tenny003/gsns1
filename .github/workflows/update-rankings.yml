@@ -1,0 +1,44 @@
+name: Update Game Rankings
+
+# 3시간마다 자동 실행 + 수동 실행 가능
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # rankings.json 커밋 push 권한
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # SteamSpy API로 순위 데이터 생성
+      - name: Generate rankings
+        run: node scripts/update-rankings.js
+
+      # 변경이 있을 때만 커밋 & 푸시
+      - name: Commit and push if changed
+        run: |
+          git config user.email "tenny003@gmail.com"
+          git config user.name  "tenny003"
+          git add data/rankings.json
+          git diff --staged --quiet && echo "변경 없음" || \
+          (git commit -m "chore: auto-update game rankings $(date -u +'%Y-%m-%d %H:%M UTC') [skip ci]" \
+           && git push)
+
+      # ── Cloudflare Pages 자동 배포 ─────────────────────────────────────────
+      # 아래 단계를 활성화하려면 GitHub 저장소 Settings → Secrets에
+      #   CLOUDFLARE_API_TOKEN  (Cloudflare Dashboard → My Profile → API Tokens)
+      # 를 추가하세요.
+      - name: Deploy to Cloudflare Pages
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        run: npx wrangler@latest pages deploy . --project-name=gsns --branch=main --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

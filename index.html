@@ -160,6 +160,21 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .page-btn:disabled{opacity:.35;cursor:default;pointer-events:none;}
 .page-info{font-size:.82rem;color:var(--sub);padding:0 4px;}
 
+/* 실시간 라이브 배지 */
+.live-bar{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:8px;flex-wrap:wrap;}
+.live-badge{display:inline-flex;align-items:center;gap:5px;
+  background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);
+  color:#ef4444;padding:3px 10px;border-radius:50px;
+  font-size:.75rem;font-weight:700;letter-spacing:.08em;}
+.live-dot{width:7px;height:7px;background:#ef4444;border-radius:50%;
+  animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.3);}}
+.update-info{font-size:.78rem;color:var(--sub);}
+.refresh-btn{padding:3px 12px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.75rem;cursor:pointer;
+  transition:all .2s;}
+.refresh-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+
 /* CTA 배너 */
 .cta-section{
   text-align:center;padding:6px 20px;
@@ -189,6 +204,11 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <a class="nav-btn" href="contact.html">🤝 Partnership</a>
   <h1>🎮 GSNS</h1>
   <p class="sub-text">한국 게임 & 글로벌 게임 실시간 랭킹 플랫폼</p>
+  <div class="live-bar">
+    <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+    <span id="updateInfo" class="update-info">순위 불러오는 중...</span>
+    <button class="refresh-btn" onclick="refreshRankings()">↻ 새로고침</button>
+  </div>
   <div class="theme-toggle" onclick="toggleTheme()">
     <span class="toggle-icon" id="toggleIcon">🌙</span>
     <div class="toggle-track"><div class="toggle-thumb"></div></div>
@@ -910,6 +930,42 @@ function searchGame() {
   renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
 }
 
+async function loadRankings() {
+  try {
+    const res = await fetch('/data/rankings.json?' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+
+    if (data.updated) {
+      const diffMs = Date.now() - new Date(data.updated).getTime();
+      const diffH  = Math.floor(diffMs / 3600000);
+      const diffM  = Math.floor((diffMs % 3600000) / 60000);
+      const t = diffH > 0 ? `${diffH}시간 ${diffM}분 전` : `${diffM}분 전`;
+      document.getElementById('updateInfo').textContent = `마지막 업데이트: ${t}`;
+    }
+
+    for (const continent of ['asia','na','europe','global']) {
+      const order = data.rankings && data.rankings[continent];
+      if (!order || !order.length) continue;
+      for (const genre of Object.keys(gameData[continent])) {
+        gameData[continent][genre].sort((a, b) => {
+          const ai = order.indexOf(a.name);
+          const bi = order.indexOf(b.name);
+          return (ai === -1 ? 9999 : ai) - (bi === -1 ? 9999 : bi);
+        });
+      }
+    }
+    renderGames(gameData[currentContinent][currentGenre]);
+  } catch(e) {
+    document.getElementById('updateInfo').textContent = '순위 불러오기 실패';
+  }
+}
+
+function refreshRankings() {
+  document.getElementById('updateInfo').textContent = '업데이트 중...';
+  loadRankings();
+}
+
 function toggleTheme() {
   document.body.classList.toggle('light');
   const isLight = document.body.classList.contains('light');
@@ -930,7 +986,7 @@ window.onload = () => {
   }
   updateGenreTabs();
   updateSectionTitle();
-  renderGames(gameData[currentContinent][currentGenre]);
+  loadRankings();
 };
 </script>
 </body>
