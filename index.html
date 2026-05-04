@@ -116,14 +116,21 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .card:hover{transform:translateY(-4px);}
 .rank{font-size:1.3rem;font-weight:bold;color:var(--rank-color);}
 .tag{display:inline-block;background:var(--tag-bg);color:#fff;padding:4px 12px;border-radius:20px;margin:8px 0;font-size:.82rem;}
-.img-wrap{position:relative;width:100%;height:140px;border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--control-bg);}
-.game-logo{width:100%;height:100%;object-fit:cover;display:block;}
+.img-wrap{
+  position:relative;width:100%;height:140px;border-radius:14px;
+  overflow:hidden;margin-bottom:14px;
+  background:linear-gradient(135deg,#0c1628,#1a2744);
+  display:flex;align-items:center;justify-content:center;
+}
+.game-logo{
+  max-width:78%;max-height:78%;
+  object-fit:contain;display:block;
+  filter:drop-shadow(0 2px 10px rgba(0,0,0,.6));
+}
 .img-fallback{
   position:absolute;inset:0;display:none;
   align-items:center;justify-content:center;flex-direction:column;gap:6px;
-  background:linear-gradient(135deg,#1e3a5f 0%,#0f172a 100%);
 }
-body.light .img-fallback{background:linear-gradient(135deg,#dbeafe,#e0f2fe);}
 .img-fallback .fi{font-size:2.8rem;font-weight:900;color:#38bdf8;line-height:1;}
 .img-fallback .fn{font-size:.7rem;font-weight:700;color:#94a3b8;text-align:center;padding:0 8px;}
 .card h3{font-size:1rem;margin-bottom:6px;}
@@ -209,48 +216,46 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 const L = (name,genre,platform,site) => ({name,genre,platform,site,logo:logoMap[name]||''});
 
 const logoMap = {
-  // ── Steam CDN (App ID 검증 완료) ──
-  "PUBG: Battlegrounds": "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
-  "MapleStory":          "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/header.jpg",
-  "Lost Ark":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/header.jpg",
-  "Dungeon & Fighter":   "https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/header.jpg",
-  "Overwatch 2":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg",
-  "Genshin Impact":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1283830/header.jpg",
-  "Call of Duty":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/header.jpg",
-  "Elden Ring":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
-  "Counter-Strike 2":    "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
-  "Dota 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg",
-  "Final Fantasy XIV":   "https://cdn.cloudflare.steamstatic.com/steam/apps/39210/header.jpg",
-  "Apex Legends":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg",
-  "Diablo IV":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg",
-  "Cyberpunk 2077":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
-  "Black Desert":        "https://cdn.cloudflare.steamstatic.com/steam/apps/582660/header.jpg",
-  "Blade & Soul":        "https://cdn.cloudflare.steamstatic.com/steam/apps/3669060/header.jpg",
-  "Elder Scrolls Online":"https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header.jpg",
-  "New World":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1063730/header.jpg",
-  "Guild Wars 2":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1284210/header.jpg",
-  "Baldur's Gate 3":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg",
-  "Starfield":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
-  "Halo Infinite":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/header.jpg",
-  "Terraria":            "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg",
-  "Valheim":             "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg",
-  "RuneScape":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1343400/header.jpg",
-  "The Witcher 3":       "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
-  "Path of Exile":       "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/header.jpg",
-  "Palworld":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/header.jpg",
+  // ── Steam 공식 logo.png (투명 배경 로고) ──
+  "PUBG: Battlegrounds": "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/logo.png",
+  "MapleStory":          "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/logo.png",
+  "Lost Ark":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/logo.png",
+  "Dungeon & Fighter":   "https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/logo.png",
+  "Overwatch 2":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/logo.png",
+  "Genshin Impact":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1283830/logo.png",
+  "Call of Duty":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/logo.png",
+  "Elden Ring":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/logo.png",
+  "Counter-Strike 2":    "https://cdn.cloudflare.steamstatic.com/steam/apps/730/logo.png",
+  "Dota 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/570/logo.png",
+  "Final Fantasy XIV":   "https://cdn.cloudflare.steamstatic.com/steam/apps/39210/logo.png",
+  "Apex Legends":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/logo.png",
+  "Diablo IV":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/logo.png",
+  "Cyberpunk 2077":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/logo.png",
+  "Black Desert":        "https://cdn.cloudflare.steamstatic.com/steam/apps/582660/logo.png",
+  "Blade & Soul":        "https://cdn.cloudflare.steamstatic.com/steam/apps/3669060/logo.png",
+  "Elder Scrolls Online":"https://cdn.cloudflare.steamstatic.com/steam/apps/306130/logo.png",
+  "New World":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1063730/logo.png",
+  "Guild Wars 2":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1284210/logo.png",
+  "Baldur's Gate 3":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/logo.png",
+  "Starfield":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/logo.png",
+  "Halo Infinite":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/logo.png",
+  "Terraria":            "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/logo.png",
+  "Valheim":             "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/logo.png",
+  "RuneScape":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1343400/logo.png",
+  "The Witcher 3":       "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/logo.png",
+  "Path of Exile":       "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/logo.png",
+  "Palworld":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/logo.png",
 
-  // ── Wikimedia (안정적 CDN, 검증된 URL) ──
-  "League of Legends":   "https://upload.wikimedia.org/wikipedia/en/c/ca/League_of_Legends_Screenshot_2018.png",
-  "Valorant":            "https://upload.wikimedia.org/wikipedia/en/b/ba/Valorant_cover.jpg",
-  "Fortnite":            "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg.png",
-  "World of Warcraft":   "https://upload.wikimedia.org/wikipedia/en/6/65/World_of_Warcraft.png",
-  "Minecraft":           "https://upload.wikimedia.org/wikipedia/en/2/20/Minecraft_cover.png",
-  "Lineage":             "https://upload.wikimedia.org/wikipedia/en/b/bc/Lineage_cover.jpg",
-  "Free Fire":           "https://upload.wikimedia.org/wikipedia/en/0/09/Free_Fire_Chrono.png",
+  // ── Wikimedia 공식 로고 (Steam 비출시 게임) ──
+  "League of Legends":   "https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
+  "Valorant":            "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg",
+  "Fortnite":            "https://upload.wikimedia.org/wikipedia/commons/0/0e/FortniteLogo.svg",
+  "World of Warcraft":   "https://upload.wikimedia.org/wikipedia/en/6/65/World_of_Warcraft_logo.svg",
+  "Minecraft":           "https://upload.wikimedia.org/wikipedia/commons/4/4d/Minecraft_logo.svg",
+  "Lineage":             "https://upload.wikimedia.org/wikipedia/en/2/24/Lineage_logo.png",
+  "Free Fire":           "https://upload.wikimedia.org/wikipedia/en/3/38/Free_Fire_New_Logo.svg",
   "Sudden Attack":       "https://upload.wikimedia.org/wikipedia/en/3/3c/Suddenattacklogo.PNG",
-
-  // ── Nexon 공식 CDN ──
-  "FC Online":           "https://ssl.nexon.com/s2/game/fconline/renewal/common/share.jpg"
+  "FC Online":           "https://upload.wikimedia.org/wikipedia/en/d/df/EA_Sports_FC_logo.svg"
 };
 
 const gameData = {
