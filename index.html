@@ -76,10 +76,27 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
 h1{font-size:2.5rem;}
 .sub{color:var(--sub);margin-top:10px;}
 .container{max-width:1400px;margin:auto;padding:30px;}
-.controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;justify-content:center;}
+.controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:30px;justify-content:center;align-items:center;}
 button,select,input{
   padding:12px 16px;border:none;border-radius:10px;
   background:var(--control-bg);color:var(--control-color);cursor:pointer;transition:background .3s,color .3s;
+}
+/* 랭킹 탭 버튼 */
+.rank-btn{
+  padding:11px 26px;border-radius:50px;
+  background:transparent;
+  border:2px solid var(--control-bg);
+  color:var(--sub);
+  font-size:.9rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;transition:all .25s;
+  position:relative;overflow:hidden;
+}
+.rank-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+.rank-btn.active{
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 4px 18px rgba(56,189,248,.4);
 }
 .section-title{font-size:1.8rem;margin:25px 0;}
 .rank-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
@@ -149,8 +166,8 @@ body.light .toggle-icon{transform:rotate(20deg);}
 
 <div class="container">
   <div class="controls">
-    <button onclick="showKoreanRankings()">한국 TOP10</button>
-    <button onclick="showGlobalRankings()">글로벌 TOP10</button>
+    <button class="rank-btn active" id="btnKorea" onclick="showKoreanRankings()">🇰🇷 한국 TOP 10</button>
+    <button class="rank-btn" id="btnGlobal" onclick="showGlobalRankings()">🌍 글로벌 TOP 10</button>
     <select id="genreFilter" onchange="filterByGenre()">
       <option value="all">전체 장르</option>
       <option value="MMORPG">MMORPG</option>
@@ -367,15 +384,22 @@ function renderGames(list){
   });
 }
 
+function setActiveBtn(id){
+  document.querySelectorAll('.rank-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
 function showKoreanRankings(){
   currentList = [...koreanGames];
   document.getElementById('sectionTitle').innerText='한국 게임 TOP10';
+  setActiveBtn('btnKorea');
   renderGames(currentList);
 }
 
 function showGlobalRankings(){
   currentList = [...globalGames];
   document.getElementById('sectionTitle').innerText='글로벌 게임 TOP10';
+  setActiveBtn('btnGlobal');
   renderGames(currentList);
 }
 
