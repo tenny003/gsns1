@@ -3444,7 +3444,7 @@ function updateTimeDisplay() {
     : `${diffH}${currentLang==='ko'?'시간 전':'h ago'}`;
   document.getElementById('updateInfo').textContent = `${t('lastUpdated')}: ${timeStr}`;
 }
-let currentGenre = 'TOP 10';
+let currentGenre = '롤플레잉';
 let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
 let currentSubRegion = 'all';
@@ -3644,10 +3644,10 @@ function goToPage(p) {
 function updateGenreTabs() {
   const container = document.getElementById('genreTabs');
   if (!container) return;
-  const genres = Object.keys(gameData[currentContinent]).filter(g => g !== '출시예정');
+  const genres = Object.keys(gameData[currentContinent]).filter(g => g !== '출시예정' && g !== 'TOP 10');
   const genreTrans = t('genre');
   container.innerHTML = genres.map(g =>
-    `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : (genreTrans[g]||g)}</button>`
+    `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${genreTrans[g]||g}</button>`
   ).join('');
 }
 
@@ -3760,7 +3760,7 @@ function setContinent(region) {
   currentContinent = region;
   currentSubRegion = 'all';
   const genres = Object.keys(gameData[region]);
-  currentGenre = genres.includes(currentGenre) ? currentGenre : 'TOP 10';
+  currentGenre = genres.includes(currentGenre) ? currentGenre : '롤플레잉';
   currentPage = 1;
   document.getElementById('searchInput').value = '';
   document.getElementById('genreTabs').style.display = 'flex';
@@ -4411,7 +4411,7 @@ function navigateToContinent(continent) {
   closeDrawer();
   currentContinent = continent;
   currentSubRegion = 'all';
-  currentGenre = 'TOP 10';
+  currentGenre = '롤플레잉';
   currentPage = 1;
   currentSort = 'default';
   currentPlatformFilter = 'all';
