@@ -22,7 +22,8 @@
       "Bash(git status *)",
       "Bash(git status)",
       "Bash(powershell -ExecutionPolicy Bypass -File *)",
-      "PowerShell(powershell -ExecutionPolicy Bypass -File \"c:\\\\Users\\\\user\\\\Desktop\\\\GSNS\\\\deploy.ps1\")"
+      "PowerShell(powershell -ExecutionPolicy Bypass -File \"c:\\\\Users\\\\user\\\\Desktop\\\\GSNS\\\\deploy.ps1\")",
+      "Bash(Test-Path \"c:\\\\Users\\\\user\\\\Desktop\\\\GSNS\\\\ads.txt\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\user\\Desktop\\AI 작업\\방송\\새폴더1",
