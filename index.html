@@ -1770,7 +1770,7 @@ function setGenre(genre) {
   updateGenreTabs();
   updateSectionTitle();
   document.getElementById('searchInput').value = '';
-  renderGames(gameData[currentContinent][currentGenre]);
+  renderGames(getActiveGameList());
 }
 
 function searchGame() {
@@ -1895,7 +1895,7 @@ async function loadRankings() {
         });
       }
     }
-    renderGames(gameData[currentContinent][currentGenre]);
+    renderGames(getActiveGameList());
   } catch(e) {
     document.getElementById('updateInfo').textContent = t('loadFail');
   }
