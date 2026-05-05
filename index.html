@@ -497,6 +497,57 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 .trend-up{color:#22c55e;font-size:.68rem;font-weight:900;flex-shrink:0;min-width:14px;text-align:center;}
 .trend-down{color:#ef4444;font-size:.68rem;font-weight:900;flex-shrink:0;min-width:14px;text-align:center;}
 .trend-stay{color:var(--sub);font-size:.68rem;flex-shrink:0;min-width:14px;text-align:center;}
+
+/* ── 드로어 심플 네비 ── */
+.drawer-nav{padding:12px 16px;display:flex;flex-direction:column;gap:6px;}
+.drawer-nav-section-label{
+  font-size:.72rem;font-weight:800;color:var(--sub);letter-spacing:.06em;
+  text-transform:uppercase;padding:8px 4px 4px;
+}
+.drawer-nav-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:12px;border:none;
+  background:transparent;color:var(--text);font-size:.95rem;font-weight:700;
+  cursor:pointer;transition:all .2s;font-family:inherit;width:100%;text-align:left;
+}
+.drawer-nav-btn:hover{background:var(--control-bg);color:#38bdf8;}
+.drawer-nav-btn .nav-icon{font-size:1.2rem;width:28px;text-align:center;flex-shrink:0;}
+.drawer-nav-btn.new-games{
+  background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(37,99,235,.12));
+  border:1.5px solid rgba(56,189,248,.3);color:#38bdf8;margin-top:4px;
+}
+.drawer-nav-btn.new-games:hover{background:rgba(56,189,248,.2);}
+.drawer-nav-divider{height:1px;background:var(--border);margin:8px 4px;}
+
+/* ── 앱 콘텐츠 뷰 ── */
+#appContent{max-width:1400px;margin:auto;padding:0 24px;}
+.view-container{padding-top:24px;}
+.view-topbar{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:22px;padding-bottom:16px;border-bottom:2px solid var(--border);
+}
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:50px;border:2px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.85rem;font-weight:700;
+  cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;flex-shrink:0;
+}
+.back-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+.view-title{font-size:1.45rem;font-weight:800;color:var(--text);flex:1;}
+
+/* ── 헤더 대칭 보정 ── */
+header{padding:22px 80px;}
+.menu-btn,.theme-icon-btn{width:42px;height:42px;border-radius:11px;}
+.nav-btn{padding:9px 18px;font-size:.82rem;}
+.header-right{gap:8px;}
+
+/* ── 탭 버튼 균일 크기 ── */
+.tab-btn{padding:9px 18px;font-size:.85rem;}
+.sub-tab-btn{padding:7px 14px;font-size:.8rem;}
+
+/* ── 뷰 컨테이너 여백 ── */
+.view-container .tab-row{margin-bottom:12px;}
+.view-container .filter-row{margin-bottom:16px;}
 </style>
 </head>
 <body>
@@ -527,16 +578,49 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 <!-- 드로어 오버레이 -->
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
-<!-- 사이드 드로어 (게임 브라우저) -->
+<!-- 사이드 드로어 (심플 네비게이션) -->
 <div class="side-drawer" id="sideDrawer">
   <div class="drawer-header">
     <img src="/favicon.svg" class="drawer-logo" alt="GSNS">
-    <span class="drawer-title" id="drawerTitle">게임 브라우저</span>
+    <span class="drawer-title" id="drawerTitle">GSNS</span>
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
-  <div class="drawer-body">
-    <div class="tab-row" id="continentTabs"></div>
-    <div class="sub-tab-row" id="subRegionTabs"></div>
+  <nav class="drawer-nav" id="drawerNav">
+    <div class="drawer-nav-section-label" id="navLabelContinent">대륙별 랭킹</div>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('asia')">
+      <span class="nav-icon">🌏</span><span id="navAsia">아시아</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('na')">
+      <span class="nav-icon">🌎</span><span id="navNA">북미</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('europe')">
+      <span class="nav-icon">🌍</span><span id="navEurope">유럽</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('global')">
+      <span class="nav-icon">🌐</span><span id="navGlobal">글로벌</span>
+    </button>
+    <div class="drawer-nav-divider"></div>
+    <button class="drawer-nav-btn new-games" onclick="navigateToNewGames()">
+      <span class="nav-icon">🆕</span><span id="navNewGames">2026 신작 & 출시예정</span>
+    </button>
+  </nav>
+</div>
+
+<!-- 앱 콘텐츠 영역 -->
+<div id="appContent">
+
+  <!-- 뷰: 메인 대시보드 -->
+  <div id="viewDashboard" class="view-container">
+    <div class="dashboard-grid" id="dashboardGrid"></div>
+  </div>
+
+  <!-- 뷰: 대륙별 게임 브라우저 -->
+  <div id="viewContinent" class="view-container" style="display:none">
+    <div class="view-topbar">
+      <button class="back-btn" onclick="showView('dashboard')">← <span id="backBtnLabel">홈</span></button>
+      <h2 class="view-title" id="continentViewTitle"></h2>
+    </div>
+    <div class="tab-row" id="subRegionTabs"></div>
     <div class="tab-row" id="genreTabs"></div>
     <div class="search-row">
       <input type="text" id="searchInput" placeholder="🔍  게임 검색" oninput="searchGame()" />
@@ -548,12 +632,17 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
     <div class="rank-grid" id="rankGrid"></div>
     <div class="pagination" id="paginationContainer"></div>
   </div>
-</div>
 
-<!-- 메인 대시보드 -->
-<div id="mainDashboard">
-  <div class="quick-genre-row" id="quickGenreRow"></div>
-  <div class="dashboard-grid" id="dashboardGrid"></div>
+  <!-- 뷰: 2026 신작 & 출시예정 -->
+  <div id="viewNewGames" class="view-container" style="display:none">
+    <div class="view-topbar">
+      <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
+      <h2 class="view-title">🆕 2026 신작 &amp; 출시예정</h2>
+    </div>
+    <p class="rank-source" id="newGamesSource"></p>
+    <div class="rank-grid" id="newGamesGrid"></div>
+  </div>
+
 </div>
 
 <!-- CTA 배너 -->
@@ -688,7 +777,15 @@ const pubMap = {
   "Diablo IV":                 "Blizzard Entertainment",
   "Cyberpunk 2077":            "CD Projekt Red",
   "The Elder Scrolls V: Skyrim":"Bethesda Softworks",
-  "Diablo IV":                 "Blizzard Entertainment"
+  "Diablo IV":                 "Blizzard Entertainment",
+  "GTA VI":                    "Rockstar Games",
+  "Hollow Knight: Silksong":   "Team Cherry",
+  "Elden Ring: Nightreign":    "Bandai Namco / FromSoftware",
+  "Death Stranding 2: On the Beach":"Kojima Productions",
+  "Metal Gear Solid Delta: Snake Eater":"Konami",
+  "Avowed":                    "Obsidian Entertainment / Xbox",
+  "Ghost of Yōtei":            "PlayStation Studios",
+  "Doom: The Dark Ages":       "id Software / Bethesda",
 };
 
 const descMap = {
@@ -784,6 +881,14 @@ const descMap = {
   "Clair Obscur: Expedition 33":"Sandfall Interactive의 턴제 RPG. 프랑스풍 아트와 시네마틱 전투로 극찬받은 2025년 깜짝 GOTY 후보.",
   "Hades II":                   "수퍼자이언트 게임즈의 로그라이크 속편. 올림포스 신화를 배경으로 한 2025년 메타크리틱 최고 평점 게임.",
   "Blue Prince":                "독창적인 퍼즐 로그라이크. 방을 탐험할 때마다 구조가 바뀌는 미스터리 저택을 배경으로 한 2025년 인디 명작.",
+  "GTA VI":                    "Rockstar Games의 차기작. Vice City를 배경으로 한 오픈 월드 범죄 액션. 역사상 가장 기대받는 게임 중 하나.",
+  "Hollow Knight: Silksong":   "Team Cherry의 후속작. 호넷이 주인공인 메트로배니아 액션. 2025년 출시 예정으로 수년간 기다림 끝에 드디어 공개.",
+  "Elden Ring: Nightreign":    "FromSoftware의 엘든링 기반 협동 로그라이크. 3인 협력으로 즐기는 새로운 소울라이크 액션.",
+  "Death Stranding 2: On the Beach":"코지마 프로덕션의 후속작. 샘 브리지스가 다시 등장하는 포스트아포칼립스 오픈 월드 액션.",
+  "Metal Gear Solid Delta: Snake Eater":"코나미의 MGS3 리메이크. 스네이크 이터의 완전한 리빌드로 UE5 기반 최신 그래픽.",
+  "Avowed":                    "옵시디언의 1인칭 판타지 RPG. 에터니티 세계관을 배경으로 한 Xbox/PC 독점 오픈 월드 어드벤처.",
+  "Ghost of Yōtei":            "Sony 인하우스의 Ghost of Tsushima 후속작. 홋카이도 에조를 배경으로 한 사무라이 오픈 월드 액션.",
+  "Doom: The Dark Ages":       "id Software의 Doom 시리즈 신작. 중세 판타지 배경의 강렬한 1인칭 슈팅 액션. 2025년 출시.",
 };
 
 const descMapEn = {
@@ -879,6 +984,14 @@ const descMapEn = {
   "Clair Obscur: Expedition 33":"Sandfall Interactive's turn-based RPG. Acclaimed for its French-inspired art and cinematic combat — a 2025 GOTY contender.",
   "Hades II":                   "Supergiant Games' rogue-like sequel. Set in Olympian mythology and 2025's top-rated game on Metacritic.",
   "Blue Prince":                "A unique puzzle rogue-like. A 2025 indie masterpiece set in a mysterious manor whose layout changes every run.",
+  "GTA VI":                    "Rockstar Games' next title. Open-world crime action set in Vice City. One of the most anticipated games in history.",
+  "Hollow Knight: Silksong":   "Team Cherry's sequel starring Hornet. A metroidvania action game years in the making, finally released in 2025.",
+  "Elden Ring: Nightreign":    "FromSoftware's co-op roguelike spin-off. Play with up to 3 players in a new soulslike experience.",
+  "Death Stranding 2: On the Beach":"Kojima Productions' sequel. Sam Bridges returns in a post-apocalyptic open-world action game.",
+  "Metal Gear Solid Delta: Snake Eater":"Konami's full remake of MGS3. A complete rebuild of Snake Eater using Unreal Engine 5.",
+  "Avowed":                    "Obsidian's first-person fantasy RPG. An open-world adventure set in the Pillars of Eternity universe. Xbox/PC exclusive.",
+  "Ghost of Yōtei":            "Sony's follow-up to Ghost of Tsushima. Samurai open-world action set in Hokkaido's Ezo region.",
+  "Doom: The Dark Ages":       "id Software's new Doom entry. Intense first-person shooter with a medieval fantasy setting. Released 2025.",
 };
 
 // ── 공식 현지화 게임 명칭 (각 게임 공식 홈페이지 기준) ────────────────────
@@ -1205,6 +1318,12 @@ const logoMap = {
   "Clair Obscur: Expedition 33":"https://cdn.cloudflare.steamstatic.com/steam/apps/2881650/logo.png",
   "Hades II":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1145350/logo.png",
   "Blue Prince":              "https://cdn.cloudflare.steamstatic.com/steam/apps/1569580/logo.png",
+  "Hollow Knight: Silksong":  "https://cdn.cloudflare.steamstatic.com/steam/apps/1030300/logo.png",
+  "Elden Ring: Nightreign":   "https://cdn.cloudflare.steamstatic.com/steam/apps/2622380/logo.png",
+  "Death Stranding 2: On the Beach":"https://cdn.cloudflare.steamstatic.com/steam/apps/2920110/logo.png",
+  "Metal Gear Solid Delta: Snake Eater":"https://cdn.cloudflare.steamstatic.com/steam/apps/2144980/logo.png",
+  "Avowed":                   "https://cdn.cloudflare.steamstatic.com/steam/apps/2209550/logo.png",
+  "Doom: The Dark Ages":      "https://cdn.cloudflare.steamstatic.com/steam/apps/2716300/logo.png",
 };
 
 const bannerMap = {
@@ -1288,6 +1407,12 @@ const bannerMap = {
   "Clair Obscur: Expedition 33":"https://cdn.cloudflare.steamstatic.com/steam/apps/2881650/header.jpg",
   "Hades II":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/1145350/header.jpg",
   "Blue Prince":               "https://cdn.cloudflare.steamstatic.com/steam/apps/1569580/header.jpg",
+  "Hollow Knight: Silksong":   "https://cdn.cloudflare.steamstatic.com/steam/apps/1030300/header.jpg",
+  "Elden Ring: Nightreign":    "https://cdn.cloudflare.steamstatic.com/steam/apps/2622380/header.jpg",
+  "Death Stranding 2: On the Beach":"https://cdn.cloudflare.steamstatic.com/steam/apps/2920110/header.jpg",
+  "Metal Gear Solid Delta: Snake Eater":"https://cdn.cloudflare.steamstatic.com/steam/apps/2144980/header.jpg",
+  "Avowed":                    "https://cdn.cloudflare.steamstatic.com/steam/apps/2209550/header.jpg",
+  "Doom: The Dark Ages":       "https://cdn.cloudflare.steamstatic.com/steam/apps/2716300/header.jpg",
 };
 
 const gameData = {
@@ -1397,12 +1522,15 @@ const gameData = {
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld'),
       L("No Man's Sky",'Space Sim','PC/Console','https://www.nomanssky.com/')
     ],
-    '2025 신작': [
-      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
-      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
-      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
-      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
-      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
+    '출시예정': [
+      L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
+      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
+      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
+      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
+      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
     ]
   },
   na: {
@@ -1504,12 +1632,15 @@ const gameData = {
       L('Valheim','Survival','PC','https://www.valheimgame.com/'),
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld')
     ],
-    '2025 신작': [
-      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
-      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
-      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
-      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
-      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
+    '출시예정': [
+      L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
+      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
+      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
+      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
+      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
     ]
   },
   europe: {
@@ -1601,12 +1732,15 @@ const gameData = {
       L('Planet Zoo','Management Sim','PC','https://www.planetzoo.game/'),
       L('Stardew Valley','Farming Sim','PC/Console','https://www.stardewvalley.net/')
     ],
-    '2025 신작': [
-      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
-      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
-      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
-      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
-      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
+    '출시예정': [
+      L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
+      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
+      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
+      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
+      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
     ]
   },
   global: {
@@ -1716,12 +1850,15 @@ const gameData = {
       L('Valheim','Survival','PC','https://www.valheimgame.com/'),
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld')
     ],
-    '2025 신작': [
-      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
-      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
-      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
-      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
-      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
+    '출시예정': [
+      L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
+      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
+      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
+      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
+      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
     ]
   }
 };
@@ -1737,12 +1874,12 @@ const TRANS = {
     loading:'순위 불러오는 중...', loadFail:'순위 불러오기 실패',
     lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
     continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','2025 신작':'2025 신작'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','출시예정':'출시예정'},
     sortBy:'정렬', sortDefault:'기본순', sortScore:'점수순↓', sortName:'이름순', sortRelease:'출시연도↓',
     pfLabel:'플랫폼', pfAll:'전체', pfPC:'PC', pfMobile:'모바일', pfConsole:'콘솔',
     critic:'평론가', user:'유저',
     sourceTop:'SteamSpy 동시접속자(CCU) + 지역 가중치 기반 | 매주 월요일 업데이트',
-    source2025:'Metacritic 2025 신작 상위 타이틀 | 출처: Metacritic, Steam',
+    source2025:'2026 출시예정 & 신작 타이틀 | 출처: 각 게임사 공식 발표',
     sourceGenre:'장르별 인기 게임 목록 | 출처: SteamSpy · Riot Games · 각 게임사 공개 지표',
     ctaTitle:'함께 성장할 파트너를 찾고 있나요?',
     ctaSub:'게임사, 브랜드, 콘텐츠 크리에이터 등 다양한 제휴를 환영합니다.',
@@ -1759,12 +1896,12 @@ const TRANS = {
     loading:'Loading rankings...', loadFail:'Failed to load rankings',
     lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
     continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','2025 신작':'2025 New'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','출시예정':'Upcoming 2026'},
     sortBy:'Sort', sortDefault:'Default', sortScore:'Score↓', sortName:'Name', sortRelease:'Year↓',
     pfLabel:'Platform', pfAll:'All', pfPC:'PC', pfMobile:'Mobile', pfConsole:'Console',
     critic:'Critic', user:'User',
     sourceTop:'Based on SteamSpy CCU + regional weights | Updated every Monday',
-    source2025:'Top 2025 Titles | Source: Metacritic, Steam',
+    source2025:'2026 Upcoming & New Releases | Source: Official announcements',
     sourceGenre:'Genre game list | Sources: SteamSpy · Riot Games · official player data',
     ctaTitle:'Looking for a partner to grow with?',
     ctaSub:'We welcome partnerships with game studios, brands, and content creators.',
@@ -1781,7 +1918,7 @@ const TRANS = {
     loading:'加载排名中...', loadFail:'加载排名失败',
     lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
     continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','2025 신작':'2025 新作'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','출시예정':'2026即将发售'},
     sortBy:'排序', sortDefault:'默认', sortScore:'评分↓', sortName:'名称', sortRelease:'年份↓',
     pfLabel:'平台', pfAll:'全部', pfPC:'PC', pfMobile:'手游', pfConsole:'主机',
     critic:'评论家', user:'用户',
@@ -1803,7 +1940,7 @@ const TRANS = {
     loading:'ランキングを読み込み中...', loadFail:'ランキングの読み込みに失敗しました',
     lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
     continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','2025 신작':'2025 新作'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','출시예정':'2026年近日発売'},
     sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'スコア↓', sortName:'名前', sortRelease:'年度↓',
     pfLabel:'プラットフォーム', pfAll:'全て', pfPC:'PC', pfMobile:'モバイル', pfConsole:'コンソール',
     critic:'批評家', user:'ユーザー',
@@ -2054,6 +2191,14 @@ const communityMap = {
   "Clair Obscur: Expedition 33":{reddit:"https://reddit.com/r/ClairObscur",          discord:"https://discord.gg/clairobscur"},
   "Hades II":                  {reddit:"https://reddit.com/r/HadesTheGame",          discord:"https://discord.gg/supergiantgames"},
   "Blue Prince":               {reddit:"https://reddit.com/r/BluePrince",            discord:"https://discord.gg/rawfury"},
+  "GTA VI":                    {reddit:"https://reddit.com/r/gtaVI",                 discord:"https://discord.gg/rockstargames"},
+  "Hollow Knight: Silksong":   {reddit:"https://reddit.com/r/HollowKnight",          discord:"https://discord.gg/hollowknight"},
+  "Elden Ring: Nightreign":    {reddit:"https://reddit.com/r/EldenRingNightreign",   discord:"https://discord.gg/eldenring"},
+  "Death Stranding 2: On the Beach":{reddit:"https://reddit.com/r/DeathStranding",  discord:"https://discord.gg/kojimaproductions"},
+  "Metal Gear Solid Delta: Snake Eater":{reddit:"https://reddit.com/r/metalgearsolid",discord:"https://discord.gg/metalgear"},
+  "Avowed":                    {reddit:"https://reddit.com/r/avowed",                discord:"https://discord.gg/obsidian"},
+  "Ghost of Yōtei":            {reddit:"https://reddit.com/r/ghostofyotei",          discord:"https://discord.gg/ghostofyotei"},
+  "Doom: The Dark Ages":       {reddit:"https://reddit.com/r/Doom",                  discord:"https://discord.gg/doom"},
 };
 
 // ── 메타스코어 / 유저스코어 / 출시연도 ────────────────────────────────────────
@@ -2146,12 +2291,21 @@ const scoreMap = {
   "Euro Truck Simulator 2":     { meta: 80, user: 90, release: 2012 },
   "Madden NFL 25":              { meta: 77, user: 54, release: 2024 },
   "Need for Speed Heat":        { meta: 73, user: 72, release: 2019 },
-  // 2025 신작
+  // 출시예정 (2025 출시 완료)
   "Monster Hunter Wilds":       { meta: 93, user: 88, release: 2025 },
   "Split Fiction":              { meta: 91, user: 92, release: 2025 },
   "Clair Obscur: Expedition 33":{ meta: 92, user: 88, release: 2025 },
   "Hades II":                   { meta: 95, user: 91, release: 2025 },
   "Blue Prince":                { meta: 91, user: 86, release: 2025 },
+  // 2026 출시예정
+  "GTA VI":                     { meta: 0,  user: 0,  release: 2026 },
+  "Hollow Knight: Silksong":    { meta: 0,  user: 0,  release: 2025 },
+  "Elden Ring: Nightreign":     { meta: 88, user: 83, release: 2025 },
+  "Death Stranding 2: On the Beach":{ meta: 82, user: 87, release: 2025 },
+  "Metal Gear Solid Delta: Snake Eater":{ meta: 0, user: 0, release: 2025 },
+  "Avowed":                     { meta: 81, user: 78, release: 2025 },
+  "Ghost of Yōtei":             { meta: 0,  user: 0,  release: 2025 },
+  "Doom: The Dark Ages":        { meta: 87, user: 85, release: 2025 },
 };
 
 function getMetaColor(score) {
@@ -2373,9 +2527,10 @@ function goToPage(p) {
 }
 
 function updateGenreTabs() {
+  const container = document.getElementById('genreTabs');
+  if (!container) return;
   const genres = Object.keys(gameData[currentContinent]);
   const genreTrans = t('genre');
-  const container = document.getElementById('genreTabs');
   container.innerHTML = genres.map(g =>
     `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : (genreTrans[g]||g)}</button>`
   ).join('');
@@ -2384,6 +2539,7 @@ function updateGenreTabs() {
 function updateSubRegionTabs() {
   const defs = subRegionDefs[currentContinent] || [];
   const container = document.getElementById('subRegionTabs');
+  if (!container) return;
   container.innerHTML = defs.map(d =>
     `<button class="sub-tab-btn${d.id === currentSubRegion ? ' active' : ''}" onclick="setSubRegion('${d.id}')">${d.label[currentLang]}</button>`
   ).join('');
@@ -2400,11 +2556,12 @@ function setSubRegion(id) {
 }
 
 function updateContinentTabs() {
+  const el = document.getElementById('continentTabs');
+  if (!el) return;
   const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
-  document.getElementById('continentTabs').innerHTML =
-    ['asia','na','europe','global'].map(c =>
-      `<button class="tab-btn${c===currentContinent?' active':''}" onclick="setContinent('${c}')">${emojis[c]} ${t('continent')[c]}</button>`
-    ).join('');
+  el.innerHTML = ['asia','na','europe','global'].map(c =>
+    `<button class="tab-btn${c===currentContinent?' active':''}" onclick="setContinent('${c}')">${emojis[c]} ${t('continent')[c]}</button>`
+  ).join('');
 }
 
 function setLang(lang) {
@@ -2424,21 +2581,33 @@ function setLang(lang) {
   document.getElementById('footerPrivacy').textContent  = t('footerPrivacy');
   document.getElementById('footerContact').textContent  = t('footerContact');
   document.getElementById('footerSource').textContent   = t('footerSource');
-  const drawerTitleEl = document.getElementById('drawerTitle');
-  if (drawerTitleEl) {
-    const dt = {ko:'게임 브라우저',en:'Game Browser',zh:'游戏浏览器',ja:'ゲームブラウザ'};
-    drawerTitleEl.textContent = dt[lang] || dt.en;
-  }
-  updateContinentTabs();
+  const navLabels = {
+    ko:{continent:'대륙별 랭킹',asia:'아시아',na:'북미',europe:'유럽',global:'글로벌',newGames:'2026 신작 & 출시예정',back:'홈'},
+    en:{continent:'Regions',    asia:'Asia',  na:'N. America',europe:'Europe',global:'Global',newGames:'2026 Upcoming',back:'Home'},
+    zh:{continent:'地区排名',   asia:'亚洲',  na:'北美',     europe:'欧洲',  global:'全球',  newGames:'2026 即将发售',back:'首页'},
+    ja:{continent:'地域別ランキング',asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル',newGames:'2026 近日発売',back:'ホーム'},
+  };
+  const nl = navLabels[lang] || navLabels.en;
+  const setTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent=txt; };
+  setTxt('navLabelContinent', nl.continent);
+  setTxt('navAsia', nl.asia); setTxt('navNA', nl.na);
+  setTxt('navEurope', nl.europe); setTxt('navGlobal', nl.global);
+  setTxt('navNewGames', nl.newGames);
+  document.querySelectorAll('.backBtnLabel, #backBtnLabel').forEach(el => el.textContent = nl.back);
   updateSubRegionTabs();
   updateGenreTabs();
   updateSectionTitle();
   updateTimeDisplay();
   updateLoginButton();
   updateFilterRow();
-  renderGames(getActiveGameList());
+  if (currentView === 'continent') {
+    const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
+    setTxt('continentViewTitle', emojis[currentContinent] + ' ' + t('continent')[currentContinent]);
+    renderGames(getActiveGameList());
+  } else if (currentView === 'newgames') {
+    renderNewGamesPage();
+  }
   renderDashboard();
-  renderQuickGenreRow();
 }
 
 function updateSectionTitle() {
@@ -2450,7 +2619,7 @@ function updateSectionTitle() {
   document.getElementById('sectionTitle').textContent =
     `${emoji[currentContinent]} ${cLabel}${subLabel} — ${gLabel}`;
   document.getElementById('rankSource').textContent =
-    currentGenre === '2025 신작' ? t('source2025')
+    currentGenre === '출시예정' ? t('source2025')
     : currentGenre === 'TOP 10' ? t('sourceTop')
     : t('sourceGenre');
 }
@@ -2836,6 +3005,108 @@ function getTrendHTML(name) {
   return '<span class="trend-stay">—</span>';
 }
 
+// ── 뷰 전환 ──────────────────────────────────────────────────────────────────
+let currentView = 'dashboard';
+function showView(view) {
+  currentView = view;
+  document.getElementById('viewDashboard').style.display  = view === 'dashboard'  ? 'block' : 'none';
+  document.getElementById('viewContinent').style.display  = view === 'continent'  ? 'block' : 'none';
+  document.getElementById('viewNewGames').style.display   = view === 'newgames'   ? 'block' : 'none';
+  if (view === 'dashboard') renderDashboard();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function navigateToContinent(continent) {
+  closeDrawer();
+  currentContinent = continent;
+  currentSubRegion = 'all';
+  currentGenre = 'TOP 10';
+  currentPage = 1;
+  currentSort = 'default';
+  currentPlatformFilter = 'all';
+  const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
+  document.getElementById('continentViewTitle').textContent = emojis[continent] + ' ' + t('continent')[continent];
+  document.getElementById('searchInput').value = '';
+  updateSubRegionTabs();
+  updateGenreTabs();
+  updateSectionTitle();
+  updateFilterRow();
+  renderGames(getActiveGameList());
+  showView('continent');
+}
+
+function navigateToNewGames() {
+  closeDrawer();
+  renderNewGamesPage();
+  showView('newgames');
+}
+
+function renderNewGamesPage() {
+  const grid = document.getElementById('newGamesGrid');
+  const src  = document.getElementById('newGamesSource');
+  if (!grid) return;
+  if (src) src.textContent = t('source2025');
+  const list = gameData.asia['출시예정'] || [];
+  grid.innerHTML = '';
+  list.forEach((game, i) => {
+    const rank = i + 1;
+    const displayName = getLocalizedGameName(game.name);
+    const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+    const desc = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
+               : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
+               : currentLang === 'ja' ? (descMapJa[game.name] || descMapEn[game.name] || game.desc)
+               : game.desc;
+    const banner = bannerMap[game.name] || '';
+    const logo   = game.logo || '';
+    const sc     = scoreMap[game.name];
+    let scoreHTML = '';
+    if (sc) {
+      const metaColor = getMetaColor(sc.meta);
+      const metaVal   = sc.meta > 0 ? sc.meta : '—';
+      const userVal   = sc.user > 0 ? sc.user : '—';
+      const yearChip  = sc.release ? `<span class="release-chip">${sc.release}</span>` : '';
+      scoreHTML = `<div class="score-row">
+        <div class="meta-badge ${metaColor}"><span class="s-val">${metaVal}</span><span class="s-lbl">${t('critic')}</span></div>
+        <div class="user-badge"><span class="s-val">${userVal}</span><span class="s-lbl">${t('user')}</span></div>
+        ${yearChip}
+      </div>`;
+    }
+    const upcomingBadge = `<div class="must-play-wrap"><span class="must-play-badge" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">🆕 UPCOMING</span></div>`;
+    const cLinks = communityMap[game.name];
+    const communityHTML = cLinks ? `<div class="community-links">
+      ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
+      ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
+    </div>` : '';
+    const imgInner = banner
+      ? `<img src="${banner}" class="game-banner" alt="${displayName}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="logo-layer" style="display:none">
+           <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+         </div>`
+      : `<div class="logo-layer" style="display:flex">
+           <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+           <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+         </div>`;
+    grid.innerHTML += `<div class="card">
+      <div class="img-wrap">${imgInner}
+        <div class="rank-badge">#${rank}</div>
+        <div class="genre-badge">${game.genre}</div>
+      </div>
+      ${upcomingBadge}
+      <h3>${displayName}</h3>
+      ${scoreHTML}
+      ${desc ? `<p class="desc-text">${desc}</p>` : ''}
+      <p>${t('platform')}: ${game.platform}</p>
+      <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
+      <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
+      ${communityHTML}
+    </div>`;
+  });
+}
+
 // ── 드로어 열기·닫기 ─────────────────────────────────────────────────────────
 function openDrawer() {
   document.getElementById('drawerOverlay').classList.add('open');
@@ -2848,26 +3119,9 @@ function closeDrawer() {
   document.body.style.overflow = '';
 }
 
-// ── 드로어를 특정 대륙·장르로 열기 ───────────────────────────────────────────
+// ── 하위 호환: 대시보드 패널 클릭 시 대륙 페이지로 이동 ─────────────────────
 function openDrawerGenre(continent, genre) {
-  if (currentContinent !== continent || currentGenre !== genre) {
-    currentContinent = continent;
-    currentSubRegion = 'all';
-    const genres = Object.keys(gameData[continent]);
-    currentGenre = genres.includes(genre) ? genre : 'TOP 10';
-    currentPage = 1;
-    currentSort = 'default';
-    currentPlatformFilter = 'all';
-    document.getElementById('searchInput').value = '';
-    document.getElementById('genreTabs').style.display = 'flex';
-    updateContinentTabs();
-    updateSubRegionTabs();
-    updateGenreTabs();
-    updateSectionTitle();
-    updateFilterRow();
-    renderGames(getActiveGameList());
-  }
-  openDrawer();
+  navigateToContinent(continent);
 }
 
 // ── 메인 대시보드 렌더링 ─────────────────────────────────────────────────────
@@ -2930,11 +3184,10 @@ window.onload = () => {
   } else {
     document.getElementById('toggleIcon').textContent = '🌙';
   }
+  currentView = 'dashboard';
   setLang(currentLang);
   updateLoginButton();
-  updateFilterRow();
   renderDashboard();
-  renderQuickGenreRow();
   loadRankings();
 };
 </script>
