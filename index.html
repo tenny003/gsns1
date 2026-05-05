@@ -2086,6 +2086,41 @@ function renderQuickGenreRow() {
     ).join('');
 }
 
+async function loadGameData() {
+  const resp = await fetch('games-data.json');
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const data = await resp.json();
+
+  ({ pubMap, logoMap, bannerMap,
+     descMap, descMapEn, descMapZh, descMapJa,
+     gameNameMap, scoreMap, communityMap,
+     upcomingReleaseDates, popularNewGames } = data);
+
+  gameData = {};
+  for (const [c, genres] of Object.entries(data.gameData)) {
+    gameData[c] = {};
+    for (const [genre, games] of Object.entries(genres)) {
+      gameData[c][genre] = games.map(g => ({
+        name: g.name,
+        genre: g.genre,
+        platform: g.platform,
+        site: g.site,
+        publisher: g.pub || pubMap[g.name] || '',
+        logo: logoMap[g.name] || '',
+        desc: descMap[g.name] || ''
+      }));
+    }
+  }
+}
+
+function initPage() {
+  currentView = 'dashboard';
+  setLang(currentLang);
+  updateLoginButton();
+  renderDashboard();
+  loadRankings();
+}
+
 window.onload = async () => {
   // 테마 복원
   const savedTheme = localStorage.getItem('theme');
@@ -2097,58 +2132,30 @@ window.onload = async () => {
   }
 
   // 로딩 스피너 표시
-  const appContent = document.getElementById('appContent');
   const spinner = document.createElement('div');
   spinner.id = 'dataLoader';
   spinner.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg);z-index:9999;flex-direction:column;gap:16px;';
-  spinner.innerHTML = '<div style="width:44px;height:44px;border:4px solid #334155;border-top-color:#38bdf8;border-radius:50%;animation:spin .8s linear infinite"></div>' +
+  spinner.innerHTML =
+    '<div style="width:44px;height:44px;border:4px solid #334155;border-top-color:#38bdf8;border-radius:50%;animation:spin .8s linear infinite"></div>' +
     '<p style="color:#94a3b8;font-size:.9rem">게임 데이터 로딩 중...</p>' +
     '<style>@keyframes spin{to{transform:rotate(360deg)}}</style>';
   document.body.appendChild(spinner);
 
-  // 게임 데이터 비동기 로드
   try {
-    const resp = await fetch('games-data.json');
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const data = await resp.json();
-
-    // 맵 할당
-    ({ pubMap, logoMap, bannerMap,
-       descMap, descMapEn, descMapZh, descMapJa,
-       gameNameMap, scoreMap, communityMap,
-       upcomingReleaseDates, popularNewGames } = data);
-
-    // gameData 재구성 (slim → full game objects)
-    gameData = {};
-    for (const [c, genres] of Object.entries(data.gameData)) {
-      gameData[c] = {};
-      for (const [genre, games] of Object.entries(genres)) {
-        gameData[c][genre] = games.map(g => ({
-          name: g.name,
-          genre: g.genre,
-          platform: g.platform,
-          site: g.site,
-          publisher: g.pub || pubMap[g.name] || '',
-          logo: logoMap[g.name] || '',
-          desc: descMap[g.name] || ''
-        }));
-      }
-    }
+    await loadGameData();
+    spinner.remove();
+    initPage();
   } catch (err) {
-    console.error('게임 데이터 로드 실패:', err);
-    spinner.innerHTML = '<p style="color:#f87171;font-size:1rem;text-align:center;padding:20px">' +
-      '⚠️ 게임 데이터를 불러오지 못했습니다.<br>페이지를 새로고침해 주세요.</p>';
-    return;
+    console.warn('games-data.json 로드 실패 — 빈 데이터로 초기화:', err.message);
+    spinner.remove();
+    initPage();
+    // 상단에 재시도 배너 표시
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:sticky;top:60px;z-index:100;background:#7f1d1d;color:#fca5a5;text-align:center;padding:10px 16px;font-size:.88rem;display:flex;align-items:center;justify-content:center;gap:12px;';
+    banner.innerHTML = '⚠️ 게임 데이터를 불러오지 못했습니다. ' +
+      '<button onclick="location.reload()" style="background:#dc2626;border:none;color:#fff;padding:4px 12px;border-radius:20px;font-size:.82rem;cursor:pointer;font-weight:700">새로고침</button>';
+    document.body.insertAdjacentElement('afterbegin', banner);
   }
-
-  // 스피너 제거
-  spinner.remove();
-
-  currentView = 'dashboard';
-  setLang(currentLang);
-  updateLoginButton();
-  renderDashboard();
-  loadRankings();
 };
 </script>
 </body>
