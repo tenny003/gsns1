@@ -29,7 +29,16 @@
       "Bash(echo.)",
       "Bash(node -e \"const fs = require\\('fs'\\); const content = fs.readFileSync\\('index.html', 'utf8'\\); const scriptMatch = content.match\\(/<script>\\([\\\\s\\\\S]*?\\)<\\\\/script>/g\\); let errors = []; scriptMatch && scriptMatch.forEach\\(\\(s, i\\) => { try { new Function\\(s.replace\\(/<\\\\/?script>/g, ''\\)\\); } catch\\(e\\) { errors.push\\('Script block ' + i + ': ' + e.message\\); } }\\); console.log\\(errors.length ? 'ERRORS: ' + errors.join\\(', '\\) : 'No JS syntax errors detected'\\); console.log\\('File size:', Math.round\\(content.length/1024\\) + 'KB'\\);\")",
       "Bash(node -e ' *)",
-      "Bash(git commit -m 'feat: 게임 데이터 대폭 확장 - 46개 신규 게임 추가, 각 대륙/장르별 게임 수 최대 30개로 증가 *)"
+      "Bash(git commit -m 'feat: 게임 데이터 대폭 확장 - 46개 신규 게임 추가, 각 대륙/장르별 게임 수 최대 30개로 증가 *)",
+      "Bash(node extract-data.js)",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('games-data.json','utf-8'\\)\\); for\\(const [k,v] of Object.entries\\(d\\)\\){const n=Array.isArray\\(v\\)?v.length:Object.keys\\(v\\).length; console.log\\(k+': '+n\\);}\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const d=JSON.parse\\(fs.readFileSync\\('games-data.json','utf-8'\\)\\); console.log\\(JSON.stringify\\(Object.keys\\(d\\)\\)\\); console.log\\('fileSize:', fs.statSync\\('games-data.json'\\).size\\);\")",
+      "Bash(node -e \"const d=JSON.parse\\(require\\('fs'\\).readFileSync\\('games-data.json','utf-8'\\)\\); const cont=Object.keys\\(d.gameData\\); console.log\\('Continents:',cont\\); for\\(const c of cont\\){const genres=Object.keys\\(d.gameData[c]\\); const total=genres.reduce\\(\\(s,g\\)=>s+d.gameData[c][g].length,0\\); console.log\\(c+':',genres.length,'genres,',total,'games'\\);}\")",
+      "Bash(node -e \"const s=require\\('fs'\\).statSync\\('games-data.json'\\).size; console.log\\('JSON size:', \\(s/1024\\).toFixed\\(1\\)+'KB'\\);\")",
+      "Bash(node patch-index.js)",
+      "Bash(node -e \"const fs=require\\('fs'\\); const html=fs.readFileSync\\('index.html','utf-8'\\); const matches=html.match\\(/pubMap|logoMap|bannerMap|scoreMap|communityMap/g\\); console.log\\('count:', matches ? matches.length : 0\\);\")",
+      "Bash(Remove-Item extract-data.js, patch-index.js, index.html.bak -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"임시 파일 삭제 완료\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\user\\Desktop\\AI 작업\\방송\\새폴더1",
