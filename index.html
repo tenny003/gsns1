@@ -646,18 +646,21 @@ header{padding:22px 80px;}
       <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
       <h2 class="view-title">🆕 2025–26 신작 &amp; 출시예정</h2>
     </div>
+    <!-- 탭 버튼 -->
+    <div class="tab-row" style="margin-bottom:18px">
+      <button class="tab-btn active" id="tabBtnPopular" onclick="switchNewGamesTab('popular')">🎮 인기신작게임</button>
+      <button class="tab-btn" id="tabBtnUpcoming" onclick="switchNewGamesTab('upcoming')">🔮 출시예정기대작</button>
+    </div>
     <!-- 섹션 1: 인기신작게임 -->
-    <div class="newgames-section-header">
-      <h2 class="newgames-section-title" id="popularSectionTitle">🎮 인기신작게임</h2>
+    <div id="sectionPopular">
       <p class="rank-source" id="popularGamesSource"></p>
+      <div class="rank-grid" id="popularGamesGrid"></div>
     </div>
-    <div class="rank-grid" id="popularGamesGrid"></div>
     <!-- 섹션 2: 출시예정기대작 -->
-    <div class="newgames-section-header" style="margin-top:40px">
-      <h2 class="newgames-section-title" id="upcomingSectionTitle">🔮 출시예정기대작</h2>
+    <div id="sectionUpcoming" style="display:none">
       <p class="rank-source" id="upcomingGamesSource"></p>
+      <div class="rank-grid" id="upcomingGamesGrid"></div>
     </div>
-    <div class="rank-grid" id="upcomingGamesGrid"></div>
   </div>
 
 </div>
@@ -3155,6 +3158,7 @@ function navigateToContinent(continent) {
 
 function navigateToNewGames() {
   closeDrawer();
+  currentNewGamesTab = 'popular';
   renderNewGamesPage();
   showView('newgames');
 }
@@ -3215,28 +3219,51 @@ function buildNewGameCard(game, rank, badgeHTML) {
   </div>`;
 }
 
+let currentNewGamesTab = 'popular';
+
+function switchNewGamesTab(tab) {
+  currentNewGamesTab = tab;
+  const secPopular  = document.getElementById('sectionPopular');
+  const secUpcoming = document.getElementById('sectionUpcoming');
+  const btnPopular  = document.getElementById('tabBtnPopular');
+  const btnUpcoming = document.getElementById('tabBtnUpcoming');
+  if (!secPopular || !secUpcoming) return;
+  if (tab === 'popular') {
+    secPopular.style.display  = '';
+    secUpcoming.style.display = 'none';
+    btnPopular.classList.add('active');
+    btnUpcoming.classList.remove('active');
+  } else {
+    secPopular.style.display  = 'none';
+    secUpcoming.style.display = '';
+    btnPopular.classList.remove('active');
+    btnUpcoming.classList.add('active');
+  }
+}
+
 function renderNewGamesPage() {
   const popularGrid   = document.getElementById('popularGamesGrid');
   const upcomingGrid  = document.getElementById('upcomingGamesGrid');
   if (!popularGrid || !upcomingGrid) return;
 
-  const isKo = currentLang === 'ko';
-  const isZh = currentLang === 'zh';
-  const isJa = currentLang === 'ja';
+  // 탭 버튼 라벨 다국어 업데이트
+  const popularBtnLabel  = {ko:'🎮 인기신작게임', en:'🎮 Popular New Releases', zh:'🎮 热门新游戏', ja:'🎮 人気新作ゲーム'}[currentLang] || '🎮 인기신작게임';
+  const upcomingBtnLabel = {ko:'🔮 출시예정기대작', en:'🔮 Most Anticipated', zh:'🔮 最受期待即将发售', ja:'🔮 最注目の発売予定作'}[currentLang] || '🔮 출시예정기대작';
+  const btnP = document.getElementById('tabBtnPopular');
+  const btnU = document.getElementById('tabBtnUpcoming');
+  if (btnP) btnP.textContent = popularBtnLabel;
+  if (btnU) btnU.textContent = upcomingBtnLabel;
 
-  const popularTitle   = {ko:'🎮 인기신작게임', en:'🎮 Popular New Releases', zh:'🎮 热门新游戏', ja:'🎮 人気新作ゲーム'}[currentLang] || '🎮 인기신작게임';
-  const upcomingTitle  = {ko:'🔮 출시예정기대작', en:'🔮 Most Anticipated Upcoming', zh:'🔮 最受期待即将发售', ja:'🔮 最注目の発売予定作'}[currentLang] || '🔮 출시예정기대작';
-  const popularSrc     = {ko:'2025년 출시 완료 · 출처: Metacritic, Steam, OpenCritic', en:'Released in 2025 · Source: Metacritic, Steam, OpenCritic', zh:'2025年已发售 · 来源：Metacritic, Steam', ja:'2025年リリース済み · 出典：Metacritic, Steam'}[currentLang] || '';
-  const upcomingSrc    = {ko:'전세계 기대작 · 출처: 각 게임사 공식 발표', en:'Global most anticipated · Source: Official announcements', zh:'全球期待大作 · 来源：各游戏官方公告', ja:'世界の期待作 · 出典：各社公式発表'}[currentLang] || '';
-
-  const ptEl = document.getElementById('popularSectionTitle');
-  const utEl = document.getElementById('upcomingSectionTitle');
+  // 출처 텍스트
+  const popularSrc  = {ko:'2025년 출시 완료 · 출처: Metacritic, Steam, OpenCritic', en:'Released in 2025 · Source: Metacritic, Steam, OpenCritic', zh:'2025年已发售 · 来源：Metacritic, Steam', ja:'2025年リリース済み · 出典：Metacritic, Steam'}[currentLang] || '';
+  const upcomingSrc = {ko:'전세계 기대작 · 출처: 각 게임사 공식 발표', en:'Global most anticipated · Source: Official announcements', zh:'全球期待大作 · 来源：各游戏官方公告', ja:'世界の期待作 · 出典：各社公式発表'}[currentLang] || '';
   const psEl = document.getElementById('popularGamesSource');
   const usEl = document.getElementById('upcomingGamesSource');
-  if (ptEl) ptEl.textContent = popularTitle;
-  if (utEl) utEl.textContent = upcomingTitle;
   if (psEl) psEl.textContent = popularSrc;
   if (usEl) usEl.textContent = upcomingSrc;
+
+  // 탭 상태 적용
+  switchNewGamesTab(currentNewGamesTab);
 
   // 섹션 1: 인기신작게임 (2025 출시 완료)
   popularGrid.innerHTML = '';
