@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GSNS 랭킹</title>
+<title>GSNS - 글로벌 게임 주간 랭킹 | 아시아·북미·유럽 게임 순위</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="shortcut icon" href="/favicon.svg" />
 <meta name="description" content="GSNS는 아시아, 북미, 유럽, 글로벌 지역별 주간 게임 순위를 제공하는 랭킹 플랫폼입니다. 롤플레잉, 슈팅, 전략, 액션, 스포츠 장르별 인기 게임을 확인하세요." />
@@ -365,6 +365,19 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
 footer{text-align:center;padding:30px;color:var(--footer-color);}
 .ad-slot{width:100%;max-width:1400px;margin:0 auto;padding:10px 24px;text-align:center;overflow:hidden;}
 .ad-slot ins{display:block;}
+
+/* ── 양옆 고정 사이드 광고 ─────────────────────────────────────────────────── */
+.ad-side{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:160px;z-index:5;display:none;
+  pointer-events:auto;
+}
+.ad-side-left{ left:8px; }
+.ad-side-right{ right:8px; }
+/* 뷰포트가 충분히 넓을 때만 노출 — 콘텐츠 1400px + 양옆 160px + 여백 = ~1760px */
+@media(min-width:1760px){
+  .ad-side{ display:block; }
+}
 .faq-section{max-width:860px;margin:0 auto;padding:60px 24px 40px;}
 .faq-section h2{font-size:1.5rem;font-weight:800;text-align:center;margin-bottom:8px;}
 .faq-section .faq-sub{text-align:center;color:var(--sub);font-size:.9rem;margin-bottom:36px;}
@@ -727,13 +740,13 @@ header{padding:22px 80px;}
   </nav>
 </div>
 
-<!-- 광고: 헤더 하단 -->
+<!-- 광고: 헤더 하단 (가로형 배너) -->
 <div class="ad-slot">
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-4555619175991161"
-       data-ad-slot="auto"
-       data-ad-format="auto"
+       data-ad-slot="1234567890"
+       data-ad-format="horizontal"
        data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
@@ -840,12 +853,12 @@ header{padding:22px 80px;}
   <div id="faqContainer"></div>
 </section>
 
-<!-- 광고: 푸터 상단 -->
+<!-- 광고: 콘텐츠 하단 (반응형) -->
 <div class="ad-slot">
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-4555619175991161"
-       data-ad-slot="auto"
+       data-ad-slot="0987654321"
        data-ad-format="auto"
        data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -872,6 +885,8 @@ header{padding:22px 80px;}
     <a id="footerAbout" href="about.html">서비스 소개</a>
     <span class="footer-sep">|</span>
     <a id="footerPrivacy" href="privacy.html">개인정보처리방침</a>
+    <span class="footer-sep">|</span>
+    <a id="footerTerms" href="terms.html">이용약관</a>
     <span class="footer-sep">|</span>
     <a id="footerContact" href="contact.html">제휴 문의</a>
   </div>
@@ -4617,5 +4632,21 @@ window.onload = () => {
   loadRankings();
 };
 </script>
+
+<!-- ── 양옆 고정 사이드 광고 (뷰포트 1760px 이상에서 노출) ── -->
+<div class="ad-side ad-side-left" aria-label="광고">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:160px;height:600px"
+       data-ad-client="ca-pub-4555619175991161"
+       data-ad-slot="1122334455"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<div class="ad-side ad-side-right" aria-label="광고">
+  <ins class="adsbygoogle"
+       style="display:inline-block;width:160px;height:600px"
+       data-ad-client="ca-pub-4555619175991161"
+       data-ad-slot="5544332211"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
 </body>
 </html>
