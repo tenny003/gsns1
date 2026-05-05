@@ -716,6 +716,20 @@ header{padding:22px 80px;}
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
   <nav class="drawer-nav" id="drawerNav">
+    <div class="drawer-nav-section-label" id="navLabelContinent">대륙별 랭킹</div>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('asia')">
+      <span class="nav-icon">🌏</span><span id="navAsia">아시아</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('na')">
+      <span class="nav-icon">🌎</span><span id="navNA">북미</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('europe')">
+      <span class="nav-icon">🌍</span><span id="navEurope">유럽</span>
+    </button>
+    <button class="drawer-nav-btn" onclick="navigateToContinent('global')">
+      <span class="nav-icon">🌐</span><span id="navGlobal">글로벌</span>
+    </button>
+    <div class="drawer-nav-divider"></div>
     <button class="drawer-nav-btn new-games" onclick="navigateToNewGames()">
       <span class="nav-icon">🆕</span><span id="navNewGames">2026 신작 & 출시예정</span>
     </button>
@@ -3692,6 +3706,9 @@ function setLang(lang) {
   };
   const nl = navLabels[lang] || navLabels.en;
   const setTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent=txt; };
+  setTxt('navLabelContinent', nl.continent);
+  setTxt('navAsia', nl.asia); setTxt('navNA', nl.na);
+  setTxt('navEurope', nl.europe); setTxt('navGlobal', nl.global);
   setTxt('navNewGames', nl.newGames);
   document.querySelectorAll('.backBtnLabel, #backBtnLabel').forEach(el => el.textContent = nl.back);
   updateSubRegionTabs();
