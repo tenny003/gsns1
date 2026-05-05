@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gsns.pages.dev/sitemap.xml
+Sitemap: https://gsns1.pages.dev/sitemap.xml
