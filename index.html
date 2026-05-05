@@ -216,6 +216,62 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .modal-box ul{padding-left:20px;margin-bottom:8px;}
 .modal-box strong{color:var(--text);}
 
+/* 언어 토글 */
+.lang-toggle{display:flex;border-radius:50px;border:1px solid var(--border);overflow:hidden;margin-left:4px;}
+.lang-btn{padding:4px 12px;border:none;background:transparent;color:var(--sub);
+  font-size:.75rem;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.04em;font-family:inherit;}
+.lang-btn.active{background:linear-gradient(135deg,#38bdf8,#2563eb);color:#fff;}
+
+/* 국가·지역 서브 탭 */
+.sub-tab-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+.sub-tab-btn{
+  padding:7px 16px;border-radius:50px;
+  background:transparent;border:1.5px solid var(--border);
+  color:var(--sub);font-size:.82rem;font-weight:600;
+  cursor:pointer;transition:all .22s;
+}
+.sub-tab-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+.sub-tab-btn.active{
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  border-color:transparent;color:#fff;
+  box-shadow:0 3px 12px rgba(56,189,248,.35);
+}
+
+/* 게임 커뮤니티 링크 버튼 */
+.community-links{display:flex;gap:6px;margin-top:8px;}
+.community-btn{
+  flex:1;padding:6px 4px;border-radius:8px;border:1px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.72rem;font-weight:700;
+  cursor:pointer;transition:all .2s;text-decoration:none;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:3px;
+}
+.community-btn.reddit:hover{border-color:#ff4500;color:#ff4500;background:rgba(255,69,0,.07);}
+.community-btn.discord:hover{border-color:#5865f2;color:#5865f2;background:rgba(88,101,242,.07);}
+
+/* 커뮤니티 허브 섹션 */
+.community-hub{
+  background:linear-gradient(135deg,#0c1e3a,#172a4a);
+  border-radius:20px;padding:32px;margin:0 0 40px;
+  border:1px solid rgba(56,189,248,.15);
+}
+body.light .community-hub{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:rgba(37,99,235,.15);}
+.community-hub h3{font-size:1.3rem;margin-bottom:6px;}
+.community-hub > p{color:var(--sub);font-size:.86rem;margin-bottom:20px;}
+.community-hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
+.community-hub-card{
+  background:var(--control-bg);border-radius:14px;padding:16px;
+  border:1px solid var(--border);transition:all .22s;
+  text-decoration:none;display:block;
+}
+.community-hub-card:hover{border-color:#38bdf8;transform:translateY(-2px);}
+.community-hub-card h4{font-size:.88rem;margin-bottom:4px;color:var(--text);}
+.community-hub-card p{font-size:.76rem;color:var(--sub);margin:0;line-height:1.5;}
+.hub-badge{display:inline-block;padding:2px 9px;border-radius:50px;
+  font-size:.68rem;font-weight:700;margin-bottom:8px;letter-spacing:.04em;}
+.hub-badge.reddit{background:rgba(255,69,0,.13);color:#ff4500;}
+.hub-badge.discord{background:rgba(88,101,242,.13);color:#5865f2;}
+.hub-badge.coming{background:rgba(56,189,248,.13);color:#38bdf8;}
+
 /* CTA 배너 */
 .cta-section{
   text-align:center;padding:6px 20px;
@@ -244,11 +300,15 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 <header>
   <a class="nav-btn" href="contact.html">🤝 Partnership</a>
   <h1>🎮 GSNS</h1>
-  <p class="sub-text">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
+  <p class="sub-text" id="siteSubtitle">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
   <div class="live-bar">
     <span class="live-badge"><span class="live-dot"></span>WEEKLY</span>
     <span id="updateInfo" class="update-info">순위 불러오는 중...</span>
-    <button class="refresh-btn" onclick="refreshRankings()">↻ 새로고침</button>
+    <button class="refresh-btn" id="refreshBtn" onclick="refreshRankings()">↻ 새로고침</button>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="langKo" onclick="setLang('ko')">KO</button>
+      <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+    </div>
   </div>
   <div class="theme-toggle" onclick="toggleTheme()">
     <span class="toggle-icon" id="toggleIcon">🌙</span>
@@ -266,6 +326,9 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
     <button class="tab-btn"        onclick="setContinent('global')">🌐 글로벌</button>
   </div>
 
+  <!-- 국가·지역 서브 탭 -->
+  <div class="sub-tab-row" id="subRegionTabs"></div>
+
   <!-- 장르 탭 -->
   <div class="tab-row" id="genreTabs"></div>
 
@@ -279,6 +342,41 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <p class="rank-source" id="rankSource"></p>
   <div class="rank-grid" id="rankGrid"></div>
   <div class="pagination" id="paginationContainer"></div>
+</div>
+
+<!-- 커뮤니티 허브 -->
+<div class="container">
+  <div class="community-hub">
+    <h3 id="communityHubTitle">💬 게임 커뮤니티</h3>
+    <p id="communityHubDesc">전 세계 게이머들이 모이는 커뮤니티에 참여해보세요.</p>
+    <div class="community-hub-grid">
+      <a href="https://reddit.com/r/gaming" target="_blank" rel="noopener" class="community-hub-card">
+        <span class="hub-badge reddit">Reddit</span>
+        <h4>r/gaming</h4>
+        <p id="hub-gaming-desc">전 세계 게이머 허브 · 36M+ 멤버</p>
+      </a>
+      <a href="https://reddit.com/r/Games" target="_blank" rel="noopener" class="community-hub-card">
+        <span class="hub-badge reddit">Reddit</span>
+        <h4>r/Games</h4>
+        <p id="hub-games-desc">게임 뉴스 & 토론 · 고품질 게임 커뮤니티</p>
+      </a>
+      <a href="https://reddit.com/r/leagueoflegends" target="_blank" rel="noopener" class="community-hub-card">
+        <span class="hub-badge reddit">Reddit</span>
+        <h4>r/leagueoflegends</h4>
+        <p id="hub-lol-desc">League of Legends 글로벌 커뮤니티</p>
+      </a>
+      <a href="https://discord.com/invite/gaming" target="_blank" rel="noopener" class="community-hub-card">
+        <span class="hub-badge discord">Discord</span>
+        <h4 id="hub-discord-title">게임 Discord</h4>
+        <p id="hub-discord-desc">실시간 채팅으로 게이머와 소통</p>
+      </a>
+      <div class="community-hub-card" style="cursor:default">
+        <span class="hub-badge coming">Coming Soon</span>
+        <h4>GSNS Community</h4>
+        <p id="hub-gsns-desc">GSNS 자체 커뮤니티 서비스 준비 중</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- CTA 배너 -->
@@ -965,16 +1063,229 @@ const gameData = {
   }
 };
 
+// ── i18n ─────────────────────────────────────────────────────────────────────
+const TRANS = {
+  ko:{
+    subtitle:'한국 게임 & 글로벌 게임 주간 랭킹 플랫폼',
+    searchPlaceholder:'🔍  게임 검색',
+    platform:'플랫폼', publisher:'배급사', officialSite:'공식 사이트 이동',
+    noGames:'해당 조건의 게임 데이터가 없습니다.',
+    totalGames:n=>`총 ${n}개`,
+    loading:'순위 불러오는 중...', loadFail:'순위 불러오기 실패',
+    lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
+    continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션'},
+    sourceTop:'SteamSpy 동시접속자(CCU) + 지역 가중치 기반 | 매주 월요일 업데이트',
+    sourceGenre:'장르별 인기 게임 목록 | 출처: SteamSpy · Riot Games · 각 게임사 공개 지표',
+    communityHub:'💬 게임 커뮤니티',communityHubDesc:'전 세계 게이머들이 모이는 커뮤니티에 참여해보세요.',
+    hubGaming:'전 세계 게이머 허브 · 36M+ 멤버',hubGames:'게임 뉴스 & 토론 · 고품질 게임 커뮤니티',
+    hubLoL:'League of Legends 글로벌 커뮤니티',hubDiscordTitle:'게임 Discord',
+    hubDiscord:'실시간 채팅으로 게이머와 소통',hubGsns:'GSNS 자체 커뮤니티 서비스 준비 중',
+  },
+  en:{
+    subtitle:'Global Weekly Game Rankings & Community Platform',
+    searchPlaceholder:'🔍  Search games',
+    platform:'Platform', publisher:'Publisher', officialSite:'Official Site',
+    noGames:'No games found for this category.',
+    totalGames:n=>`Total ${n} games`,
+    loading:'Loading rankings...', loadFail:'Failed to load rankings',
+    lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
+    continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation'},
+    sourceTop:'Based on SteamSpy CCU + regional weights | Updated every Monday',
+    sourceGenre:'Genre game list | Sources: SteamSpy · Riot Games · official player data',
+    communityHub:'💬 Game Community',communityHubDesc:'Join global communities for games you love.',
+    hubGaming:'Global gaming hub · 36M+ members',hubGames:'Game news & discussion · quality community',
+    hubLoL:'League of Legends global community',hubDiscordTitle:'Gaming Discord',
+    hubDiscord:'Chat in real-time with gamers worldwide',hubGsns:'GSNS own community — coming soon',
+  }
+};
+function t(key){ return TRANS[currentLang][key]; }
+
+// ── 국가·지역 서브탭 정의 ────────────────────────────────────────────────────
+const subRegionDefs = {
+  asia:[
+    {id:'all',   label:{ko:'🌏 전체',   en:'🌏 All'}},
+    {id:'korea', label:{ko:'🇰🇷 한국',  en:'🇰🇷 Korea'}},
+    {id:'japan', label:{ko:'🇯🇵 일본',  en:'🇯🇵 Japan'}},
+    {id:'china', label:{ko:'🇨🇳 중국',  en:'🇨🇳 China'}},
+    {id:'sea',   label:{ko:'🌴 동남아', en:'🌴 SEA'}},
+  ],
+  na:[
+    {id:'all',    label:{ko:'🌎 전체',    en:'🌎 All'}},
+    {id:'us',     label:{ko:'🇺🇸 미국',   en:'🇺🇸 USA'}},
+    {id:'canada', label:{ko:'🇨🇦 캐나다', en:'🇨🇦 Canada'}},
+  ],
+  europe:[
+    {id:'all',     label:{ko:'🌍 전체',   en:'🌍 All'}},
+    {id:'western', label:{ko:'🏰 서유럽', en:'🏰 West EU'}},
+    {id:'nordic',  label:{ko:'🌲 북유럽', en:'🌲 Nordic'}},
+  ],
+  global:[
+    {id:'all', label:{ko:'🌐 전체', en:'🌐 All'}},
+  ],
+};
+
+// ── 국가별 TOP 10 데이터 ─────────────────────────────────────────────────────
+const countryData = {
+  'asia-korea':[
+    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/ko-kr/'),
+    L('FC Online','Sports','PC','https://fconline.nexon.com/'),
+    L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+    L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
+    L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/','Smilegate RPG'),
+    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
+    L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
+    L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
+    L('Sudden Attack','FPS','PC','https://sa.nexon.com/'),
+    L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
+    L('StarCraft II','RTS','PC','https://starcraft2.com/'),
+    L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
+  ],
+  'asia-japan':[
+    L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
+    L('Final Fantasy XIV','MMORPG','PC','https://jp.finalfantasyxiv.com/'),
+    L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+    L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+    L('Resident Evil Village','Action','PC/Console','https://www.residentevil.com/village/'),
+    L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
+    L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
+    L('Sekiro','Action','PC/Console','https://www.sekirothegame.com/'),
+    L('Dark Souls III','Action RPG','PC/Console','https://www.bandainamcoent.eu/dark-souls/'),
+    L('Palworld','Open World','PC/Console','https://www.pocketpair.jp/palworld'),
+    L('Valorant','FPS','PC','https://playvalorant.com/'),
+  ],
+  'asia-china':[
+    L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+    L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+    L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
+    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+    L('Valorant','FPS','PC','https://playvalorant.com/'),
+    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+    L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
+    L('Lost Ark','MMORPG','PC','https://www.playlostark.com/'),
+    L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
+  ],
+  'asia-sea':[
+    L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
+    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+    L('Valorant','FPS','PC','https://playvalorant.com/'),
+    L('Ragnarok Online','MMORPG','PC','https://ro.gnjoy.com/'),
+    L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
+    L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
+    L('Dota 2','MOBA','PC','https://www.dota2.com/'),
+    L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+    L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+  ],
+  'na-us':[
+    L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+    L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+    L('Madden NFL 25','Sports','PC/Console','https://www.ea.com/games/madden-nfl'),
+    L('NBA 2K25','Sports','PC/Console','https://nba.2k.com/'),
+    L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+    L('Halo Infinite','FPS','PC/Console','https://www.halowaypoint.com/'),
+    L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+    L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+    L('Destiny 2','FPS','PC/Console','https://www.bungie.net/7/en/Destiny/NewLight'),
+    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+  ],
+  'na-canada':[
+    L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+    L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
+    L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
+    L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
+    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+    L('Valorant','FPS','PC','https://playvalorant.com/'),
+    L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
+    L('Rocket League','Sports','PC/Console','https://www.rocketleague.com/'),
+    L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+  ],
+  'europe-western':[
+    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
+    L('EA Sports FC 25','Sports','PC/Console','https://www.ea.com/games/ea-sports-fc/ea-sports-fc-25'),
+    L('Dota 2','MOBA','PC','https://www.dota2.com/'),
+    L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+    L('The Witcher 3','Open World RPG','PC/Console','https://www.thewitcher.com/'),
+    L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
+    L("Baldur's Gate 3",'RPG','PC/Console','https://baldursgate3.game/'),
+    L('Rainbow Six Siege','FPS','PC/Console','https://www.ubisoft.com/en-us/game/rainbow-six/siege'),
+    L('F1 24','Racing','PC/Console','https://www.ea.com/games/f1/f1-24'),
+  ],
+  'europe-nordic':[
+    L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
+    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+    L('Battlefield 2042','FPS','PC/Console','https://www.ea.com/games/battlefield/battlefield-2042'),
+    L('Euro Truck Simulator 2','Sim','PC','https://eurotrucksimulator2.com/'),
+    L('Cities: Skylines','City Builder','PC','https://www.paradoxinteractive.com/games/cities-skylines/'),
+    L('Valheim','Survival','PC','https://www.valheimgame.com/'),
+    L('Hearts of Iron IV','Grand Strategy','PC','https://www.paradoxinteractive.com/games/hearts-of-iron-iv/'),
+    L('XCOM 2','Strategy','PC','https://firaxis.com/games/xcom-2'),
+    L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+    L('Deep Rock Galactic','Action','PC/Console','https://www.deeprockgalactic.com/'),
+  ],
+};
+
+// ── 게임별 커뮤니티 링크 ─────────────────────────────────────────────────────
+const communityMap = {
+  "League of Legends":    {reddit:"https://reddit.com/r/leagueoflegends",  discord:"https://discord.gg/leagueoflegends"},
+  "PUBG: Battlegrounds":  {reddit:"https://reddit.com/r/PUBATTLEGROUNDS"},
+  "Genshin Impact":       {reddit:"https://reddit.com/r/Genshin_Impact",   discord:"https://discord.gg/genshinimpact"},
+  "Counter-Strike 2":     {reddit:"https://reddit.com/r/GlobalOffensive"},
+  "Dota 2":               {reddit:"https://reddit.com/r/DotA2"},
+  "Valorant":             {reddit:"https://reddit.com/r/VALORANT",         discord:"https://discord.gg/valorant"},
+  "Fortnite":             {reddit:"https://reddit.com/r/FortNiteBR"},
+  "Minecraft":            {reddit:"https://reddit.com/r/Minecraft",        discord:"https://discord.gg/minecraft"},
+  "World of Warcraft":    {reddit:"https://reddit.com/r/wow"},
+  "Overwatch 2":          {reddit:"https://reddit.com/r/Overwatch"},
+  "Elden Ring":           {reddit:"https://reddit.com/r/Eldenring"},
+  "Apex Legends":         {reddit:"https://reddit.com/r/apexlegends"},
+  "Call of Duty":         {reddit:"https://reddit.com/r/CallOfDuty"},
+  "Diablo IV":            {reddit:"https://reddit.com/r/diablo4"},
+  "Cyberpunk 2077":       {reddit:"https://reddit.com/r/cyberpunkgame"},
+  "The Witcher 3":        {reddit:"https://reddit.com/r/witcher"},
+  "Baldur's Gate 3":      {reddit:"https://reddit.com/r/BaldursGate3",     discord:"https://discord.gg/larian"},
+  "Path of Exile":        {reddit:"https://reddit.com/r/pathofexile",      discord:"https://discord.gg/pathofexile"},
+  "Lost Ark":             {reddit:"https://reddit.com/r/lostarkgame",      discord:"https://discord.gg/lostark"},
+  "Final Fantasy XIV":    {reddit:"https://reddit.com/r/ffxiv",            discord:"https://discord.gg/ffxiv"},
+  "Palworld":             {reddit:"https://reddit.com/r/Palworld"},
+  "Stardew Valley":       {reddit:"https://reddit.com/r/StardewValley"},
+  "Honkai: Star Rail":    {reddit:"https://reddit.com/r/HonkaiStarRail"},
+  "Among Us":             {reddit:"https://reddit.com/r/AmongUs"},
+  "Escape from Tarkov":   {reddit:"https://reddit.com/r/EscapefromTarkov"},
+  "Monster Hunter: World":{reddit:"https://reddit.com/r/MonsterHunterWorld"},
+  "Dark Souls III":       {reddit:"https://reddit.com/r/darksouls3"},
+  "Rainbow Six Siege":    {reddit:"https://reddit.com/r/Rainbow6"},
+  "Destiny 2":            {reddit:"https://reddit.com/r/DestinyTheGame",   discord:"https://discord.gg/destinythegame"},
+  "No Man's Sky":         {reddit:"https://reddit.com/r/NoMansSkyTheGame"},
+  "Valheim":              {reddit:"https://reddit.com/r/valheim"},
+  "Rocket League":        {reddit:"https://reddit.com/r/RocketLeague"},
+  "MapleStory":           {reddit:"https://reddit.com/r/Maplestory"},
+  "Terraria":             {reddit:"https://reddit.com/r/Terraria"},
+  "Halo Infinite":        {reddit:"https://reddit.com/r/halo"},
+  "Hollow Knight":        {reddit:"https://reddit.com/r/HollowKnight"},
+  "Deep Rock Galactic":   {reddit:"https://reddit.com/r/DeepRockGalactic", discord:"https://discord.gg/deeprockgalactic"},
+  "Sea of Thieves":       {reddit:"https://reddit.com/r/Seaofthieves"},
+  "Warframe":             {reddit:"https://reddit.com/r/Warframe",         discord:"https://discord.gg/warframe"},
+  "StarCraft II":         {reddit:"https://reddit.com/r/starcraft"},
+  "Clash of Clans":       {reddit:"https://reddit.com/r/ClashOfClans"},
+};
+
 const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};
 let currentContinent = 'asia';
 let currentGenre = 'TOP 10';
 let currentPage = 1;
+let currentLang = localStorage.getItem('lang') || 'ko';
+let currentSubRegion = 'all';
 
 function renderGames(list) {
   const grid = document.getElementById('rankGrid');
   grid.innerHTML = '';
   if (!list || list.length === 0) {
-    grid.innerHTML = '<p style="color:var(--sub);padding:20px">해당 장르의 게임 데이터가 없습니다.</p>';
+    grid.innerHTML = `<p style="color:var(--sub);padding:20px">${t('noGames')}</p>`;
     renderPagination(0, 0);
     return;
   }
@@ -985,6 +1296,12 @@ function renderGames(list) {
   pageList.forEach((game, i) => {
     const rank = start + i + 1;
     const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+    const cLinks = communityMap[game.name];
+    const communityHTML = cLinks ? `
+      <div class="community-links">
+        ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
+        ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
+      </div>` : '';
     grid.innerHTML += `
       <div class="card">
         <div class="img-wrap">
@@ -999,9 +1316,10 @@ function renderGames(list) {
         <div class="tag">${game.genre}</div>
         <h3>${game.name}</h3>
         ${game.desc ? `<p class="desc-text">${game.desc}</p>` : ''}
-        <p>플랫폼: ${game.platform}</p>
-        <p class="pub-text">배급사: ${game.publisher}</p>
-        <button class="site-btn" onclick="window.open('${game.site}','_blank')">공식 사이트 이동</button>
+        <p>${t('platform')}: ${game.platform}</p>
+        <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
+        <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
+        ${communityHTML}
       </div>`;
   });
   renderPagination(totalPages, list.length);
@@ -1018,37 +1336,88 @@ function renderPagination(totalPages, total) {
   let pages = '';
   for (let p = s; p <= e; p++)
     pages += `<button class="page-btn${p===currentPage?' active':''}" onclick="goToPage(${p})">${p}</button>`;
-  c.innerHTML = prev + pages + next + `<span class="page-info">총 ${total}개</span>`;
+  c.innerHTML = prev + pages + next + `<span class="page-info">${t('totalGames')(total)}</span>`;
+}
+
+function getActiveGameList() {
+  if (currentSubRegion !== 'all') {
+    return countryData[`${currentContinent}-${currentSubRegion}`] || [];
+  }
+  return gameData[currentContinent][currentGenre] || [];
 }
 
 function goToPage(p) {
   currentPage = p;
   const kw = document.getElementById('searchInput').value.toLowerCase();
-  const base = gameData[currentContinent][currentGenre];
+  const base = getActiveGameList();
   renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
   document.querySelector('.container').scrollIntoView({behavior:'smooth'});
 }
 
 function updateGenreTabs() {
   const genres = Object.keys(gameData[currentContinent]);
+  const genreTrans = t('genre');
   const container = document.getElementById('genreTabs');
   container.innerHTML = genres.map(g =>
-    `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : g}</button>`
+    `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : (genreTrans[g]||g)}</button>`
   ).join('');
+}
+
+function updateSubRegionTabs() {
+  const defs = subRegionDefs[currentContinent] || [];
+  const container = document.getElementById('subRegionTabs');
+  container.innerHTML = defs.map(d =>
+    `<button class="sub-tab-btn${d.id === currentSubRegion ? ' active' : ''}" onclick="setSubRegion('${d.id}')">${d.label[currentLang]}</button>`
+  ).join('');
+}
+
+function setSubRegion(id) {
+  currentSubRegion = id;
+  currentPage = 1;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('genreTabs').style.display = id === 'all' ? 'flex' : 'none';
+  updateSubRegionTabs();
+  updateSectionTitle();
+  renderGames(getActiveGameList());
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.getElementById('langKo').classList.toggle('active', lang === 'ko');
+  document.getElementById('langEn').classList.toggle('active', lang === 'en');
+  document.getElementById('siteSubtitle').textContent = t('subtitle');
+  document.getElementById('searchInput').placeholder = t('searchPlaceholder');
+  document.getElementById('refreshBtn').textContent = t('refresh');
+  document.getElementById('communityHubTitle').textContent = t('communityHub');
+  document.getElementById('communityHubDesc').textContent = t('communityHubDesc');
+  document.getElementById('hub-gaming-desc').textContent = t('hubGaming');
+  document.getElementById('hub-games-desc').textContent = t('hubGames');
+  document.getElementById('hub-lol-desc').textContent = t('hubLoL');
+  document.getElementById('hub-discord-title').textContent = t('hubDiscordTitle');
+  document.getElementById('hub-discord-desc').textContent = t('hubDiscord');
+  document.getElementById('hub-gsns-desc').textContent = t('hubGsns');
+  updateSubRegionTabs();
+  updateGenreTabs();
+  updateSectionTitle();
+  renderGames(getActiveGameList());
 }
 
 function updateSectionTitle() {
   const emoji = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
+  const cLabel = t('continent')[currentContinent];
+  const gLabel = currentGenre === 'TOP 10' ? 'TOP 10' : (t('genre')[currentGenre] || currentGenre);
+  const subDef = (subRegionDefs[currentContinent]||[]).find(d => d.id === currentSubRegion);
+  const subLabel = (currentSubRegion !== 'all' && subDef) ? ` · ${subDef.label[currentLang]}` : '';
   document.getElementById('sectionTitle').textContent =
-    `${emoji[currentContinent]} ${continentLabels[currentContinent]} — ${currentGenre}`;
+    `${emoji[currentContinent]} ${cLabel}${subLabel} — ${gLabel}`;
   document.getElementById('rankSource').textContent =
-    currentGenre === 'TOP 10'
-      ? '순위 산정: SteamSpy 동시접속자(CCU) + 지역별 인기 가중치 기반 | 매주 월요일 업데이트'
-      : '장르별 인기 게임 목록 | 데이터 출처: SteamSpy · Riot Games · 각 게임사 공개 지표';
+    currentGenre === 'TOP 10' ? t('sourceTop') : t('sourceGenre');
 }
 
 function setContinent(region) {
   currentContinent = region;
+  currentSubRegion = 'all';
   const genres = Object.keys(gameData[region]);
   currentGenre = genres.includes(currentGenre) ? currentGenre : 'TOP 10';
   currentPage = 1;
@@ -1056,9 +1425,11 @@ function setContinent(region) {
     b.classList.toggle('active', ['asia','na','europe','global'][i] === region);
   });
   document.getElementById('searchInput').value = '';
+  document.getElementById('genreTabs').style.display = 'flex';
+  updateSubRegionTabs();
   updateGenreTabs();
   updateSectionTitle();
-  renderGames(gameData[currentContinent][currentGenre]);
+  renderGames(getActiveGameList());
 }
 
 function setGenre(genre) {
@@ -1072,7 +1443,7 @@ function setGenre(genre) {
 
 function searchGame() {
   const kw = document.getElementById('searchInput').value.toLowerCase();
-  const base = gameData[currentContinent][currentGenre];
+  const base = getActiveGameList();
   currentPage = 1;
   renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
 }
@@ -1138,8 +1509,10 @@ async function loadRankings() {
       const diffMs = Date.now() - new Date(data.updated).getTime();
       const diffD  = Math.floor(diffMs / 86400000);
       const diffH  = Math.floor((diffMs % 86400000) / 3600000);
-      const t = diffD > 0 ? `${diffD}일 ${diffH}시간 전` : `${diffH}시간 전`;
-      document.getElementById('updateInfo').textContent = `마지막 업데이트: ${t}`;
+      const timeStr = diffD > 0
+        ? `${diffD}${currentLang==='ko'?'일':'d'} ${diffH}${currentLang==='ko'?'시간 전':'h ago'}`
+        : `${diffH}${currentLang==='ko'?'시간 전':'h ago'}`;
+      document.getElementById('updateInfo').textContent = `${t('lastUpdated')}: ${timeStr}`;
     }
 
     for (const continent of ['asia','na','europe','global']) {
@@ -1155,12 +1528,12 @@ async function loadRankings() {
     }
     renderGames(gameData[currentContinent][currentGenre]);
   } catch(e) {
-    document.getElementById('updateInfo').textContent = '순위 불러오기 실패';
+    document.getElementById('updateInfo').textContent = t('loadFail');
   }
 }
 
 function refreshRankings() {
-  document.getElementById('updateInfo').textContent = '업데이트 중...';
+  document.getElementById('updateInfo').textContent = t('updating');
   loadRankings();
 }
 
@@ -1173,8 +1546,8 @@ function toggleTheme() {
 }
 
 window.onload = () => {
-  const saved = localStorage.getItem('theme');
-  if (saved === 'light') {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
     document.body.classList.add('light');
     document.getElementById('toggleIcon').textContent = '☀️';
     document.getElementById('themeBtn').textContent   = 'Light Mode';
@@ -1182,6 +1555,14 @@ window.onload = () => {
     document.getElementById('toggleIcon').textContent = '🌙';
     document.getElementById('themeBtn').textContent   = 'Dark Mode';
   }
+  // 언어 초기화
+  document.getElementById('langKo').classList.toggle('active', currentLang === 'ko');
+  document.getElementById('langEn').classList.toggle('active', currentLang === 'en');
+  document.getElementById('siteSubtitle').textContent = t('subtitle');
+  document.getElementById('searchInput').placeholder  = t('searchPlaceholder');
+  document.getElementById('refreshBtn').textContent   = t('refresh');
+  if (currentLang === 'en') setLang('en');  // sync community hub text
+  updateSubRegionTabs();
   updateGenreTabs();
   updateSectionTitle();
   loadRankings();
