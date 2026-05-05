@@ -641,8 +641,8 @@ header{padding:22px 80px;}
 
 <header>
   <button class="menu-btn" onclick="openDrawer()" title="메뉴 열기">☰</button>
-  <h1><img src="/favicon.svg" class="gsns-mark" alt="GSNS 마크"> GSNS</h1>
-  <p class="sub-text" id="siteSubtitle">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
+  <h1 onclick="showView('dashboard');window.scrollTo({top:0,behavior:'smooth'})" style="cursor:pointer"><img src="/favicon.svg" class="gsns-mark" alt="GSNS 마크"> GSNS</h1>
+  <p class="sub-text" id="siteSubtitle" onclick="showView('dashboard');window.scrollTo({top:0,behavior:'smooth'})" style="cursor:pointer">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
   <div class="live-bar">
     <span class="live-badge"><span class="live-dot"></span>WEEKLY</span>
     <span id="updateInfo" class="update-info">순위 불러오는 중...</span>
