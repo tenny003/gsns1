@@ -26,7 +26,10 @@
       "Bash(Test-Path \"c:\\\\Users\\\\user\\\\Desktop\\\\GSNS\\\\ads.txt\")",
       "WebFetch(domain:adsense-ko.googleblog.com)",
       "WebFetch(domain:support.google.com)",
-      "Bash(echo.)"
+      "Bash(echo.)",
+      "Bash(node -e \"const fs = require\\('fs'\\); const content = fs.readFileSync\\('index.html', 'utf8'\\); const scriptMatch = content.match\\(/<script>\\([\\\\s\\\\S]*?\\)<\\\\/script>/g\\); let errors = []; scriptMatch && scriptMatch.forEach\\(\\(s, i\\) => { try { new Function\\(s.replace\\(/<\\\\/?script>/g, ''\\)\\); } catch\\(e\\) { errors.push\\('Script block ' + i + ': ' + e.message\\); } }\\); console.log\\(errors.length ? 'ERRORS: ' + errors.join\\(', '\\) : 'No JS syntax errors detected'\\); console.log\\('File size:', Math.round\\(content.length/1024\\) + 'KB'\\);\")",
+      "Bash(node -e ' *)",
+      "Bash(git commit -m 'feat: 게임 데이터 대폭 확장 - 46개 신규 게임 추가, 각 대륙/장르별 게임 수 최대 30개로 증가 *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\user\\Desktop\\AI 작업\\방송\\새폴더1",
