@@ -46,7 +46,6 @@ h1{font-size:2.5rem;display:flex;align-items:center;justify-content:center;gap:1
 .gsns-mark{width:2.2rem;height:2.2rem;vertical-align:middle;display:inline-block;}
 .sub-text{color:var(--sub);margin-top:8px;}
 .nav-btn{
-  position:absolute;right:30px;top:50%;transform:translateY(-50%);
   padding:10px 22px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
   color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;
@@ -54,7 +53,7 @@ h1{font-size:2.5rem;display:flex;align-items:center;justify-content:center;gap:1
   box-shadow:0 4px 16px rgba(56,189,248,.35);
   text-decoration:none;display:flex;align-items:center;gap:6px;
 }
-.nav-btn:hover{opacity:.85;transform:translateY(calc(-50% - 2px));}
+.nav-btn:hover{opacity:.85;transform:translateY(-2px);}
 
 /* 테마 토글 */
 .theme-toggle{
@@ -392,12 +391,118 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   box-shadow:0 2px 8px rgba(56,189,248,.35);
 }
 .filter-sep{width:1px;height:26px;background:var(--border);opacity:.5;margin:0 2px;}
+
+/* ── 햄버거 메뉴 버튼 ── */
+.menu-btn{
+  position:absolute;left:20px;top:50%;transform:translateY(-50%);
+  background:transparent;border:2px solid var(--border);color:var(--text);
+  width:44px;height:44px;border-radius:12px;font-size:1.3rem;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.menu-btn:hover{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,.08);}
+
+/* ── 헤더 우측 그룹 ── */
+.header-right{
+  position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  display:flex;align-items:center;gap:10px;
+}
+.theme-icon-btn{
+  background:transparent;border:2px solid var(--border);color:var(--text);
+  width:40px;height:40px;border-radius:10px;font-size:1.15rem;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.theme-icon-btn:hover{border-color:#38bdf8;background:rgba(56,189,248,.08);}
+
+/* ── 드로어 오버레이 & 패널 ── */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.drawer-overlay.open{opacity:1;pointer-events:all;}
+.side-drawer{
+  position:fixed;top:0;left:0;width:min(560px,96vw);height:100vh;
+  background:var(--header-bg);z-index:201;
+  transform:translateX(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;display:flex;flex-direction:column;
+  border-right:1px solid var(--border);box-shadow:4px 0 32px rgba(0,0,0,.4);
+}
+.side-drawer.open{transform:translateX(0);}
+.drawer-header{
+  display:flex;align-items:center;gap:10px;padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:var(--header-bg);z-index:1;flex-shrink:0;
+}
+.drawer-logo{width:1.4rem;height:1.4rem;}
+.drawer-title{font-size:1.05rem;font-weight:800;flex:1;}
+.drawer-close{
+  background:transparent;border:1.5px solid var(--border);color:var(--sub);
+  width:36px;height:36px;border-radius:10px;font-size:1rem;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.drawer-close:hover{border-color:#ef4444;color:#ef4444;}
+.drawer-body{padding:16px 20px;flex:1;}
+
+/* ── 메인 대시보드 ── */
+#mainDashboard{max-width:1400px;margin:auto;padding:24px 24px 0;}
+.quick-genre-row{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;
+  padding:10px 14px;background:var(--control-bg);border-radius:12px;border:1px solid var(--border);
+  align-items:center;
+}
+.quick-genre-btn{
+  padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.8rem;font-weight:700;
+  cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;
+}
+.quick-genre-btn:hover{border-color:#38bdf8;color:#38bdf8;background:rgba(56,189,248,.08);}
+.dashboard-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));
+  gap:18px;margin-bottom:28px;
+}
+.dash-panel{
+  background:var(--card-bg);border-radius:18px;padding:16px;
+  box-shadow:0 6px 20px var(--card-shadow);border:1px solid var(--border);
+}
+.dash-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.dash-panel-title{font-size:.98rem;font-weight:800;}
+.dash-see-all{
+  font-size:.73rem;color:#38bdf8;background:transparent;
+  border:1px solid rgba(56,189,248,.4);padding:3px 10px;border-radius:50px;
+  cursor:pointer;font-family:inherit;font-weight:700;transition:all .2s;
+}
+.dash-see-all:hover{background:rgba(56,189,248,.15);}
+.dash-rank-list{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.dash-rank-item{
+  display:flex;align-items:center;gap:7px;padding:5px 7px;
+  border-radius:9px;cursor:pointer;transition:background .18s;
+}
+.dash-rank-item:hover{background:rgba(56,189,248,.06);}
+.dash-rank-num{
+  font-size:.8rem;font-weight:900;color:var(--sub);
+  min-width:20px;text-align:right;flex-shrink:0;
+}
+.dash-rank-num.top3{color:#38bdf8;}
+.dash-game-name{
+  flex:1;font-size:.84rem;font-weight:600;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dash-score{font-size:.72rem;font-weight:800;padding:2px 6px;border-radius:6px;flex-shrink:0;}
+.dash-score.green{background:#16a34a;color:#fff;}
+.dash-score.yellow{background:#ca8a04;color:#fff;}
+.dash-score.orange{background:#ea580c;color:#fff;}
+.dash-score.gray{background:var(--control-bg);color:var(--sub);border:1px solid var(--border);}
+.trend-up{color:#22c55e;font-size:.68rem;font-weight:900;flex-shrink:0;min-width:14px;text-align:center;}
+.trend-down{color:#ef4444;font-size:.68rem;font-weight:900;flex-shrink:0;min-width:14px;text-align:center;}
+.trend-stay{color:var(--sub);font-size:.68rem;flex-shrink:0;min-width:14px;text-align:center;}
 </style>
 </head>
 <body>
 
 <header>
-  <button class="nav-btn" id="loginNavBtn" onclick="showLoginModal()">🔑 로그인</button>
+  <button class="menu-btn" onclick="openDrawer()" title="메뉴 열기">☰</button>
   <h1><img src="/favicon.svg" class="gsns-mark" alt="GSNS 마크"> GSNS</h1>
   <p class="sub-text" id="siteSubtitle">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
   <div class="live-bar">
@@ -411,36 +516,44 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
       <button class="lang-btn" id="langJa" onclick="setLang('ja')">日本語</button>
     </div>
   </div>
-  <div class="theme-toggle" onclick="toggleTheme()">
-    <span class="toggle-icon" id="toggleIcon">🌙</span>
-    <div class="toggle-track"><div class="toggle-thumb"></div></div>
-    <span class="toggle-label" id="themeBtn">Dark Mode</span>
+  <div class="header-right">
+    <button class="theme-icon-btn" onclick="toggleTheme()" title="테마 전환">
+      <span id="toggleIcon">🌙</span>
+    </button>
+    <button class="nav-btn" id="loginNavBtn" onclick="showLoginModal()">🔑 로그인</button>
   </div>
 </header>
 
-<div class="container">
-  <!-- 대륙 탭 (JS 동적 렌더링) -->
-  <div class="tab-row" id="continentTabs"></div>
+<!-- 드로어 오버레이 -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
-  <!-- 국가·지역 서브 탭 -->
-  <div class="sub-tab-row" id="subRegionTabs"></div>
-
-  <!-- 장르 탭 -->
-  <div class="tab-row" id="genreTabs"></div>
-
-  <!-- 검색 -->
-  <div class="search-row">
-    <input type="text" id="searchInput" placeholder="🔍  게임 검색" oninput="searchGame()" />
+<!-- 사이드 드로어 (게임 브라우저) -->
+<div class="side-drawer" id="sideDrawer">
+  <div class="drawer-header">
+    <img src="/favicon.svg" class="drawer-logo" alt="GSNS">
+    <span class="drawer-title" id="drawerTitle">게임 브라우저</span>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
+  <div class="drawer-body">
+    <div class="tab-row" id="continentTabs"></div>
+    <div class="sub-tab-row" id="subRegionTabs"></div>
+    <div class="tab-row" id="genreTabs"></div>
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="🔍  게임 검색" oninput="searchGame()" />
+    </div>
+    <div class="filter-row" id="filterRow"></div>
+    <div class="divider"></div>
+    <h2 class="section-title" id="sectionTitle"></h2>
+    <p class="rank-source" id="rankSource"></p>
+    <div class="rank-grid" id="rankGrid"></div>
+    <div class="pagination" id="paginationContainer"></div>
+  </div>
+</div>
 
-  <!-- 필터 & 정렬 -->
-  <div class="filter-row" id="filterRow"></div>
-
-  <div class="divider"></div>
-  <h2 class="section-title" id="sectionTitle"></h2>
-  <p class="rank-source" id="rankSource"></p>
-  <div class="rank-grid" id="rankGrid"></div>
-  <div class="pagination" id="paginationContainer"></div>
+<!-- 메인 대시보드 -->
+<div id="mainDashboard">
+  <div class="quick-genre-row" id="quickGenreRow"></div>
+  <div class="dashboard-grid" id="dashboardGrid"></div>
 </div>
 
 <!-- CTA 배너 -->
@@ -2255,7 +2368,8 @@ function goToPage(p) {
   const kw = document.getElementById('searchInput').value.toLowerCase();
   const base = getActiveGameList();
   renderGames(kw ? base.filter(g => g.name.toLowerCase().includes(kw)) : base);
-  document.querySelector('.container').scrollIntoView({behavior:'smooth'});
+  const st = document.getElementById('sectionTitle');
+  if (st) st.scrollIntoView({behavior:'smooth'});
 }
 
 function updateGenreTabs() {
@@ -2310,6 +2424,11 @@ function setLang(lang) {
   document.getElementById('footerPrivacy').textContent  = t('footerPrivacy');
   document.getElementById('footerContact').textContent  = t('footerContact');
   document.getElementById('footerSource').textContent   = t('footerSource');
+  const drawerTitleEl = document.getElementById('drawerTitle');
+  if (drawerTitleEl) {
+    const dt = {ko:'게임 브라우저',en:'Game Browser',zh:'游戏浏览器',ja:'ゲームブラウザ'};
+    drawerTitleEl.textContent = dt[lang] || dt.en;
+  }
   updateContinentTabs();
   updateSubRegionTabs();
   updateGenreTabs();
@@ -2318,6 +2437,8 @@ function setLang(lang) {
   updateLoginButton();
   updateFilterRow();
   renderGames(getActiveGameList());
+  renderDashboard();
+  renderQuickGenreRow();
 }
 
 function updateSectionTitle() {
@@ -2462,7 +2583,7 @@ function closeModal() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
 
 async function loadRankings() {
   try {
@@ -2487,6 +2608,7 @@ async function loadRankings() {
       }
     }
     renderGames(getActiveGameList());
+    renderDashboard();
   } catch(e) {
     document.getElementById('updateInfo').textContent = t('loadFail');
   }
@@ -2501,7 +2623,6 @@ function toggleTheme() {
   document.body.classList.toggle('light');
   const isLight = document.body.classList.contains('light');
   document.getElementById('toggleIcon').textContent = isLight ? '☀️' : '🌙';
-  document.getElementById('themeBtn').textContent   = isLight ? 'Light Mode' : 'Dark Mode';
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
@@ -2695,19 +2816,125 @@ function doLogout() {
   closeLoginModal();
 }
 
+// ── 트렌드 인디케이터 (주간 순위 변동 표시) ──────────────────────────────────
+const trendMap = {
+  "League of Legends":"stay","PUBG: Battlegrounds":"up","Genshin Impact":"stay",
+  "FC Online":"down","Lost Ark":"up","MapleStory":"stay","Valorant":"up",
+  "Dungeon & Fighter":"stay","Lineage":"down","Overwatch 2":"down","Aion 2":"up",
+  "Wuthering Waves":"up","Fortnite":"up","Call of Duty":"stay","Minecraft":"stay",
+  "Apex Legends":"up","Counter-Strike 2":"stay","World of Warcraft":"down",
+  "Diablo IV":"up","Elden Ring":"stay","Cyberpunk 2077":"up","Final Fantasy XIV":"stay",
+  "Baldur's Gate 3":"stay","Dota 2":"down","Monster Hunter Wilds":"up",
+  "Split Fiction":"up","Clair Obscur: Expedition 33":"up","Hades II":"up","Blue Prince":"up",
+  "GTA 5":"stay","Roblox":"up","Honkai: Star Rail":"up","Palworld":"down",
+  "Stardew Valley":"stay","Free Fire":"stay","Valorant":"up","Escape from Tarkov":"down",
+};
+function getTrendHTML(name) {
+  const tr = trendMap[name];
+  if (tr === 'up')   return '<span class="trend-up">▲</span>';
+  if (tr === 'down') return '<span class="trend-down">▼</span>';
+  return '<span class="trend-stay">—</span>';
+}
+
+// ── 드로어 열기·닫기 ─────────────────────────────────────────────────────────
+function openDrawer() {
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('sideDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('sideDrawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── 드로어를 특정 대륙·장르로 열기 ───────────────────────────────────────────
+function openDrawerGenre(continent, genre) {
+  if (currentContinent !== continent || currentGenre !== genre) {
+    currentContinent = continent;
+    currentSubRegion = 'all';
+    const genres = Object.keys(gameData[continent]);
+    currentGenre = genres.includes(genre) ? genre : 'TOP 10';
+    currentPage = 1;
+    currentSort = 'default';
+    currentPlatformFilter = 'all';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('genreTabs').style.display = 'flex';
+    updateContinentTabs();
+    updateSubRegionTabs();
+    updateGenreTabs();
+    updateSectionTitle();
+    updateFilterRow();
+    renderGames(getActiveGameList());
+  }
+  openDrawer();
+}
+
+// ── 메인 대시보드 렌더링 ─────────────────────────────────────────────────────
+function renderDashboard() {
+  const grid = document.getElementById('dashboardGrid');
+  if (!grid) return;
+  const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
+  const continents = ['asia','na','europe','global'];
+  const seeAllLabel = {ko:'전체 보기',en:'See All',zh:'查看全部',ja:'全て見る'}[currentLang] || 'See All';
+  grid.innerHTML = continents.map(cont => {
+    const top10 = (gameData[cont]['TOP 10'] || []).slice(0, 10);
+    const contLabel = t('continent')[cont];
+    const items = top10.map((game, i) => {
+      const rank = i + 1;
+      const sc = scoreMap[game.name];
+      const metaVal = sc && sc.meta > 0 ? sc.meta : null;
+      const scoreColor = sc ? getMetaColor(sc.meta) : 'gray';
+      const scoreBadge = metaVal ? `<span class="dash-score ${scoreColor}">${metaVal}</span>` : '';
+      const trendHTML = getTrendHTML(game.name);
+      const displayName = getLocalizedGameName(game.name);
+      return `<li class="dash-rank-item" onclick="openDrawerGenre('${cont}','TOP 10')">
+        <span class="dash-rank-num${rank<=3?' top3':''}">${rank}</span>
+        ${trendHTML}
+        <span class="dash-game-name">${displayName}</span>
+        ${scoreBadge}
+      </li>`;
+    }).join('');
+    return `<div class="dash-panel">
+      <div class="dash-panel-header">
+        <span class="dash-panel-title">${emojis[cont]} ${contLabel} TOP 10</span>
+        <button class="dash-see-all" onclick="openDrawerGenre('${cont}','TOP 10')">${seeAllLabel}</button>
+      </div>
+      <ul class="dash-rank-list">${items}</ul>
+    </div>`;
+  }).join('');
+}
+
+// ── 빠른 장르 버튼 렌더링 ────────────────────────────────────────────────────
+function renderQuickGenreRow() {
+  const row = document.getElementById('quickGenreRow');
+  if (!row) return;
+  const genreTrans = t('genre');
+  const genres = ['롤플레잉','슈팅','전략','액션','스포츠 및 레이싱','어드벤처','시뮬레이션','2025 신작'];
+  const genreEmojis = {
+    '롤플레잉':'⚔️','슈팅':'🔫','전략':'♟️','액션':'👊',
+    '스포츠 및 레이싱':'🏆','어드벤처':'🗺️','시뮬레이션':'🏗️','2025 신작':'🆕'
+  };
+  const genreLabel = {ko:'장르',en:'Genre',zh:'类型',ja:'ジャンル'}[currentLang];
+  row.innerHTML = `<span style="font-size:.78rem;font-weight:700;color:var(--sub);white-space:nowrap;">${genreLabel}:</span>` +
+    genres.map(g =>
+      `<button class="quick-genre-btn" onclick="openDrawerGenre('${currentContinent}','${g}')">${genreEmojis[g]||''} ${genreTrans[g]||g}</button>`
+    ).join('');
+}
+
 window.onload = () => {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
     document.body.classList.add('light');
     document.getElementById('toggleIcon').textContent = '☀️';
-    document.getElementById('themeBtn').textContent   = 'Light Mode';
   } else {
     document.getElementById('toggleIcon').textContent = '🌙';
-    document.getElementById('themeBtn').textContent   = 'Dark Mode';
   }
   setLang(currentLang);
   updateLoginButton();
   updateFilterRow();
+  renderDashboard();
+  renderQuickGenreRow();
   loadRankings();
 };
 </script>
