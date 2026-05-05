@@ -104,6 +104,12 @@ const APP_IDS = {
   264710:  'Subnautica',
   703080:  'Planet Zoo',
   2582560: 'Madden NFL 25',
+  2147660: 'Wuthering Waves',
+  271590:  'GTA 5',
+  1049590: 'Eternal Return',
+  2677660: 'Delta Force',
+  1517290: 'Battlefield 2042',
+  440:     'Team Fortress 2',
 };
 
 // ── 비Steam 게임 기준 점수 (동시접속자 환산 추정값) ────────────────────────
@@ -122,6 +128,10 @@ const BASE_SCORES = {
   'Clash of Clans':     400000,  // Supercell 모바일 CCU 추정
   'Animal Crossing':    160000,  // Nintendo Switch 추정
   'Escape from Tarkov':  80000,  // BSG 추정
+  'Roblox':            1500000,  // 크로스플랫폼 ~5M CCU, PC 환산 ~1.5M
+  'Aion 2':             60000,   // NCSoft KR 추정 (2025.11 출시)
+  'GTA 5':             120000,   // Rockstar 추정 (GTA Online 활성)
+  'Eternal Return':     30000,   // Nimble Neuron 추정
 };
 
 // ── 대륙별 인기도 가중치 ───────────────────────────────────────────────────
@@ -144,6 +154,11 @@ const REGION_BOOST = {
     'StarCraft II':        2.2,
     'Blade & Soul':        3.5,
     'Black Desert':        2.5,
+    'Wuthering Waves':     2.8,
+    'Aion 2':              5.0,
+    'Eternal Return':      3.0,
+    'Delta Force':         2.2,
+    'Roblox':              1.5,
   },
   na: {
     'Call of Duty':        2.2,

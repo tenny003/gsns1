@@ -487,6 +487,12 @@ const pubMap = {
   "Planet Zoo":                "Frontier Developments",
   "Madden NFL 25":             "Electronic Arts",
   "Animal Crossing":           "Nintendo",
+  "Wuthering Waves":           "Kuro Games",
+  "Roblox":                    "Roblox Corporation",
+  "GTA 5":                     "Rockstar Games",
+  "Eternal Return":            "Nimble Neuron",
+  "Delta Force":               "Team Jade",
+  "Aion 2":                    "NCSoft",
   "Elden Ring":                "Bandai Namco",
   "Diablo IV":                 "Blizzard Entertainment",
   "Cyberpunk 2077":            "CD Projekt Red",
@@ -576,6 +582,12 @@ const descMap = {
   "The Elder Scrolls V: Skyrim":"베데스다의 북부 대륙 오픈 월드 RPG. 역사상 가장 많이 팔린 RPG 중 하나.",
   "Madden NFL 25":              "EA의 공식 NFL 미식축구 시뮬레이션. 북미에서 압도적 인기의 스포츠 게임.",
   "Sudden Attack":              "넥슨의 PC 전용 밀리터리 FPS. 국내 슈팅 게임 시장을 오랫동안 주도한 작품.",
+  "Wuthering Waves":            "쿠로 게임즈의 오픈 월드 액션 RPG. 원신의 강력한 경쟁작으로 아시아 전역에서 급부상.",
+  "Roblox":                     "로블록스 코퍼레이션의 메타버스 플랫폼. 전 세계 크로스플랫폼 CCU 1위, 10대에게 압도적 인기.",
+  "GTA 5":                      "Rockstar Games의 오픈 월드 범죄 액션. 역사상 가장 많이 팔린 게임 중 하나. GTA Online 현재도 활발.",
+  "Eternal Return":             "님블뉴런의 서바이벌 MOBA. 2D 아이소메트릭 스타일의 독특한 배틀로얄 국산 인디 게임.",
+  "Delta Force":                "팀제이드의 무료 밀리터리 FPS. 대규모 전장 모드와 배틀로얄을 결합한 2024년 주목작.",
+  "Aion 2":                     "엔씨소프트의 차세대 MMORPG. 2025년 11월 출시 후 한국 PC방 순위 6위 진입한 신작.",
 };
 
 const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
@@ -644,6 +656,10 @@ const logoMap = {
   "Subnautica":               "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/logo.png",
   "Planet Zoo":               "https://cdn.cloudflare.steamstatic.com/steam/apps/703080/logo.png",
   "Madden NFL 25":            "https://cdn.cloudflare.steamstatic.com/steam/apps/2582560/logo.png",
+  "Wuthering Waves":          "https://cdn.cloudflare.steamstatic.com/steam/apps/2147660/logo.png",
+  "GTA 5":                    "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/logo.png",
+  "Eternal Return":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1049590/logo.png",
+  "Delta Force":              "https://cdn.cloudflare.steamstatic.com/steam/apps/2677660/logo.png",
   // ── Wikimedia ──
   "League of Legends":        "https://upload.wikimedia.org/wikipedia/commons/d/d8/League_of_Legends_2019_vector.svg",
   "Valorant":                 "https://upload.wikimedia.org/wikipedia/commons/f/fc/Valorant_logo_-_pink_color_version.svg",
@@ -663,7 +679,9 @@ const logoMap = {
   "StarCraft II":             "https://upload.wikimedia.org/wikipedia/en/9/90/StarCraft_II_Logo.webp",
   "Clash of Clans":           "https://upload.wikimedia.org/wikipedia/en/5/59/Clash_of_Clans_Logo.png",
   "Animal Crossing":          "https://upload.wikimedia.org/wikipedia/en/9/9e/Animal_Crossing_Logo.png",
-  "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/20/Escape_from_Tarkov.jpg"
+  "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/20/Escape_from_Tarkov.jpg",
+  "Roblox":                   "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg",
+  "Aion 2":                   "https://cdn.gamemeca.com/gmdb/g001/43/65/gm307250_31223.jpg",
 };
 
 const gameData = {
@@ -678,12 +696,15 @@ const gameData = {
       L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
       L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
       L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
-      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/')
+      L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
+      L('Aion 2','MMORPG','PC','https://aion2.plaync.com/'),
+      L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
     ],
     '롤플레잉': [
       L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
       L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/','Smilegate RPG'),
       L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
+      L('Aion 2','MMORPG','PC','https://aion2.plaync.com/'),
       L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
       L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
       L('Blade & Soul','MMORPG','PC','https://bns.plaync.com/'),
@@ -694,6 +715,7 @@ const gameData = {
       L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
       L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
       L('Dark Souls III','RPG','PC/Console','https://www.bandainamcoent.eu/dark-souls/'),
+      L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
       L('Warframe','Action RPG','PC','https://www.warframe.com/')
     ],
     '슈팅': [
@@ -707,12 +729,14 @@ const gameData = {
       L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
       L('Rainbow Six Siege','FPS','PC/Console','https://www.ubisoft.com/en-us/game/rainbow-six/siege'),
       L('Destiny 2','FPS','PC/Console','https://www.bungie.net/7/en/Destiny/NewLight'),
-      L('Battlefield 2042','FPS','PC/Console','https://www.ea.com/games/battlefield/battlefield-2042')
+      L('Battlefield 2042','FPS','PC/Console','https://www.ea.com/games/battlefield/battlefield-2042'),
+      L('Delta Force','FPS','PC','https://www.deltaforce.com/')
     ],
     '전략': [
       L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/ko-kr/'),
       L('Dota 2','MOBA','PC','https://www.dota2.com/'),
       L('StarCraft II','RTS','PC','https://starcraft2.com/'),
+      L('Eternal Return','Strategy/Survival','PC','https://eternalreturn.com/'),
       L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
       L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
       L('Civilization VI','Turn-Based','PC','https://civilization.2k.com/civ-vi/'),
@@ -751,7 +775,9 @@ const gameData = {
       L('Sea of Thieves','Adventure','PC/Console','https://www.seaofthieves.com/'),
       L("No Man's Sky",'Space Adventure','PC/Console','https://www.nomanssky.com/'),
       L('Among Us','Social Deduction','PC/Mobile','https://www.innersloth.com/games/among-us/'),
-      L('Subnautica','Survival Adventure','PC','https://unknownworlds.com/subnautica/')
+      L('Subnautica','Survival Adventure','PC','https://unknownworlds.com/subnautica/'),
+      L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
+      L('GTA 5','Open World','PC/Console','https://www.rockstargames.com/gta-v/')
     ],
     '시뮬레이션': [
       L('The Sims 4','Life Sim','PC','https://www.ea.com/games/the-sims/the-sims-4'),
@@ -958,15 +984,15 @@ const gameData = {
   },
   global: {
     'TOP 10': [
+      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+      L('Roblox','Sandbox','PC/Mobile','https://www.roblox.com/'),
+      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
       L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
       L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
-      L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
-      L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
       L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
-      L('Valorant','FPS','PC','https://playvalorant.com/'),
       L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
+      L('Valorant','FPS','PC','https://playvalorant.com/'),
       L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
-      L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
       L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
     ],
     '롤플레잉': [
@@ -1046,9 +1072,12 @@ const gameData = {
       L("No Man's Sky",'Space Adventure','PC/Console','https://www.nomanssky.com/'),
       L('Among Us','Social Deduction','PC/Mobile','https://www.innersloth.com/games/among-us/'),
       L('Control','Action Adventure','PC/Console','https://controlgame.com/'),
-      L('Subnautica','Survival Adventure','PC','https://unknownworlds.com/subnautica/')
+      L('Subnautica','Survival Adventure','PC','https://unknownworlds.com/subnautica/'),
+      L('GTA 5','Open World','PC/Console','https://www.rockstargames.com/gta-v/'),
+      L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/')
     ],
     '시뮬레이션': [
+      L('Roblox','Sandbox/Social','PC/Mobile','https://www.roblox.com/'),
       L('Minecraft','Sandbox','PC/Mobile','https://www.minecraft.net/'),
       L('The Sims 4','Life Sim','PC','https://www.ea.com/games/the-sims/the-sims-4'),
       L('Stardew Valley','Farming Sim','PC/Console','https://www.stardewvalley.net/'),
@@ -1129,18 +1158,22 @@ const subRegionDefs = {
 // ── 국가별 TOP 10 데이터 ─────────────────────────────────────────────────────
 const countryData = {
   'asia-korea':[
+    // GameMeca 한국 PC방 순위 기준 (2026년 4월 22~28일)
     L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/ko-kr/'),
+    L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
+    L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
     L('FC Online','Sports','PC','https://fconline.nexon.com/'),
-    L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
+    L('Aion 2','MMORPG','PC','https://aion2.plaync.com/'),
+    L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
     L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
     L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/','Smilegate RPG'),
-    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
-    L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
-    L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
     L('Sudden Attack','FPS','PC','https://sa.nexon.com/'),
-    L('Lineage','MMORPG','PC','https://lineage.plaync.com/'),
-    L('StarCraft II','RTS','PC','https://starcraft2.com/'),
+    L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
     L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
+    L('StarCraft II','RTS','PC','https://starcraft2.com/'),
+    L('Eternal Return','Strategy','PC','https://playeternalreturn.com/'),
+    L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
   ],
   'asia-japan':[
     L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
@@ -1272,6 +1305,12 @@ const communityMap = {
   "Warframe":             {reddit:"https://reddit.com/r/Warframe",         discord:"https://discord.gg/warframe"},
   "StarCraft II":         {reddit:"https://reddit.com/r/starcraft"},
   "Clash of Clans":       {reddit:"https://reddit.com/r/ClashOfClans"},
+  "Wuthering Waves":      {reddit:"https://reddit.com/r/WutheringWaves"},
+  "Roblox":               {reddit:"https://reddit.com/r/roblox",            discord:"https://discord.gg/roblox"},
+  "GTA 5":                {reddit:"https://reddit.com/r/gtaonline"},
+  "Eternal Return":       {reddit:"https://reddit.com/r/eternalreturn"},
+  "Delta Force":          {reddit:"https://reddit.com/r/DeltaForceGame"},
+  "Aion 2":               {reddit:"https://reddit.com/r/aion"},
 };
 
 const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};

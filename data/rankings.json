@@ -1,7 +1,8 @@
 {
-  "updated": "2026-05-04T23:47:11.115Z",
+  "updated": "2026-05-05T00:24:42.735Z",
   "source": "SteamSpy CCU + 지역 가중치",
   "playerCounts": {
+    "Team Fortress 2": 43819,
     "Counter-Strike 2": 1013936,
     "Terraria": 24580,
     "Euro Truck Simulator 2": 17281,
@@ -9,6 +10,7 @@
     "Path of Exile": 4694,
     "Rocket League": 21106,
     "Cities: Skylines": 8842,
+    "GTA 5": 67851,
     "Civilization VI": 25420,
     "The Witcher 3": 15893,
     "Rainbow Six Siege": 51847,
@@ -39,8 +41,11 @@
       "Counter-Strike 2",
       "Apex Legends",
       "League of Legends",
+      "Roblox",
       "Free Fire",
+      "GTA 5",
       "Call of Duty",
+      "Team Fortress 2",
       "Palworld",
       "New World",
       "FC Online",
@@ -71,10 +76,12 @@
       "Sekiro",
       "Battlefield 2042",
       "Halo Infinite",
+      "Aion 2",
       "Sudden Attack",
       "StarCraft II",
       "Animal Crossing",
       "World of Warcraft",
+      "Eternal Return",
       "Escape from Tarkov"
     ],
     "na": [
@@ -83,9 +90,12 @@
       "PUBG: Battlegrounds",
       "Apex Legends",
       "Fortnite",
+      "GTA 5",
+      "Team Fortress 2",
       "Palworld",
       "Lost Ark",
       "New World",
+      "Roblox",
       "Destiny 2",
       "League of Legends",
       "Baldur's Gate 3",
@@ -119,17 +129,22 @@
       "Escape from Tarkov",
       "StarCraft II",
       "Lineage",
-      "Sudden Attack"
+      "Aion 2",
+      "Sudden Attack",
+      "Eternal Return"
     ],
     "europe": [
       "Counter-Strike 2",
       "PUBG: Battlegrounds",
       "Apex Legends",
       "The Witcher 3",
+      "GTA 5",
       "Call of Duty",
+      "Team Fortress 2",
       "Palworld",
       "Lost Ark",
       "New World",
+      "Roblox",
       "Cyberpunk 2077",
       "Euro Truck Simulator 2",
       "League of Legends",
@@ -163,16 +178,21 @@
       "World of Warcraft",
       "StarCraft II",
       "Lineage",
-      "Sudden Attack"
+      "Aion 2",
+      "Sudden Attack",
+      "Eternal Return"
     ],
     "global": [
       "Counter-Strike 2",
       "PUBG: Battlegrounds",
       "Apex Legends",
+      "GTA 5",
       "Call of Duty",
+      "Team Fortress 2",
       "Palworld",
       "Lost Ark",
       "New World",
+      "Roblox",
       "League of Legends",
       "Fortnite",
       "Minecraft",
@@ -207,7 +227,9 @@
       "StarCraft II",
       "Lineage",
       "Escape from Tarkov",
-      "Sudden Attack"
+      "Aion 2",
+      "Sudden Attack",
+      "Eternal Return"
     ]
   }
 }
