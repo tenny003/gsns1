@@ -113,6 +113,13 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .divider{height:1px;background:var(--border);margin:0 0 28px;opacity:.5;}
 
 .section-title{font-size:1.8rem;margin-bottom:20px;}
+.newgames-section-header{margin-bottom:16px;}
+.newgames-section-title{
+  font-size:1.6rem;font-weight:800;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;margin-bottom:6px;
+}
 .rank-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -637,10 +644,20 @@ header{padding:22px 80px;}
   <div id="viewNewGames" class="view-container" style="display:none">
     <div class="view-topbar">
       <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
-      <h2 class="view-title">🆕 2026 신작 &amp; 출시예정</h2>
+      <h2 class="view-title">🆕 2025–26 신작 &amp; 출시예정</h2>
     </div>
-    <p class="rank-source" id="newGamesSource"></p>
-    <div class="rank-grid" id="newGamesGrid"></div>
+    <!-- 섹션 1: 인기신작게임 -->
+    <div class="newgames-section-header">
+      <h2 class="newgames-section-title" id="popularSectionTitle">🎮 인기신작게임</h2>
+      <p class="rank-source" id="popularGamesSource"></p>
+    </div>
+    <div class="rank-grid" id="popularGamesGrid"></div>
+    <!-- 섹션 2: 출시예정기대작 -->
+    <div class="newgames-section-header" style="margin-top:40px">
+      <h2 class="newgames-section-title" id="upcomingSectionTitle">🔮 출시예정기대작</h2>
+      <p class="rank-source" id="upcomingGamesSource"></p>
+    </div>
+    <div class="rank-grid" id="upcomingGamesGrid"></div>
   </div>
 
 </div>
@@ -786,6 +803,13 @@ const pubMap = {
   "Avowed":                    "Obsidian Entertainment / Xbox",
   "Ghost of Yōtei":            "PlayStation Studios",
   "Doom: The Dark Ages":       "id Software / Bethesda",
+  "The Elder Scrolls VI":      "Bethesda Game Studios",
+  "Fable":                     "Playground Games / Xbox",
+  "Perfect Dark":              "The Initiative / Xbox",
+  "Crimson Desert":            "Pearl Abyss",
+  "Phantom Blade Zero":        "S-GAME",
+  "Assassin's Creed Hexe":     "Ubisoft",
+  "The Outer Worlds 2":        "Obsidian Entertainment / Xbox",
 };
 
 const descMap = {
@@ -889,6 +913,13 @@ const descMap = {
   "Avowed":                    "옵시디언의 1인칭 판타지 RPG. 에터니티 세계관을 배경으로 한 Xbox/PC 독점 오픈 월드 어드벤처.",
   "Ghost of Yōtei":            "Sony 인하우스의 Ghost of Tsushima 후속작. 홋카이도 에조를 배경으로 한 사무라이 오픈 월드 액션.",
   "Doom: The Dark Ages":       "id Software의 Doom 시리즈 신작. 중세 판타지 배경의 강렬한 1인칭 슈팅 액션. 2025년 출시.",
+  "The Elder Scrolls VI":      "베데스다의 차세대 오픈 월드 RPG. 스카이림·오블리비언을 잇는 메인라인 시리즈 신작. 전 세계 팬들의 최대 기대작.",
+  "Fable":                     "플레이그라운드 게임즈(Forza Horizon 개발사)가 개발하는 Xbox 독점 판타지 RPG. 클래식 Fable 시리즈의 대규모 리부트.",
+  "Perfect Dark":              "Xbox 독점 스파이 액션 슈터. The Initiative 개발. N64 클래식 Perfect Dark의 현대적 재해석.",
+  "Crimson Desert":            "Pearl Abyss(검은사막 개발사)의 오픈 월드 액션 RPG. 다크 판타지 세계관, 대규모 전투 시스템.",
+  "Phantom Blade Zero":        "중국 인디 스튜디오 S-GAME 개발의 소울라이크 액션 RPG. 동양풍 비주얼과 고난이도 액션으로 세계에서 주목받는 기대작.",
+  "Assassin's Creed Hexe":     "유비소프트 차기 어쌔신 크리드. 마녀사냥 시대 독일을 배경으로 한 다크 판타지 AC. 시리즈 혁신 기대작.",
+  "The Outer Worlds 2":        "Obsidian Entertainment의 SF RPG 속편. Xbox/PC 독점, 강력한 서사와 선택 시스템이 특징인 기대작.",
 };
 
 const descMapEn = {
@@ -992,6 +1023,13 @@ const descMapEn = {
   "Avowed":                    "Obsidian's first-person fantasy RPG. An open-world adventure set in the Pillars of Eternity universe. Xbox/PC exclusive.",
   "Ghost of Yōtei":            "Sony's follow-up to Ghost of Tsushima. Samurai open-world action set in Hokkaido's Ezo region.",
   "Doom: The Dark Ages":       "id Software's new Doom entry. Intense first-person shooter with a medieval fantasy setting. Released 2025.",
+  "The Elder Scrolls VI":      "Bethesda's next mainline RPG. The long-awaited successor to Skyrim and Oblivion. Arguably the most anticipated game in history.",
+  "Fable":                     "Playground Games' (Forza Horizon) Xbox-exclusive fantasy RPG. A massive reboot of the classic Fable series.",
+  "Perfect Dark":              "Xbox-exclusive spy action shooter by The Initiative. A modern reimagining of the N64 classic.",
+  "Crimson Desert":            "Pearl Abyss' (Black Desert) open-world action RPG. Dark fantasy setting with epic large-scale combat.",
+  "Phantom Blade Zero":        "Soulslike action RPG by indie studio S-GAME. Eastern-inspired visuals and high-difficulty action — a globally anticipated indie title.",
+  "Assassin's Creed Hexe":     "Ubisoft's next Assassin's Creed. Dark fantasy set during the witch-hunting era in Germany.",
+  "The Outer Worlds 2":        "Obsidian Entertainment's sci-fi RPG sequel. Xbox/PC exclusive featuring strong narrative and choice systems.",
 };
 
 // ── 공식 현지화 게임 명칭 (각 게임 공식 홈페이지 기준) ────────────────────
@@ -1219,6 +1257,14 @@ const descMapJa = {
   "Clair Obscur: Expedition 33":"Sandfall InteractiveのターンベースRPG。フランス風アートと映画的な戦闘で高評価、2025年GOTY候補作。",
   "Hades II":                   "SupergiantのローグライクRPG続編。オリュンポス神話を舞台にした2025年Metacritic最高点ゲーム。",
   "Blue Prince":                "独創的なパズルローグライク。毎回構造が変わる謎の邸宅を舞台にした2025年インディ傑作。",
+  "Ghost of Yōtei":             "PlayStation Studiosの2025年PS5独占アクションRPG。『Ghost of Tsushima』に続く北海道の侍の旅。",
+  "The Elder Scrolls VI":       "BethesdaのメインラインTES RPGシリーズ最新作。Skyrim以来の正統続編として世界中で最も期待されている。",
+  "Fable":                      "Playground Games(Forza Horizon)開発のXbox独占ファンタジーRPG。クラシック『Fable』シリーズの大規模リブート。",
+  "Perfect Dark":               "The Initiative開発のXbox独占スパイアクションシューター。N64クラシックの現代的再解釈。",
+  "Crimson Desert":             "Pearl Abyss(Black Desert開発元)のオープンワールドアクションRPG。ダークファンタジー世界観と大規模バトル。",
+  "Phantom Blade Zero":         "中国インディスタジオS-GAME開発。ソウルライクアクションRPG。東洋的ビジュアルと高難度アクションで世界注目。",
+  "Assassin's Creed Hexe":      "Ubisoftの次世代AC。魔女狩り時代のドイツを舞台にしたダークファンタジー仕立てのアサシンクリード。",
+  "The Outer Worlds 2":         "Obsidian Entertainment(Avowed開発元)の宇宙SF RPG続編。Xbox/PC独占、強力な物語と選択システムが特徴。",
 };
 
 const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
@@ -1415,6 +1461,34 @@ const bannerMap = {
   "Doom: The Dark Ages":       "https://cdn.cloudflare.steamstatic.com/steam/apps/2716300/header.jpg",
 };
 
+// ── 2025 인기 신작 게임 (출시 완료) ─────────────────────────────────────────
+const popularNewGames = [
+  {...L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'), releaseDate:'2025.02.28'},
+  {...L('Split Fiction','Co-op Adventure','PC/Console','https://store.steampowered.com/app/2552290/','Hazelight / EA'), releaseDate:'2025.03.06'},
+  {...L('Clair Obscur: Expedition 33','Turn-Based RPG','PC/Console','https://store.steampowered.com/app/2881650/','Sandfall Interactive'), releaseDate:'2025.04.24'},
+  {...L('Blue Prince','Puzzle Roguelike','PC/Console','https://store.steampowered.com/app/1569580/','Dogubomb / Raw Fury'), releaseDate:'2025.04.10'},
+  {...L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/','Obsidian Entertainment / Xbox'), releaseDate:'2025.02.18'},
+  {...L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/','id Software / Bethesda'), releaseDate:'2025.05.15'},
+  {...L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/','Bandai Namco / FromSoftware'), releaseDate:'2025.05.30'},
+  {...L('Death Stranding 2: On the Beach','Action','PS5/PC','https://store.steampowered.com/app/2920110/','Kojima Productions'), releaseDate:'2025.06.26'},
+  {...L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/','Konami'), releaseDate:'2025.08.28'},
+  {...L('Hades II','Roguelike RPG','PC/Console','https://store.steampowered.com/app/1145350/','Supergiant Games'), releaseDate:'2025.09.25'},
+  {...L('Ghost of Yōtei','Action RPG','PS5','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'), releaseDate:'2025'},
+];
+
+// ── 신작 출시일 (출시예정기대작 표시용) ──────────────────────────────────────
+const upcomingReleaseDates = {
+  'GTA VI':                    '2026 출시예정',
+  'The Elder Scrolls VI':      '출시예정 (미정)',
+  'Hollow Knight: Silksong':   '출시예정 (미정)',
+  'Fable':                     '출시예정',
+  'Perfect Dark':              '출시예정 (미정)',
+  'Crimson Desert':            '출시예정',
+  "Assassin's Creed Hexe":     '출시예정',
+  'Phantom Blade Zero':        '출시예정 (미정)',
+  'The Outer Worlds 2':        '출시예정 (미정)',
+};
+
 const gameData = {
   asia: {
     'TOP 10': [
@@ -1444,6 +1518,10 @@ const gameData = {
       L('Final Fantasy XIV','MMORPG','PC','https://na.finalfantasyxiv.com/'),
       L('Path of Exile','Action RPG','PC','https://www.pathofexile.com/'),
       L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Hades II','Roguelike RPG','PC/Console','https://store.steampowered.com/app/1145350/'),
+      L('Clair Obscur: Expedition 33','Turn-Based RPG','PC/Console','https://store.steampowered.com/app/2881650/'),
       L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
       L('Dark Souls III','RPG','PC/Console','https://www.bandainamcoent.eu/dark-souls/'),
       L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
@@ -1474,7 +1552,10 @@ const gameData = {
       L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/')
     ],
     '액션': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
       L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
       L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
       L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
       L('Elden Ring','Action','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
@@ -1524,13 +1605,14 @@ const gameData = {
     ],
     '출시예정': [
       L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('The Elder Scrolls VI','RPG','PC/Console','https://elderscrolls.bethesda.net/','Bethesda Game Studios'),
       L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
-      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
-      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
-      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
-      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
-      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
-      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
+      L('Fable','RPG','PC/Console','https://www.xbox.com/games/fable','Playground Games / Xbox'),
+      L('Perfect Dark','FPS','PC/Console','https://www.xbox.com/games/perfect-dark','The Initiative / Xbox'),
+      L('Crimson Desert','Action RPG','PC/Console','https://crimsondesert.pearlabyss.com/','Pearl Abyss'),
+      L("Assassin's Creed Hexe",'Action','PC/Console','https://www.ubisoft.com/','Ubisoft'),
+      L('Phantom Blade Zero','Action RPG','PC/Console','https://www.phantomblade.com/','S-GAME'),
+      L('The Outer Worlds 2','RPG','PC/Console','https://www.xbox.com/games/the-outer-worlds-2','Obsidian Entertainment / Xbox'),
     ]
   },
   na: {
@@ -1589,6 +1671,9 @@ const gameData = {
       L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/')
     ],
     '액션': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
       L('God of War','Action RPG','PC/Console','https://www.playstation.com/en-us/games/god-of-war/'),
       L('Elden Ring','Action','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
       L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
@@ -1634,13 +1719,14 @@ const gameData = {
     ],
     '출시예정': [
       L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('The Elder Scrolls VI','RPG','PC/Console','https://elderscrolls.bethesda.net/','Bethesda Game Studios'),
       L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
-      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
-      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
-      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
-      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
-      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
-      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
+      L('Fable','RPG','PC/Console','https://www.xbox.com/games/fable','Playground Games / Xbox'),
+      L('Perfect Dark','FPS','PC/Console','https://www.xbox.com/games/perfect-dark','The Initiative / Xbox'),
+      L('The Outer Worlds 2','RPG','PC/Console','https://www.xbox.com/games/the-outer-worlds-2','Obsidian Entertainment / Xbox'),
+      L('Crimson Desert','Action RPG','PC/Console','https://crimsondesert.pearlabyss.com/','Pearl Abyss'),
+      L("Assassin's Creed Hexe",'Action','PC/Console','https://www.ubisoft.com/','Ubisoft'),
+      L('Phantom Blade Zero','Action RPG','PC/Console','https://www.phantomblade.com/','S-GAME'),
     ]
   },
   europe: {
@@ -1657,6 +1743,9 @@ const gameData = {
       L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
     ],
     '롤플레잉': [
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
+      L('Clair Obscur: Expedition 33','Turn-Based RPG','PC/Console','https://store.steampowered.com/app/2881650/'),
+      L('Hades II','Roguelike RPG','PC/Console','https://store.steampowered.com/app/1145350/'),
       L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
       L('Cyberpunk 2077','RPG','PC/Console','https://www.cyberpunk.net/'),
       L("Baldur's Gate 3",'RPG','PC/Console','https://baldursgate3.game/'),
@@ -1667,7 +1756,6 @@ const gameData = {
       L('RuneScape','MMORPG','PC','https://www.runescape.com/'),
       L('Elder Scrolls Online','MMORPG','PC/Console','https://www.elderscrollsonline.com/'),
       L('Diablo IV','Action RPG','PC/Console','https://diablo4.blizzard.com/'),
-      L('New World','MMORPG','PC','https://www.newworld.com/'),
       L('Warframe','Action RPG','PC','https://www.warframe.com/'),
       L('Dark Souls III','RPG','PC/Console','https://www.bandainamcoent.eu/dark-souls/')
     ],
@@ -1694,6 +1782,9 @@ const gameData = {
       L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/')
     ],
     '액션': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
       L('Elden Ring','Action','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
       L('God of War','Action RPG','PC/Console','https://www.playstation.com/en-us/games/god-of-war/'),
       L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
@@ -1734,13 +1825,14 @@ const gameData = {
     ],
     '출시예정': [
       L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('The Elder Scrolls VI','RPG','PC/Console','https://elderscrolls.bethesda.net/','Bethesda Game Studios'),
       L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
-      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
-      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
-      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
-      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
-      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
-      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
+      L('Fable','RPG','PC/Console','https://www.xbox.com/games/fable','Playground Games / Xbox'),
+      L('Perfect Dark','FPS','PC/Console','https://www.xbox.com/games/perfect-dark','The Initiative / Xbox'),
+      L('The Outer Worlds 2','RPG','PC/Console','https://www.xbox.com/games/the-outer-worlds-2','Obsidian Entertainment / Xbox'),
+      L('Crimson Desert','Action RPG','PC/Console','https://crimsondesert.pearlabyss.com/','Pearl Abyss'),
+      L("Assassin's Creed Hexe",'Action','PC/Console','https://www.ubisoft.com/','Ubisoft'),
+      L('Phantom Blade Zero','Action RPG','PC/Console','https://www.phantomblade.com/','S-GAME'),
     ]
   },
   global: {
@@ -1757,6 +1849,10 @@ const gameData = {
       L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends')
     ],
     '롤플레잉': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
+      L('Hades II','Roguelike RPG','PC/Console','https://store.steampowered.com/app/1145350/'),
+      L('Clair Obscur: Expedition 33','Turn-Based RPG','PC/Console','https://store.steampowered.com/app/2881650/'),
       L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
       L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
       L('Final Fantasy XIV','MMORPG','PC','https://na.finalfantasyxiv.com/'),
@@ -1769,7 +1865,6 @@ const gameData = {
       L('Path of Exile','Action RPG','PC','https://www.pathofexile.com/'),
       L('The Witcher 3','RPG','PC/Console','https://www.thewitcher.com/'),
       L('RuneScape','MMORPG','PC','https://www.runescape.com/'),
-      L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
       L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
       L('Elder Scrolls Online','MMORPG','PC/Console','https://www.elderscrollsonline.com/'),
       L('Warframe','Action RPG','PC','https://www.warframe.com/')
@@ -1800,6 +1895,9 @@ const gameData = {
       L('Hearts of Iron IV','Grand Strategy','PC','https://www.paradoxinteractive.com/games/hearts-of-iron-iv/')
     ],
     '액션': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
+      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
+      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
       L('Elden Ring','Action','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
       L('God of War','Action RPG','PC/Console','https://www.playstation.com/en-us/games/god-of-war/'),
       L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
@@ -1852,13 +1950,14 @@ const gameData = {
     ],
     '출시예정': [
       L('GTA VI','Open World','PC/Console','https://www.rockstargames.com/VI/','Rockstar Games'),
+      L('The Elder Scrolls VI','RPG','PC/Console','https://elderscrolls.bethesda.net/','Bethesda Game Studios'),
       L('Hollow Knight: Silksong','Action','PC/Console','https://www.hollowknight.com/silksong/','Team Cherry'),
-      L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/Elden_Ring_Nightreign/','Bandai Namco / FromSoftware'),
-      L('Death Stranding 2: On the Beach','Action','PC/Console','https://store.steampowered.com/app/2920110/Death_Stranding_2/','Kojima Productions'),
-      L('Metal Gear Solid Delta: Snake Eater','Action','PC/Console','https://store.steampowered.com/app/2144980/Metal_Gear_Solid_Delta/','Konami'),
-      L('Avowed','RPG','PC/Console','https://store.steampowered.com/app/2209550/Avowed/','Obsidian Entertainment / Xbox'),
-      L('Ghost of Yōtei','Action RPG','PC/Console','https://www.playstation.com/games/ghost-of-yotei/','PlayStation Studios'),
-      L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/Doom_The_Dark_Ages/','id Software / Bethesda'),
+      L('Fable','RPG','PC/Console','https://www.xbox.com/games/fable','Playground Games / Xbox'),
+      L('Perfect Dark','FPS','PC/Console','https://www.xbox.com/games/perfect-dark','The Initiative / Xbox'),
+      L('Crimson Desert','Action RPG','PC/Console','https://crimsondesert.pearlabyss.com/','Pearl Abyss'),
+      L("Assassin's Creed Hexe",'Action','PC/Console','https://www.ubisoft.com/','Ubisoft'),
+      L('Phantom Blade Zero','Action RPG','PC/Console','https://www.phantomblade.com/','S-GAME'),
+      L('The Outer Worlds 2','RPG','PC/Console','https://www.xbox.com/games/the-outer-worlds-2','Obsidian Entertainment / Xbox'),
     ]
   }
 };
@@ -2001,29 +2100,32 @@ const countryData = {
     L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
   ],
   'asia-japan':[
-    L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
+    // 일본 Steam/콘솔 인기도 + 2025 신작 반영 (Monster Hunter Wilds 1위)
+    L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
     L('Final Fantasy XIV','MMORPG','PC','https://jp.finalfantasyxiv.com/'),
+    L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
     L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
     L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
-    L('Resident Evil Village','Action','PC/Console','https://www.residentevil.com/village/'),
+    L('Monster Hunter: World','Action RPG','PC/Console','https://www.monsterhunter.com/world/'),
     L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
     L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
+    L('Death Stranding 2: On the Beach','Action','PS5/PC','https://store.steampowered.com/app/2920110/'),
     L('Sekiro','Action','PC/Console','https://www.sekirothegame.com/'),
-    L('Dark Souls III','Action RPG','PC/Console','https://www.bandainamcoent.eu/dark-souls/'),
-    L('Palworld','Open World','PC/Console','https://www.pocketpair.jp/palworld'),
     L('Valorant','FPS','PC','https://playvalorant.com/'),
+    L('Palworld','Open World','PC/Console','https://www.pocketpair.jp/palworld'),
   ],
   'asia-china':[
-    L('Dungeon & Fighter','Action RPG','PC','https://df.nexon.com/'),
-    L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
-    L('Genshin Impact','RPG','PC/Mobile','https://genshin.hoyoverse.com/'),
-    L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
-    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
-    L('Valorant','FPS','PC','https://playvalorant.com/'),
-    L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
+    // 중국 본토 정식 서비스 기준 (Valorant·Lost Ark 미출시로 제외)
+    L('Dungeon & Fighter','Action RPG','PC','https://dnf.qq.com/'),
+    L('League of Legends','MOBA','PC','https://lol.qq.com/'),
+    L('Genshin Impact','RPG','PC/Mobile','https://ys.mihoyo.com/'),
+    L('Honkai: Star Rail','RPG','PC/Mobile','https://sr.mihoyo.com/'),
+    L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.qq.com/'),
+    L('Counter-Strike 2','FPS','PC','https://csgo.com.cn/'),
+    L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
     L('Black Desert','MMORPG','PC','https://www.naeu.playblackdesert.com/'),
-    L('Lost Ark','MMORPG','PC','https://www.playlostark.com/'),
-    L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
+    L('Overwatch 2','FPS','PC/Console','https://ow.blizzard.cn/'),
+    L('Final Fantasy XIV','MMORPG','PC','https://ff14.nexon.com/'),
   ],
   'asia-sea':[
     L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
@@ -2199,6 +2301,13 @@ const communityMap = {
   "Avowed":                    {reddit:"https://reddit.com/r/avowed",                discord:"https://discord.gg/obsidian"},
   "Ghost of Yōtei":            {reddit:"https://reddit.com/r/ghostofyotei",          discord:"https://discord.gg/ghostofyotei"},
   "Doom: The Dark Ages":       {reddit:"https://reddit.com/r/Doom",                  discord:"https://discord.gg/doom"},
+  "The Elder Scrolls VI":      {reddit:"https://reddit.com/r/ElderScrolls",           discord:"https://discord.gg/elderscrolls"},
+  "Fable":                     {reddit:"https://reddit.com/r/Fable",                  discord:"https://discord.gg/fable"},
+  "Perfect Dark":              {reddit:"https://reddit.com/r/PerfectDark",            discord:"https://discord.gg/xbox"},
+  "Crimson Desert":            {reddit:"https://reddit.com/r/CrimsonDesert",          discord:"https://discord.gg/crimsondesert"},
+  "Phantom Blade Zero":        {reddit:"https://reddit.com/r/PhantomBladeZero",       discord:"https://discord.gg/phantombladezero"},
+  "Assassin's Creed Hexe":     {reddit:"https://reddit.com/r/assassinscreed",         discord:"https://discord.gg/assassinscreed"},
+  "The Outer Worlds 2":        {reddit:"https://reddit.com/r/theouterworlds",          discord:"https://discord.gg/obsidian"},
 };
 
 // ── 메타스코어 / 유저스코어 / 출시연도 ────────────────────────────────────────
@@ -2297,15 +2406,24 @@ const scoreMap = {
   "Clair Obscur: Expedition 33":{ meta: 92, user: 88, release: 2025 },
   "Hades II":                   { meta: 95, user: 91, release: 2025 },
   "Blue Prince":                { meta: 91, user: 86, release: 2025 },
-  // 2026 출시예정
+  // 2025 출시완료 (추가)
+  "Metal Gear Solid Delta: Snake Eater":{ meta: 84, user: 79, release: 2025 },
+  "Ghost of Yōtei":             { meta: 88, user: 85, release: 2025 },
+  // 2026 출시예정 (업데이트)
   "GTA VI":                     { meta: 0,  user: 0,  release: 2026 },
-  "Hollow Knight: Silksong":    { meta: 0,  user: 0,  release: 2025 },
+  "Hollow Knight: Silksong":    { meta: 0,  user: 0,  release: 0 },
   "Elden Ring: Nightreign":     { meta: 88, user: 83, release: 2025 },
   "Death Stranding 2: On the Beach":{ meta: 82, user: 87, release: 2025 },
-  "Metal Gear Solid Delta: Snake Eater":{ meta: 0, user: 0, release: 2025 },
   "Avowed":                     { meta: 81, user: 78, release: 2025 },
-  "Ghost of Yōtei":             { meta: 0,  user: 0,  release: 2025 },
   "Doom: The Dark Ages":        { meta: 87, user: 85, release: 2025 },
+  // 미래 출시예정
+  "The Elder Scrolls VI":       { meta: 0,  user: 0,  release: 0 },
+  "Fable":                      { meta: 0,  user: 0,  release: 0 },
+  "Perfect Dark":               { meta: 0,  user: 0,  release: 0 },
+  "Crimson Desert":             { meta: 0,  user: 0,  release: 0 },
+  "Phantom Blade Zero":         { meta: 0,  user: 0,  release: 0 },
+  "Assassin's Creed Hexe":      { meta: 0,  user: 0,  release: 0 },
+  "The Outer Worlds 2":         { meta: 0,  user: 0,  release: 0 },
 };
 
 function getMetaColor(score) {
@@ -2529,7 +2647,7 @@ function goToPage(p) {
 function updateGenreTabs() {
   const container = document.getElementById('genreTabs');
   if (!container) return;
-  const genres = Object.keys(gameData[currentContinent]);
+  const genres = Object.keys(gameData[currentContinent]).filter(g => g !== '출시예정');
   const genreTrans = t('genre');
   container.innerHTML = genres.map(g =>
     `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${g === 'TOP 10' ? '🏆 TOP 10' : (genreTrans[g]||g)}</button>`
@@ -3041,69 +3159,100 @@ function navigateToNewGames() {
   showView('newgames');
 }
 
-function renderNewGamesPage() {
-  const grid = document.getElementById('newGamesGrid');
-  const src  = document.getElementById('newGamesSource');
-  if (!grid) return;
-  if (src) src.textContent = t('source2025');
-  const list = gameData.asia['출시예정'] || [];
-  grid.innerHTML = '';
-  list.forEach((game, i) => {
-    const rank = i + 1;
-    const displayName = getLocalizedGameName(game.name);
-    const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
-    const desc = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
-               : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
-               : currentLang === 'ja' ? (descMapJa[game.name] || descMapEn[game.name] || game.desc)
-               : game.desc;
-    const banner = bannerMap[game.name] || '';
-    const logo   = game.logo || '';
-    const sc     = scoreMap[game.name];
-    let scoreHTML = '';
-    if (sc) {
-      const metaColor = getMetaColor(sc.meta);
-      const metaVal   = sc.meta > 0 ? sc.meta : '—';
-      const userVal   = sc.user > 0 ? sc.user : '—';
-      const yearChip  = sc.release ? `<span class="release-chip">${sc.release}</span>` : '';
-      scoreHTML = `<div class="score-row">
-        <div class="meta-badge ${metaColor}"><span class="s-val">${metaVal}</span><span class="s-lbl">${t('critic')}</span></div>
-        <div class="user-badge"><span class="s-val">${userVal}</span><span class="s-lbl">${t('user')}</span></div>
-        ${yearChip}
-      </div>`;
-    }
-    const upcomingBadge = `<div class="must-play-wrap"><span class="must-play-badge" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">🆕 UPCOMING</span></div>`;
-    const cLinks = communityMap[game.name];
-    const communityHTML = cLinks ? `<div class="community-links">
-      ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
-      ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
-    </div>` : '';
-    const imgInner = banner
-      ? `<img src="${banner}" class="game-banner" alt="${displayName}" loading="lazy"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-         <div class="logo-layer" style="display:none">
-           <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-           <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
-         </div>`
-      : `<div class="logo-layer" style="display:flex">
-           <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-           <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
-         </div>`;
-    grid.innerHTML += `<div class="card">
-      <div class="img-wrap">${imgInner}
-        <div class="rank-badge">#${rank}</div>
-        <div class="genre-badge">${game.genre}</div>
-      </div>
-      ${upcomingBadge}
-      <h3>${displayName}</h3>
-      ${scoreHTML}
-      ${desc ? `<p class="desc-text">${desc}</p>` : ''}
-      <p>${t('platform')}: ${game.platform}</p>
-      <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
-      <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
-      ${communityHTML}
+function buildNewGameCard(game, rank, badgeHTML) {
+  const displayName = getLocalizedGameName(game.name);
+  const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+  const desc = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
+             : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
+             : currentLang === 'ja' ? (descMapJa[game.name] || descMapEn[game.name] || game.desc)
+             : game.desc;
+  const banner = bannerMap[game.name] || '';
+  const logo   = game.logo || '';
+  const sc     = scoreMap[game.name];
+  let scoreHTML = '';
+  if (sc) {
+    const metaColor = getMetaColor(sc.meta);
+    const metaVal   = sc.meta > 0 ? sc.meta : '—';
+    const userVal   = sc.user > 0 ? sc.user : '—';
+    const yearChip  = sc.release ? `<span class="release-chip">${sc.release}</span>` : '';
+    scoreHTML = `<div class="score-row">
+      <div class="meta-badge ${metaColor}"><span class="s-val">${metaVal}</span><span class="s-lbl">${t('critic')}</span></div>
+      <div class="user-badge"><span class="s-val">${userVal}</span><span class="s-lbl">${t('user')}</span></div>
+      ${yearChip}
     </div>`;
+  }
+  const cLinks = communityMap[game.name];
+  const communityHTML = cLinks ? `<div class="community-links">
+    ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
+    ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
+  </div>` : '';
+  const imgInner = banner
+    ? `<img src="${banner}" class="game-banner" alt="${displayName}" loading="lazy"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+       <div class="logo-layer" style="display:none">
+         <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+       </div>`
+    : `<div class="logo-layer" style="display:flex">
+         <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+       </div>`;
+  return `<div class="card">
+    <div class="img-wrap">${imgInner}
+      <div class="rank-badge">#${rank}</div>
+      <div class="genre-badge">${game.genre}</div>
+    </div>
+    ${badgeHTML}
+    <h3>${displayName}</h3>
+    ${scoreHTML}
+    ${desc ? `<p class="desc-text">${desc}</p>` : ''}
+    <p>${t('platform')}: ${game.platform}</p>
+    <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
+    <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
+    ${communityHTML}
+  </div>`;
+}
+
+function renderNewGamesPage() {
+  const popularGrid   = document.getElementById('popularGamesGrid');
+  const upcomingGrid  = document.getElementById('upcomingGamesGrid');
+  if (!popularGrid || !upcomingGrid) return;
+
+  const isKo = currentLang === 'ko';
+  const isZh = currentLang === 'zh';
+  const isJa = currentLang === 'ja';
+
+  const popularTitle   = {ko:'🎮 인기신작게임', en:'🎮 Popular New Releases', zh:'🎮 热门新游戏', ja:'🎮 人気新作ゲーム'}[currentLang] || '🎮 인기신작게임';
+  const upcomingTitle  = {ko:'🔮 출시예정기대작', en:'🔮 Most Anticipated Upcoming', zh:'🔮 最受期待即将发售', ja:'🔮 最注目の発売予定作'}[currentLang] || '🔮 출시예정기대작';
+  const popularSrc     = {ko:'2025년 출시 완료 · 출처: Metacritic, Steam, OpenCritic', en:'Released in 2025 · Source: Metacritic, Steam, OpenCritic', zh:'2025年已发售 · 来源：Metacritic, Steam', ja:'2025年リリース済み · 出典：Metacritic, Steam'}[currentLang] || '';
+  const upcomingSrc    = {ko:'전세계 기대작 · 출처: 각 게임사 공식 발표', en:'Global most anticipated · Source: Official announcements', zh:'全球期待大作 · 来源：各游戏官方公告', ja:'世界の期待作 · 出典：各社公式発表'}[currentLang] || '';
+
+  const ptEl = document.getElementById('popularSectionTitle');
+  const utEl = document.getElementById('upcomingSectionTitle');
+  const psEl = document.getElementById('popularGamesSource');
+  const usEl = document.getElementById('upcomingGamesSource');
+  if (ptEl) ptEl.textContent = popularTitle;
+  if (utEl) utEl.textContent = upcomingTitle;
+  if (psEl) psEl.textContent = popularSrc;
+  if (usEl) usEl.textContent = upcomingSrc;
+
+  // 섹션 1: 인기신작게임 (2025 출시 완료)
+  popularGrid.innerHTML = '';
+  popularNewGames.forEach((game, i) => {
+    const relDate = game.releaseDate || '2025';
+    const newBadge = `<div class="must-play-wrap"><span class="must-play-badge" style="background:linear-gradient(135deg,#10b981,#059669);">✅ ${relDate}</span></div>`;
+    popularGrid.innerHTML += buildNewGameCard(game, i + 1, newBadge);
+  });
+
+  // 섹션 2: 출시예정기대작
+  const upcomingList = gameData.asia['출시예정'] || [];
+  upcomingGrid.innerHTML = '';
+  upcomingList.forEach((game, i) => {
+    const relLabel = upcomingReleaseDates[game.name] || '출시예정';
+    const upcomingBadge = `<div class="must-play-wrap"><span class="must-play-badge" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">🔮 ${relLabel}</span></div>`;
+    upcomingGrid.innerHTML += buildNewGameCard(game, i + 1, upcomingBadge);
   });
 }
 
@@ -3164,10 +3313,10 @@ function renderQuickGenreRow() {
   const row = document.getElementById('quickGenreRow');
   if (!row) return;
   const genreTrans = t('genre');
-  const genres = ['롤플레잉','슈팅','전략','액션','스포츠 및 레이싱','어드벤처','시뮬레이션','2025 신작'];
+  const genres = ['롤플레잉','슈팅','전략','액션','스포츠 및 레이싱','어드벤처','시뮬레이션'];
   const genreEmojis = {
     '롤플레잉':'⚔️','슈팅':'🔫','전략':'♟️','액션':'👊',
-    '스포츠 및 레이싱':'🏆','어드벤처':'🗺️','시뮬레이션':'🏗️','2025 신작':'🆕'
+    '스포츠 및 레이싱':'🏆','어드벤처':'🗺️','시뮬레이션':'🏗️'
   };
   const genreLabel = {ko:'장르',en:'Genre',zh:'类型',ja:'ジャンル'}[currentLang];
   row.innerHTML = `<span style="font-size:.78rem;font-weight:700;color:var(--sub);white-space:nowrap;">${genreLabel}:</span>` +
