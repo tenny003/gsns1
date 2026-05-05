@@ -1664,7 +1664,8 @@ function getActiveGameList() {
   if (currentSubRegion !== 'all') {
     return countryData[`${currentContinent}-${currentSubRegion}`] || [];
   }
-  return gameData[currentContinent][currentGenre] || [];
+  const list = gameData[currentContinent][currentGenre] || [];
+  return currentGenre === 'TOP 10' ? list.slice(0, 10) : list;
 }
 
 function goToPage(p) {
