@@ -248,30 +248,6 @@ body.light .toggle-icon{transform:rotate(20deg);}
 .community-btn.reddit:hover{border-color:#ff4500;color:#ff4500;background:rgba(255,69,0,.07);}
 .community-btn.discord:hover{border-color:#5865f2;color:#5865f2;background:rgba(88,101,242,.07);}
 
-/* 커뮤니티 허브 섹션 */
-.community-hub{
-  background:linear-gradient(135deg,#0c1e3a,#172a4a);
-  border-radius:20px;padding:32px;margin:0 0 40px;
-  border:1px solid rgba(56,189,248,.15);
-}
-body.light .community-hub{background:linear-gradient(135deg,#dbeafe,#eff6ff);border-color:rgba(37,99,235,.15);}
-.community-hub h3{font-size:1.3rem;margin-bottom:6px;}
-.community-hub > p{color:var(--sub);font-size:.86rem;margin-bottom:20px;}
-.community-hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;}
-.community-hub-card{
-  background:var(--control-bg);border-radius:14px;padding:16px;
-  border:1px solid var(--border);transition:all .22s;
-  text-decoration:none;display:block;
-}
-.community-hub-card:hover{border-color:#38bdf8;transform:translateY(-2px);}
-.community-hub-card h4{font-size:.88rem;margin-bottom:4px;color:var(--text);}
-.community-hub-card p{font-size:.76rem;color:var(--sub);margin:0;line-height:1.5;}
-.hub-badge{display:inline-block;padding:2px 9px;border-radius:50px;
-  font-size:.68rem;font-weight:700;margin-bottom:8px;letter-spacing:.04em;}
-.hub-badge.reddit{background:rgba(255,69,0,.13);color:#ff4500;}
-.hub-badge.discord{background:rgba(88,101,242,.13);color:#5865f2;}
-.hub-badge.coming{background:rgba(56,189,248,.13);color:#38bdf8;}
-
 /* CTA 배너 */
 .cta-section{
   text-align:center;padding:6px 20px;
@@ -342,41 +318,6 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <p class="rank-source" id="rankSource"></p>
   <div class="rank-grid" id="rankGrid"></div>
   <div class="pagination" id="paginationContainer"></div>
-</div>
-
-<!-- 커뮤니티 허브 -->
-<div class="container">
-  <div class="community-hub">
-    <h3 id="communityHubTitle">💬 게임 커뮤니티</h3>
-    <p id="communityHubDesc">전 세계 게이머들이 모이는 커뮤니티에 참여해보세요.</p>
-    <div class="community-hub-grid">
-      <a href="https://reddit.com/r/gaming" target="_blank" rel="noopener" class="community-hub-card">
-        <span class="hub-badge reddit">Reddit</span>
-        <h4>r/gaming</h4>
-        <p id="hub-gaming-desc">전 세계 게이머 허브 · 36M+ 멤버</p>
-      </a>
-      <a href="https://reddit.com/r/Games" target="_blank" rel="noopener" class="community-hub-card">
-        <span class="hub-badge reddit">Reddit</span>
-        <h4>r/Games</h4>
-        <p id="hub-games-desc">게임 뉴스 & 토론 · 고품질 게임 커뮤니티</p>
-      </a>
-      <a href="https://reddit.com/r/leagueoflegends" target="_blank" rel="noopener" class="community-hub-card">
-        <span class="hub-badge reddit">Reddit</span>
-        <h4>r/leagueoflegends</h4>
-        <p id="hub-lol-desc">League of Legends 글로벌 커뮤니티</p>
-      </a>
-      <a href="https://discord.com/invite/gaming" target="_blank" rel="noopener" class="community-hub-card">
-        <span class="hub-badge discord">Discord</span>
-        <h4 id="hub-discord-title">게임 Discord</h4>
-        <p id="hub-discord-desc">실시간 채팅으로 게이머와 소통</p>
-      </a>
-      <div class="community-hub-card" style="cursor:default">
-        <span class="hub-badge coming">Coming Soon</span>
-        <h4>GSNS Community</h4>
-        <p id="hub-gsns-desc">GSNS 자체 커뮤니티 서비스 준비 중</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- CTA 배너 -->
