@@ -591,6 +591,15 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 }
 .bug-del-btn:hover{border-color:#ef4444;color:#ef4444;}
 .bug-empty{text-align:center;padding:40px 0;color:var(--sub);font-size:.9rem;}
+.bug-login-gate{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:36px 20px;text-align:center;margin-bottom:18px;}
+.bug-gate-icon{font-size:2.6rem;margin-bottom:10px;}
+.bug-gate-title{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+.bug-gate-sub{font-size:.85rem;color:var(--sub);margin-bottom:22px;}
+.bug-gate-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.bug-gate-btn{padding:10px 26px;border-radius:10px;border:none;font-size:.9rem;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s;}
+.bug-gate-btn:hover{opacity:.85;transform:translateY(-1px);}
+.bug-gate-btn.login-btn{background:linear-gradient(135deg,#38bdf8,#2563eb);color:#fff;}
+.bug-gate-btn.signup-btn{background:var(--border);color:var(--fg);}
 .bug-status-badge{
   padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:800;
   background:rgba(34,197,94,.15);color:#4ade80;
@@ -745,8 +754,11 @@ header{padding:22px 80px;}
       <h2 class="view-title" id="bugViewTitle">🐛 버그수정요청 &amp; 문의사항</h2>
     </div>
 
-    <!-- 글쓰기 폼 -->
-    <div class="bug-write-box">
+    <!-- 로그인 게이트 (비로그인 시) -->
+    <div id="bugLoginGate" style="display:none"></div>
+
+    <!-- 글쓰기 폼 (로그인 시) -->
+    <div class="bug-write-box" id="bugWriteBox" style="display:none">
       <div class="bug-write-title" id="bugWriteLabel">✏️ 새 글 작성</div>
       <div class="bug-field-row">
         <select class="bug-select" id="bugCategory">
@@ -758,7 +770,7 @@ header{padding:22px 80px;}
       </div>
       <textarea class="bug-textarea" id="bugContentInput" placeholder="내용을 입력하세요. 버그의 경우 발생 상황, 어떤 화면에서 발생했는지 등 구체적으로 적어주시면 빠르게 수정할 수 있습니다."></textarea>
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-        <input class="bug-input" id="bugNickInput" type="text" placeholder="닉네임 (선택)" maxlength="20" style="max-width:180px">
+        <span id="bugAuthorDisplay" style="font-size:.85rem;color:var(--sub);font-weight:600"></span>
         <button class="bug-submit-btn" id="bugSubmitBtn" onclick="submitBugPost()">게시하기 →</button>
       </div>
     </div>
@@ -2894,9 +2906,6 @@ function setLang(lang) {
   if (bugTitleIn) bugTitleIn.placeholder = t('bugTitlePh');
   const bugBodyIn = document.getElementById('bugContentInput');
   if (bugBodyIn) bugBodyIn.placeholder = t('bugBodyPh');
-  const bugNickIn = document.getElementById('bugNickInput');
-  if (bugNickIn) bugNickIn.placeholder = t('bugNickPh');
-
   if (currentView === 'continent') {
     const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
     setTxt('continentViewTitle', emojis[currentContinent] + ' ' + t('continent')[currentContinent]);
@@ -3232,6 +3241,7 @@ function doLogin() {
   localStorage.setItem('gsns_user', JSON.stringify({name:user.name, email:user.email}));
   updateLoginButton();
   closeLoginModal();
+  if (currentView === 'bugreport') renderBugPosts();
 }
 
 function doSignup() {
@@ -3276,12 +3286,14 @@ function doSignup() {
   localStorage.setItem('gsns_user',  JSON.stringify({name, email}));
   updateLoginButton();
   closeLoginModal();
+  if (currentView === 'bugreport') renderBugPosts();
 }
 
 function doLogout() {
   localStorage.removeItem('gsns_user');
   updateLoginButton();
   closeLoginModal();
+  if (currentView === 'bugreport') renderBugPosts();
 }
 
 // ── 트렌드 인디케이터 (주간 순위 변동 표시) ──────────────────────────────────
@@ -3333,10 +3345,12 @@ function saveBugPosts(posts) {
 }
 
 function submitBugPost() {
+  const user = getCurrentUser();
+  if (!user) { showLoginModal(); return; }
+
   const cat   = document.getElementById('bugCategory').value;
   const title = document.getElementById('bugTitleInput').value.trim();
   const body  = document.getElementById('bugContentInput').value.trim();
-  const nick  = document.getElementById('bugNickInput').value.trim() || t('bugAnon');
 
   if (!title) { alert(t('bugAlertTitle')); return; }
   if (!body)  { alert(t('bugAlertBody')); return; }
@@ -3344,7 +3358,7 @@ function submitBugPost() {
   const posts = getBugPosts();
   posts.unshift({
     id: Date.now(),
-    cat, title, body, nick,
+    cat, title, body, nick: user.name,
     date: new Date().toLocaleString('ko-KR'),
     status: 'open'
   });
@@ -3352,7 +3366,6 @@ function submitBugPost() {
 
   document.getElementById('bugTitleInput').value   = '';
   document.getElementById('bugContentInput').value = '';
-  document.getElementById('bugNickInput').value    = '';
   renderBugPosts();
 }
 
@@ -3363,6 +3376,38 @@ function deleteBugPost(id) {
 }
 
 function renderBugPosts() {
+  const user = getCurrentUser();
+  const gate = document.getElementById('bugLoginGate');
+  const box  = document.getElementById('bugWriteBox');
+
+  if (!user) {
+    if (box)  box.style.display = 'none';
+    if (gate) {
+      gate.style.display = '';
+      const m = {
+        ko:{ title:'로그인 후 작성 가능합니다', sub:'버그 신고 및 문의를 남기려면 로그인이 필요합니다.', login:'로그인하기', signup:'회원가입' },
+        en:{ title:'Login required to write',   sub:'Please log in to report bugs or submit inquiries.',  login:'Log In',    signup:'Sign Up' },
+        zh:{ title:'请登录后发帖',               sub:'提交问题反馈或咨询需要先登录。',                   login:'登录',      signup:'注册' },
+        ja:{ title:'投稿にはログインが必要です', sub:'バグ報告やお問い合わせにはログインしてください。', login:'ログイン',  signup:'会員登録' },
+      }[currentLang] || {title:'Login required',sub:'Please log in to write.',login:'Log In',signup:'Sign Up'};
+      gate.innerHTML = `<div class="bug-login-gate">
+        <div class="bug-gate-icon">🔒</div>
+        <p class="bug-gate-title">${m.title}</p>
+        <p class="bug-gate-sub">${m.sub}</p>
+        <div class="bug-gate-btns">
+          <button class="bug-gate-btn login-btn" onclick="showLoginModal()">${m.login}</button>
+          <button class="bug-gate-btn signup-btn" onclick="showLoginModal();setTimeout(()=>switchAuthTab('signup'),60)">${m.signup}</button>
+        </div>
+      </div>`;
+    }
+  } else {
+    if (gate) gate.style.display = 'none';
+    if (box)  box.style.display  = '';
+    const authorLabel = {ko:'작성자',en:'Author',zh:'作者',ja:'投稿者'}[currentLang] || 'Author';
+    const authEl = document.getElementById('bugAuthorDisplay');
+    if (authEl) authEl.textContent = `${authorLabel}: ${user.name}`;
+  }
+
   const list  = document.getElementById('bugPostList');
   const count = document.getElementById('bugPostCount');
   if (!list) return;
