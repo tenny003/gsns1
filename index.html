@@ -3091,6 +3091,21 @@ const countryData = {
   ],
 };
 
+// ── 국가별 게임 장르 → 탭 장르 매핑 ─────────────────────────────────────────
+const genreToTabMap = {
+  'MMORPG':'롤플레잉', 'RPG':'롤플레잉', 'Action RPG':'롤플레잉',
+  'Open World RPG':'롤플레잉', 'ARPG':'롤플레잉',
+  'FPS':'슈팅', 'Battle Royale':'슈팅', 'Shooter':'슈팅',
+  'RTS':'전략', 'Strategy':'전략', 'MOBA':'전략',
+  'Grand Strategy':'전략', 'Turn-Based Strategy':'전략',
+  'Action':'액션', 'Fighting':'액션', 'Action Adventure':'액션',
+  'Sports':'스포츠 및 레이싱', 'Racing':'스포츠 및 레이싱', 'Sport':'스포츠 및 레이싱',
+  'Open World':'어드벤처', 'Sandbox':'어드벤처', 'Adventure':'어드벤처',
+  'Survival':'어드벤처', 'Souls-like':'어드벤처',
+  'Simulation':'시뮬레이션', 'Sim':'시뮬레이션',
+  'City Builder':'시뮬레이션', 'Management':'시뮬레이션',
+};
+
 // ── 게임별 커뮤니티 링크 ─────────────────────────────────────────────────────
 const communityMap = {
   // ── MOBA / 전략 ──
@@ -3626,7 +3641,9 @@ function renderPagination(totalPages, total) {
 
 function getActiveGameList() {
   if (currentSubRegion !== 'all') {
-    return countryData[`${currentContinent}-${currentSubRegion}`] || [];
+    const all = countryData[`${currentContinent}-${currentSubRegion}`] || [];
+    if (!currentGenre || currentGenre === 'TOP 10') return all;
+    return all.filter(g => genreToTabMap[g.genre] === currentGenre);
   }
   const list = gameData[currentContinent][currentGenre] || [];
   return currentGenre === 'TOP 10' ? list.slice(0, 10) : list;
@@ -3663,9 +3680,11 @@ function updateSubRegionTabs() {
 function setSubRegion(id) {
   currentSubRegion = id;
   currentPage = 1;
+  currentGenre = '롤플레잉';
   document.getElementById('searchInput').value = '';
-  document.getElementById('genreTabs').style.display = id === 'all' ? 'flex' : 'none';
+  document.getElementById('genreTabs').style.display = 'flex';
   updateSubRegionTabs();
+  updateGenreTabs();
   updateSectionTitle();
   renderGames(getActiveGameList());
 }
