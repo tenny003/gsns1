@@ -340,6 +340,8 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
     <div class="lang-toggle">
       <button class="lang-btn active" id="langKo" onclick="setLang('ko')">KO</button>
       <button class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="langZh" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" id="langJa" onclick="setLang('ja')">日本語</button>
     </div>
   </div>
   <div class="theme-toggle" onclick="toggleTheme()">
@@ -678,6 +680,52 @@ const descMapEn = {
   "Eternal Return":             "Nimble Neuron's survival MOBA. A unique 2D isometric Korean indie battle royale.",
   "Delta Force":                "Team Jade's free military FPS. A 2024 standout blending large-scale warfare and battle royale.",
   "Aion 2":                     "NCsoft's next-gen MMORPG. Debuted at #6 in Korean PC rooms after its November 2025 launch.",
+};
+
+const descMapZh = {
+  "League of Legends":          "Riot Games 的 5v5 战略 MOBA。全球超 1 亿玩家热爱的竞技游戏。",
+  "PUBG: Battlegrounds":        "百人生存大逃杀的鼻祖。韩国 Krafton 开发的全球爆款。",
+  "Genshin Impact":             "开放世界探索免费 RPG。米哈游出品的动漫风格动作游戏。",
+  "Valorant":                   "技能驱动的 5v5 战术射击游戏。Riot Games 旗下 PC 独占竞技 FPS。",
+  "Counter-Strike 2":           "全球最受欢迎的战术 FPS。Valve CS 系列最新作。",
+  "Fortnite":                   "Epic Games 的大逃杀 + 创意模式。全球超 3 亿注册玩家。",
+  "Minecraft":                  "用方块创造世界的沙盒游戏。史上最畅销游戏之一。",
+  "Dungeon & Fighter":          "Nexon 旗下格斗风格动作 RPG。在中国拥有数亿玩家的全球爆款。",
+  "Apex Legends":               "EA 出品的快节奏团队大逃杀。独特英雄技能与创新射线系统。",
+  "Call of Duty":               "Activision 军事 FPS 超级系列。全球最畅销射击游戏系列。",
+  "Elden Ring":                 "FromSoftware 的开放世界动作 RPG。乔治·R·R·马丁监修剧情，2022 年度最佳游戏。",
+  "Cyberpunk 2077":             "近未来夜之城背景开放世界 RPG。CD Projekt Red 开发。",
+  "The Witcher 3":              "收录杰洛特最后冒险的开放世界 RPG。荣获数十项年度游戏大奖。",
+  "Baldur's Gate 3":            "基于 D&D 5 版规则的回合制 RPG。Larian Studios 年度最佳游戏得主。",
+  "Lost Ark":                   "大规模开放世界 MMO 动作 RPG。Smilegate RPG 开发的韩国代表 MMORPG。",
+  "Honkai: Star Rail":          "米哈游出品的回合制太空 SF RPG。继原神之后的全球爆款续作。",
+  "Wuthering Waves":            "库洛游戏的开放世界动作 RPG。原神强劲对手，迅速席卷亚洲市场。",
+  "GTA 5":                      "Rockstar Games 开放世界犯罪动作游戏。史上最畅销游戏之一，GTA Online 至今活跃。",
+  "Roblox":                     "Roblox 公司的元宇宙平台。全球跨平台同时在线人数第一，深受青少年喜爱。",
+  "Stardew Valley":             "独立开发者传奇之作。农场经营 + 温暖的村庄关系 RPG。",
+};
+
+const descMapJa = {
+  "League of Legends":          "Riot Gamesの5v5戦略MOBA。全世界1億人以上がプレイする競技ゲーム。",
+  "PUBG: Battlegrounds":        "100人サバイバルバトルロイヤルの元祖。韓国Krafton開発のグローバルヒット作。",
+  "Genshin Impact":             "オープンワールド探索の無料RPG。HoYoverseのアニメ風アクションゲーム。",
+  "Valorant":                   "スキルベース5v5タクティカルシューター。Riot GamesのPC専用競技FPS。",
+  "Counter-Strike 2":           "世界最人気の戦術FPS。ValveのCSシリーズ最新作。",
+  "Fortnite":                   "Epic Gamesのバトルロイヤル＋クリエイティブモード。全世界3億人以上が登録。",
+  "Minecraft":                  "ブロックで世界を作るサンドボックスゲーム。史上最も売れたゲームのひとつ。",
+  "Apex Legends":               "EAのハイスピードチームバトルロイヤル。ユニークなキャラクタースキルと革新的ピングシステム。",
+  "Call of Duty":               "Activisionのミリタリー FPS メガフランチャイズ。世界最多販売シューターシリーズ。",
+  "Elden Ring":                 "FromSoftwareのオープンワールドアクションRPG。ジョージ・R・R・マーティン原作監修、GOTY 2022。",
+  "Monster Hunter: World":      "Capcomのモンスター狩りアクションRPG。仲間と協力するハンティングアドベンチャー。",
+  "Final Fantasy XIV":          "スクウェア・エニックスのサブスクMMORPG。大型ストーリー拡張で劇的な復活を遂げた作品。",
+  "Sekiro":                     "FromSoftwareの戦国日本を舞台にしたアクション。剣戟特化の高難度ゲーム。",
+  "Cyberpunk 2077":             "近未来のナイトシティを舞台にしたオープンワールドRPG。CD Projekt Red開発。",
+  "Palworld":                   "Pocketpairのオープンワールドサバイバルゲーム。発売直後に爆発的な人気を集めた話題作。",
+  "Honkai: Star Rail":          "HoYoverseのターン制宇宙SFRPGo 原神に続くグローバルヒット作。",
+  "Baldur's Gate 3":            "D&D 5版ルールベースのターン制RPG。Larian StudiosのGOTY受賞作。",
+  "Stardew Valley":             "1人開発インディーの伝説。農場経営＋村人との温かい関係RPG。",
+  "GTA 5":                      "RockstarGamesのオープンワールド犯罪アクション。史上最も売れたゲームのひとつ。GTA Onlineも今なお活発。",
+  "Roblox":                     "Roblox Corporationのメタバースプラットフォーム。全世界クロスプラットフォームCCU1位、10代に圧倒的人気。",
 };
 
 const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
@@ -1295,6 +1343,42 @@ const TRANS = {
     ctaBtn:'Contact Us →',
     footerAbout:'About GSNS', footerPrivacy:'Privacy Policy', footerContact:'Partnership',
     footerSource:'Ranking data: SteamSpy CCU + regional weights | Updated every Monday',
+  },
+  zh:{
+    subtitle:'全球每周游戏排行榜与社区平台',
+    searchPlaceholder:'🔍  搜索游戏',
+    platform:'平台', publisher:'发行商', officialSite:'官方网站',
+    noGames:'没有找到符合条件的游戏。',
+    totalGames:n=>`共 ${n} 款`,
+    loading:'加载排名中...', loadFail:'加载排名失败',
+    lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
+    continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟'},
+    sourceTop:'基于 SteamSpy 同时在线人数 + 地区权重 | 每周一更新',
+    sourceGenre:'按类型分类的游戏列表 | 来源：SteamSpy · Riot Games · 官方数据',
+    ctaTitle:'正在寻找合作伙伴？',
+    ctaSub:'欢迎游戏公司、品牌、内容创作者等各类合作。',
+    ctaBtn:'联系我们 →',
+    footerAbout:'关于我们', footerPrivacy:'隐私政策', footerContact:'合作咨询',
+    footerSource:'排名数据：SteamSpy CCU + 地区权重 | 每周一自动更新',
+  },
+  ja:{
+    subtitle:'グローバル週間ゲームランキング & コミュニティプラットフォーム',
+    searchPlaceholder:'🔍  ゲームを検索',
+    platform:'プラットフォーム', publisher:'パブリッシャー', officialSite:'公式サイト',
+    noGames:'該当するゲームが見つかりませんでした。',
+    totalGames:n=>`全 ${n} 件`,
+    loading:'ランキングを読み込み中...', loadFail:'ランキングの読み込みに失敗しました',
+    lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
+    continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション'},
+    sourceTop:'SteamSpy 同時接続者数 + 地域ウェイト | 毎週月曜日更新',
+    sourceGenre:'ジャンル別ゲームリスト | 出典：SteamSpy · Riot Games · 公式データ',
+    ctaTitle:'一緒に成長するパートナーを探していますか？',
+    ctaSub:'ゲーム会社、ブランド、コンテンツクリエイターなど様々な提携を歓迎します。',
+    ctaBtn:'お問い合わせ →',
+    footerAbout:'サービス紹介', footerPrivacy:'プライバシーポリシー', footerContact:'パートナーシップ',
+    footerSource:'ランキングデータ：SteamSpy CCU + 地域ウェイト | 毎週月曜日自動更新',
   }
 };
 function t(key){ return TRANS[currentLang][key]; }
@@ -1302,24 +1386,24 @@ function t(key){ return TRANS[currentLang][key]; }
 // ── 국가·지역 서브탭 정의 ────────────────────────────────────────────────────
 const subRegionDefs = {
   asia:[
-    {id:'all',   label:{ko:'🌏 전체',   en:'🌏 All'}},
-    {id:'korea', label:{ko:'🇰🇷 한국',  en:'🇰🇷 Korea'}},
-    {id:'japan', label:{ko:'🇯🇵 일본',  en:'🇯🇵 Japan'}},
-    {id:'china', label:{ko:'🇨🇳 중국',  en:'🇨🇳 China'}},
-    {id:'sea',   label:{ko:'🌴 동남아', en:'🌴 SEA'}},
+    {id:'all',   label:{ko:'🌏 전체',   en:'🌏 All', zh:'🌏 全部', ja:'🌏 全体'}},
+    {id:'korea', label:{ko:'🇰🇷 한국',  en:'🇰🇷 Korea',   zh:'🇰🇷 韩国',  ja:'🇰🇷 韓国'}},
+    {id:'japan', label:{ko:'🇯🇵 일본',  en:'🇯🇵 Japan',   zh:'🇯🇵 日本',  ja:'🇯🇵 日本'}},
+    {id:'china', label:{ko:'🇨🇳 중국',  en:'🇨🇳 China',   zh:'🇨🇳 中国',  ja:'🇨🇳 中国'}},
+    {id:'sea',   label:{ko:'🌴 동남아', en:'🌴 SEA',      zh:'🌴 东南亚', ja:'🌴 東南アジア'}},
   ],
   na:[
-    {id:'all',    label:{ko:'🌎 전체',    en:'🌎 All'}},
-    {id:'us',     label:{ko:'🇺🇸 미국',   en:'🇺🇸 USA'}},
-    {id:'canada', label:{ko:'🇨🇦 캐나다', en:'🇨🇦 Canada'}},
+    {id:'all',    label:{ko:'🌎 전체',    en:'🌎 All',    zh:'🌎 全部',   ja:'🌎 全体'}},
+    {id:'us',     label:{ko:'🇺🇸 미국',   en:'🇺🇸 USA',   zh:'🇺🇸 美国',  ja:'🇺🇸 アメリカ'}},
+    {id:'canada', label:{ko:'🇨🇦 캐나다', en:'🇨🇦 Canada', zh:'🇨🇦 加拿大', ja:'🇨🇦 カナダ'}},
   ],
   europe:[
-    {id:'all',     label:{ko:'🌍 전체',   en:'🌍 All'}},
-    {id:'western', label:{ko:'🏰 서유럽', en:'🏰 West EU'}},
-    {id:'nordic',  label:{ko:'🌲 북유럽', en:'🌲 Nordic'}},
+    {id:'all',     label:{ko:'🌍 전체',   en:'🌍 All',      zh:'🌍 全部',   ja:'🌍 全体'}},
+    {id:'western', label:{ko:'🏰 서유럽', en:'🏰 West EU',  zh:'🏰 西欧',   ja:'🏰 西欧'}},
+    {id:'nordic',  label:{ko:'🌲 북유럽', en:'🌲 Nordic',   zh:'🌲 北欧',   ja:'🌲 北欧'}},
   ],
   global:[
-    {id:'all', label:{ko:'🌐 전체', en:'🌐 All'}},
+    {id:'all', label:{ko:'🌐 전체', en:'🌐 All', zh:'🌐 全部', ja:'🌐 全体'}},
   ],
 };
 
@@ -1521,7 +1605,10 @@ function renderGames(list) {
         ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
         ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
       </div>` : '';
-    const desc   = currentLang === 'en' ? (descMapEn[game.name] || game.desc) : game.desc;
+    const desc   = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
+                 : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
+                 : currentLang === 'ja' ? (descMapJa[game.name] || descMapEn[game.name] || game.desc)
+                 : game.desc;
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
     const imgInner = banner
@@ -1628,6 +1715,8 @@ function setLang(lang) {
   localStorage.setItem('lang', lang);
   document.getElementById('langKo').classList.toggle('active', lang === 'ko');
   document.getElementById('langEn').classList.toggle('active', lang === 'en');
+  document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+  document.getElementById('langJa').classList.toggle('active', lang === 'ja');
   document.getElementById('siteSubtitle').textContent   = t('subtitle');
   document.getElementById('searchInput').placeholder    = t('searchPlaceholder');
   document.getElementById('refreshBtn').textContent     = t('refresh');
@@ -1839,54 +1928,77 @@ function updateLoginButton() {
   if (user) {
     btn.textContent = `👤 ${user.name}`;
   } else {
-    btn.textContent = currentLang === 'ko' ? '🔑 로그인' : '🔑 Login';
+    const loginLabels = {ko:'🔑 로그인', en:'🔑 Login', zh:'🔑 登录', ja:'🔑 ログイン'};
+    btn.textContent = loginLabels[currentLang] || '🔑 Login';
   }
 }
 
 function getLoginModalHTML(tab) {
-  const ko = currentLang === 'ko';
+  const L = currentLang;
+  const labels = {
+    login:    {ko:'로그인',     en:'Login',          zh:'登录',      ja:'ログイン'},
+    signup:   {ko:'회원가입',   en:'Sign Up',         zh:'注册',      ja:'会員登録'},
+    email:    {ko:'이메일',     en:'Email',           zh:'邮箱',      ja:'メールアドレス'},
+    emailPh:  {ko:'이메일 주소 입력', en:'Enter email address', zh:'请输入邮箱地址', ja:'メールアドレスを入力'},
+    password: {ko:'비밀번호',   en:'Password',        zh:'密码',      ja:'パスワード'},
+    pwPh:     {ko:'비밀번호 입력', en:'Enter password', zh:'请输入密码', ja:'パスワードを入力'},
+    nickname: {ko:'닉네임',     en:'Nickname',        zh:'昵称',      ja:'ニックネーム'},
+    nickPh:   {ko:'닉네임 입력 (2~12자)', en:'Nickname (2-12 chars)', zh:'请输入昵称 (2~12字)', ja:'ニックネーム (2〜12文字)'},
+    realname: {ko:'이름 (실명)', en:'Full Name',       zh:'真实姓名',  ja:'氏名'},
+    realnamePh:{ko:'실명 입력', en:'Enter full name', zh:'请输入真实姓名', ja:'氏名を入力'},
+    phone:    {ko:'전화번호',   en:'Phone Number',    zh:'手机号码',  ja:'電話番号'},
+    phonePh:  {ko:'전화번호 입력 (예: 010-1234-5678)', en:'e.g. 010-1234-5678', zh:'请输入手机号码', ja:'電話番号を入力 (例: 010-1234-5678)'},
+    pwConfirm:{ko:'비밀번호 확인', en:'Confirm Password', zh:'确认密码', ja:'パスワード確認'},
+    pw2Ph:    {ko:'비밀번호 재입력', en:'Re-enter password', zh:'请再次输入密码', ja:'パスワードを再入力'},
+    pwPh2:    {ko:'비밀번호 입력 (6자 이상)', en:'Password (6+ characters)', zh:'密码 (至少6位)', ja:'パスワード (6文字以上)'},
+  };
+  const lbl = k => labels[k][L] || labels[k]['en'];
   tab = tab || 'login';
   return `
     <div class="auth-header"><h3>🎮 GSNS</h3></div>
     <div class="auth-tabs">
-      <button class="auth-tab${tab==='login'?' active':''}" onclick="switchAuthTab('login')">
-        ${ko?'로그인':'Login'}
-      </button>
-      <button class="auth-tab${tab==='signup'?' active':''}" onclick="switchAuthTab('signup')">
-        ${ko?'회원가입':'Sign Up'}
-      </button>
+      <button class="auth-tab${tab==='login'?' active':''}" onclick="switchAuthTab('login')">${lbl('login')}</button>
+      <button class="auth-tab${tab==='signup'?' active':''}" onclick="switchAuthTab('signup')">${lbl('signup')}</button>
     </div>
     <div id="loginForm" style="display:${tab==='login'?'block':'none'}">
       <div class="auth-field">
-        <label>${ko?'이메일':'Email'}</label>
-        <input type="email" id="loginEmail" placeholder="${ko?'이메일 주소 입력':'Enter email address'}" />
+        <label>${lbl('email')}</label>
+        <input type="email" id="loginEmail" placeholder="${lbl('emailPh')}" />
       </div>
       <div class="auth-field">
-        <label>${ko?'비밀번호':'Password'}</label>
-        <input type="password" id="loginPassword" placeholder="${ko?'비밀번호 입력':'Enter password'}" />
+        <label>${lbl('password')}</label>
+        <input type="password" id="loginPassword" placeholder="${lbl('pwPh')}" />
       </div>
       <p id="loginError" class="auth-error"></p>
-      <button class="auth-submit" onclick="doLogin()">${ko?'로그인':'Login'}</button>
+      <button class="auth-submit" onclick="doLogin()">${lbl('login')}</button>
     </div>
     <div id="signupForm" style="display:${tab==='signup'?'block':'none'}">
       <div class="auth-field">
-        <label>${ko?'닉네임':'Nickname'}</label>
-        <input type="text" id="signupName" placeholder="${ko?'닉네임 입력 (2~12자)':'Enter nickname (2-12 chars)'}" />
+        <label>${lbl('nickname')}</label>
+        <input type="text" id="signupName" placeholder="${lbl('nickPh')}" />
       </div>
       <div class="auth-field">
-        <label>${ko?'이메일':'Email'}</label>
-        <input type="email" id="signupEmail" placeholder="${ko?'이메일 주소 입력':'Enter email address'}" />
+        <label>${lbl('realname')}</label>
+        <input type="text" id="signupRealName" placeholder="${lbl('realnamePh')}" />
       </div>
       <div class="auth-field">
-        <label>${ko?'비밀번호':'Password'}</label>
-        <input type="password" id="signupPw" placeholder="${ko?'비밀번호 입력 (6자 이상)':'Password (6+ characters)'}" />
+        <label>${lbl('phone')}</label>
+        <input type="tel" id="signupPhone" placeholder="${lbl('phonePh')}" />
       </div>
       <div class="auth-field">
-        <label>${ko?'비밀번호 확인':'Confirm Password'}</label>
-        <input type="password" id="signupPw2" placeholder="${ko?'비밀번호 재입력':'Re-enter password'}" />
+        <label>${lbl('email')}</label>
+        <input type="email" id="signupEmail" placeholder="${lbl('emailPh')}" />
+      </div>
+      <div class="auth-field">
+        <label>${lbl('password')}</label>
+        <input type="password" id="signupPw" placeholder="${lbl('pwPh2')}" />
+      </div>
+      <div class="auth-field">
+        <label>${lbl('pwConfirm')}</label>
+        <input type="password" id="signupPw2" placeholder="${lbl('pw2Ph')}" />
       </div>
       <p id="signupError" class="auth-error"></p>
-      <button class="auth-submit" onclick="doSignup()">${ko?'회원가입':'Sign Up'}</button>
+      <button class="auth-submit" onclick="doSignup()">${lbl('signup')}</button>
     </div>`;
 }
 
@@ -1942,32 +2054,43 @@ function doLogin() {
 }
 
 function doSignup() {
-  const name  = document.getElementById('signupName').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const pw    = document.getElementById('signupPw').value;
-  const pw2   = document.getElementById('signupPw2').value;
-  const errEl = document.getElementById('signupError');
-  const ko    = currentLang === 'ko';
-  if (!name || !email || !pw || !pw2) {
-    errEl.textContent = ko ? '모든 항목을 입력해주세요.' : 'Please fill in all fields.'; return;
+  const name     = document.getElementById('signupName').value.trim();
+  const realName = document.getElementById('signupRealName').value.trim();
+  const phone    = document.getElementById('signupPhone').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
+  const pw       = document.getElementById('signupPw').value;
+  const pw2      = document.getElementById('signupPw2').value;
+  const errEl    = document.getElementById('signupError');
+  const L        = currentLang;
+  const err = {
+    allRequired:  {ko:'모든 항목을 입력해주세요.',            en:'Please fill in all fields.',             zh:'请填写所有字段。',                ja:'すべての項目を入力してください。'},
+    nickLen:      {ko:'닉네임은 2~12자로 입력해주세요.',       en:'Nickname must be 2-12 characters.',      zh:'昵称请输入2~12个字符。',             ja:'ニックネームは2〜12文字で入力してください。'},
+    invalidEmail: {ko:'유효한 이메일 주소를 입력해주세요.',    en:'Please enter a valid email.',            zh:'请输入有效的邮箱地址。',              ja:'有効なメールアドレスを入力してください。'},
+    pwLen:        {ko:'비밀번호는 6자 이상이어야 합니다.',     en:'Password must be at least 6 characters.',zh:'密码至少需要6位字符。',              ja:'パスワードは6文字以上が必要です。'},
+    pwMismatch:   {ko:'비밀번호가 일치하지 않습니다.',         en:'Passwords do not match.',                zh:'两次输入的密码不一致。',              ja:'パスワードが一致しません。'},
+    emailExists:  {ko:'이미 등록된 이메일입니다.',             en:'Email already registered.',              zh:'该邮箱已被注册。',                   ja:'このメールアドレスはすでに登録されています。'},
+  };
+  const e = k => err[k][L] || err[k]['en'];
+  if (!name || !realName || !phone || !email || !pw || !pw2) {
+    errEl.textContent = e('allRequired'); return;
   }
   if (name.length < 2 || name.length > 12) {
-    errEl.textContent = ko ? '닉네임은 2~12자로 입력해주세요.' : 'Nickname must be 2-12 characters.'; return;
+    errEl.textContent = e('nickLen'); return;
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errEl.textContent = ko ? '유효한 이메일 주소를 입력해주세요.' : 'Please enter a valid email.'; return;
+    errEl.textContent = e('invalidEmail'); return;
   }
   if (pw.length < 6) {
-    errEl.textContent = ko ? '비밀번호는 6자 이상이어야 합니다.' : 'Password must be at least 6 characters.'; return;
+    errEl.textContent = e('pwLen'); return;
   }
   if (pw !== pw2) {
-    errEl.textContent = ko ? '비밀번호가 일치하지 않습니다.' : 'Passwords do not match.'; return;
+    errEl.textContent = e('pwMismatch'); return;
   }
   const users = getUsers();
   if (users.find(u => u.email === email)) {
-    errEl.textContent = ko ? '이미 등록된 이메일입니다.' : 'Email already registered.'; return;
+    errEl.textContent = e('emailExists'); return;
   }
-  users.push({name, email, pw:btoa(pw)});
+  users.push({name, realName, phone, email, pw:btoa(pw)});
   localStorage.setItem('gsns_users', JSON.stringify(users));
   localStorage.setItem('gsns_user',  JSON.stringify({name, email}));
   updateLoginButton();
