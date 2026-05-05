@@ -120,27 +120,47 @@ body.light .toggle-icon{transform:rotate(20deg);}
   transition:background .3s,box-shadow .3s,transform .2s;
 }
 .card:hover{transform:translateY(-4px);}
-.rank{font-size:1.3rem;font-weight:bold;color:var(--rank-color);}
-.tag{display:inline-block;background:var(--tag-bg);color:#fff;padding:4px 12px;border-radius:20px;margin:8px 0;font-size:.82rem;}
 .img-wrap{
-  position:relative;width:100%;height:140px;border-radius:14px;
+  position:relative;width:100%;height:175px;border-radius:14px;
   overflow:hidden;margin-bottom:14px;
   background:linear-gradient(135deg,#0c1628,#1a2744);
-  display:flex;align-items:center;justify-content:center;
 }
-.game-logo{
-  max-width:78%;max-height:78%;
+.game-banner{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+}
+.logo-layer{
+  position:absolute;inset:0;
+  align-items:center;justify-content:center;flex-direction:column;gap:6px;
+  background:linear-gradient(135deg,#0c1628,#1a2744);
+}
+body.light .logo-layer{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
+.logo-in-layer{
+  max-width:70%;max-height:70%;
   object-fit:contain;display:block;
   filter:drop-shadow(0 2px 10px rgba(0,0,0,.6));
 }
-.img-fallback{
-  position:absolute;inset:0;display:none;
-  align-items:center;justify-content:center;flex-direction:column;gap:6px;
+.init-box{flex-direction:column;align-items:center;gap:6px;}
+.init-box .fi{font-size:2.8rem;font-weight:900;color:#38bdf8;line-height:1;}
+.init-box .fn{font-size:.7rem;font-weight:700;color:#94a3b8;text-align:center;padding:0 8px;}
+.rank-badge{
+  position:absolute;top:10px;left:10px;z-index:4;
+  background:rgba(0,0,0,.72);color:#38bdf8;
+  font-size:.88rem;font-weight:900;
+  padding:4px 10px;border-radius:20px;letter-spacing:.02em;
+  backdrop-filter:blur(4px);
 }
-.img-fallback .fi{font-size:2.8rem;font-weight:900;color:#38bdf8;line-height:1;}
-.img-fallback .fn{font-size:.7rem;font-weight:700;color:#94a3b8;text-align:center;padding:0 8px;}
-.card h3{font-size:1rem;margin-bottom:6px;}
-.card p{font-size:.83rem;color:var(--sub);margin-bottom:6px;}
+.genre-badge{
+  position:absolute;top:10px;right:10px;z-index:4;
+  background:rgba(37,99,235,.85);color:#fff;
+  font-size:.72rem;font-weight:700;
+  padding:3px 10px;border-radius:20px;letter-spacing:.02em;
+  backdrop-filter:blur(4px);
+  max-width:46%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card h3{font-size:1.02rem;font-weight:700;margin-bottom:5px;line-height:1.35;}
+.card p{font-size:.83rem;color:var(--sub);margin-bottom:5px;}
 .pub-text{font-size:.77rem;color:var(--sub);margin-bottom:12px;opacity:.8;}
 .site-btn{
   width:100%;padding:9px;border-radius:10px;border:none;
@@ -618,6 +638,82 @@ const logoMap = {
   "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/20/Escape_from_Tarkov.jpg",
   "Roblox":                   "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg",
   "Aion 2":                   "https://cdn.gamemeca.com/gmdb/g001/43/65/gm307250_31223.jpg",
+};
+
+const bannerMap = {
+  "PUBG: Battlegrounds":       "https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg",
+  "MapleStory":                "https://cdn.cloudflare.steamstatic.com/steam/apps/216150/header.jpg",
+  "Call of Duty":              "https://cdn.cloudflare.steamstatic.com/steam/apps/1938090/header.jpg",
+  "Elden Ring":                "https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg",
+  "Dota 2":                    "https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg",
+  "Final Fantasy XIV":         "https://cdn.cloudflare.steamstatic.com/steam/apps/39210/header.jpg",
+  "Apex Legends":              "https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg",
+  "Diablo IV":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg",
+  "Black Desert":              "https://cdn.cloudflare.steamstatic.com/steam/apps/582660/header.jpg",
+  "Blade & Soul":              "https://cdn.cloudflare.steamstatic.com/steam/apps/3669060/header.jpg",
+  "Elder Scrolls Online":      "https://cdn.cloudflare.steamstatic.com/steam/apps/306130/header.jpg",
+  "New World":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1063730/header.jpg",
+  "Guild Wars 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/1284210/header.jpg",
+  "Baldur's Gate 3":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg",
+  "Starfield":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1716740/header.jpg",
+  "Halo Infinite":             "https://cdn.cloudflare.steamstatic.com/steam/apps/1240440/header.jpg",
+  "Terraria":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg",
+  "Valheim":                   "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg",
+  "RuneScape":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1343400/header.jpg",
+  "The Witcher 3":             "https://cdn.cloudflare.steamstatic.com/steam/apps/292030/header.jpg",
+  "Path of Exile":             "https://cdn.cloudflare.steamstatic.com/steam/apps/238960/header.jpg",
+  "Palworld":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/header.jpg",
+  "Honkai: Star Rail":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1471860/header.jpg",
+  "Monster Hunter: World":     "https://cdn.cloudflare.steamstatic.com/steam/apps/582010/header.jpg",
+  "Devil May Cry 5":           "https://cdn.cloudflare.steamstatic.com/steam/apps/601150/header.jpg",
+  "Sekiro":                    "https://cdn.cloudflare.steamstatic.com/steam/apps/814380/header.jpg",
+  "God of War":                "https://cdn.cloudflare.steamstatic.com/steam/apps/1593500/header.jpg",
+  "Red Dead Redemption 2":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg",
+  "Assassin's Creed Odyssey":  "https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg",
+  "Civilization VI":           "https://cdn.cloudflare.steamstatic.com/steam/apps/289070/header.jpg",
+  "Age of Empires IV":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1466860/header.jpg",
+  "Hearts of Iron IV":         "https://cdn.cloudflare.steamstatic.com/steam/apps/394360/header.jpg",
+  "XCOM 2":                    "https://cdn.cloudflare.steamstatic.com/steam/apps/268500/header.jpg",
+  "Destiny 2":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1085660/header.jpg",
+  "Rainbow Six Siege":         "https://cdn.cloudflare.steamstatic.com/steam/apps/359550/header.jpg",
+  "Battlefield 2042":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1517290/header.jpg",
+  "The Elder Scrolls V: Skyrim":"https://cdn.cloudflare.steamstatic.com/steam/apps/489830/header.jpg",
+  "Rocket League":             "https://cdn.cloudflare.steamstatic.com/steam/apps/252950/header.jpg",
+  "NBA 2K25":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/2701460/header.jpg",
+  "F1 24":                     "https://cdn.cloudflare.steamstatic.com/steam/apps/2392210/header.jpg",
+  "Euro Truck Simulator 2":    "https://cdn.cloudflare.steamstatic.com/steam/apps/227300/header.jpg",
+  "Farming Simulator 22":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1248130/header.jpg",
+  "Microsoft Flight Simulator": "https://cdn.cloudflare.steamstatic.com/steam/apps/1250410/header.jpg",
+  "Cities: Skylines":          "https://cdn.cloudflare.steamstatic.com/steam/apps/255710/header.jpg",
+  "Stardew Valley":            "https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg",
+  "The Sims 4":                "https://cdn.cloudflare.steamstatic.com/steam/apps/1222670/header.jpg",
+  "Control":                   "https://cdn.cloudflare.steamstatic.com/steam/apps/870780/header.jpg",
+  "Need for Speed Heat":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1262420/header.jpg",
+  "Total War: Warhammer III":  "https://cdn.cloudflare.steamstatic.com/steam/apps/1142710/header.jpg",
+  "Ragnarok Online":           "https://cdn.cloudflare.steamstatic.com/steam/apps/231200/header.jpg",
+  "Among Us":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/945360/header.jpg",
+  "EA Sports FC 25":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2669320/header.jpg",
+  "Dark Souls III":            "https://cdn.cloudflare.steamstatic.com/steam/apps/374320/header.jpg",
+  "Warframe":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/230410/header.jpg",
+  "Deep Rock Galactic":        "https://cdn.cloudflare.steamstatic.com/steam/apps/548430/header.jpg",
+  "Hollow Knight":             "https://cdn.cloudflare.steamstatic.com/steam/apps/367520/header.jpg",
+  "Resident Evil Village":     "https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg",
+  "Sea of Thieves":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1172620/header.jpg",
+  "No Man's Sky":              "https://cdn.cloudflare.steamstatic.com/steam/apps/275850/header.jpg",
+  "Subnautica":                "https://cdn.cloudflare.steamstatic.com/steam/apps/264710/header.jpg",
+  "Planet Zoo":                "https://cdn.cloudflare.steamstatic.com/steam/apps/703080/header.jpg",
+  "Madden NFL 25":             "https://cdn.cloudflare.steamstatic.com/steam/apps/2582560/header.jpg",
+  "Wuthering Waves":           "https://cdn.cloudflare.steamstatic.com/steam/apps/2147660/header.jpg",
+  "GTA 5":                     "https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg",
+  "Eternal Return":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1049590/header.jpg",
+  "Delta Force":               "https://cdn.cloudflare.steamstatic.com/steam/apps/2677660/header.jpg",
+  "Lost Ark":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/1599340/header.jpg",
+  "Genshin Impact":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1283830/header.jpg",
+  "Counter-Strike 2":          "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
+  "Overwatch 2":               "https://cdn.cloudflare.steamstatic.com/steam/apps/2357570/header.jpg",
+  "Cyberpunk 2077":            "https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg",
+  "Dungeon & Fighter":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1840820/header.jpg",
+  "Team Fortress 2":           "https://cdn.cloudflare.steamstatic.com/steam/apps/440/header.jpg",
 };
 
 const gameData = {
@@ -1279,18 +1375,32 @@ function renderGames(list) {
         ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
         ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
       </div>` : '';
+    const banner = bannerMap[game.name] || '';
+    const logo   = game.logo || '';
+    const imgInner = banner
+      ? `<img src="${banner}" class="game-banner" alt="${game.name}"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="logo-layer" style="display:none">
+            <img src="${logo}" class="logo-in-layer" alt=""
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="init-box" style="display:none">
+              <div class="fi">${initials}</div><div class="fn">${game.name}</div>
+            </div>
+          </div>`
+      : `<div class="logo-layer" style="display:flex">
+            <img src="${logo}" class="logo-in-layer" alt="${game.name}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="init-box" style="display:none">
+              <div class="fi">${initials}</div><div class="fn">${game.name}</div>
+            </div>
+          </div>`;
     grid.innerHTML += `
       <div class="card">
         <div class="img-wrap">
-          <img src="${game.logo}" class="game-logo" alt="${game.name}"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="img-fallback">
-            <div class="fi">${initials}</div>
-            <div class="fn">${game.name}</div>
-          </div>
+          ${imgInner}
+          <div class="rank-badge">#${rank}</div>
+          <div class="genre-badge">${game.genre}</div>
         </div>
-        <div class="rank">#${rank}</div>
-        <div class="tag">${game.genre}</div>
         <h3>${game.name}</h3>
         ${game.desc ? `<p class="desc-text">${game.desc}</p>` : ''}
         <p>${t('platform')}: ${game.platform}</p>
