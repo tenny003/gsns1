@@ -833,70 +833,11 @@ header{padding:22px 80px;}
   <a class="cta-btn" id="ctaBtn" href="contact.html">제휴 문의하기 →</a>
 </section>
 
-<!-- FAQ 섹션 (정적 콘텐츠 — SEO / AdSense 심사용) -->
-<section class="faq-section" aria-label="자주 묻는 질문">
-  <h2>자주 묻는 질문</h2>
-  <p class="faq-sub">GSNS 서비스 이용 관련 궁금한 점을 정리했습니다.</p>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      GSNS 게임 순위는 어떤 방식으로 산정되나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      GSNS는 SteamSpy API에서 제공하는 동시접속자(CCU) 데이터와 누적 소유자 수를 기반으로 점수를 산정합니다. 리그 오브 레전드·발로란트 등 비Steam 게임은 각사 공식 발표 플레이어 수를 참고하며, 권역별 인기 가중치를 추가로 적용하여 아시아·북미·유럽·글로벌 4개 지역에 최적화된 순위를 제공합니다. 순위는 매주 월요일 자동 갱신됩니다.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      순위는 얼마나 자주 업데이트되나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      GSNS 게임 순위는 매주 월요일에 자동으로 갱신됩니다. 최신 데이터가 반영되면 페이지 상단의 '마지막 업데이트' 시간이 갱신됩니다. 수동으로 최신 데이터를 불러오고 싶다면 상단의 '↻ 새로고침' 버튼을 이용하세요.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      어떤 지역과 장르를 지원하나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      지역은 아시아(한국·일본·중국·동남아), 북미(미국·캐나다), 유럽(서·북·동유럽), 글로벌(전 세계 종합) 4개 권역을 제공합니다. 장르는 롤플레잉(RPG), 슈팅, 전략, 액션, 스포츠·레이싱, 어드벤처, 시뮬레이션 7개로 분류됩니다. 각 권역 내에서 장르 탭을 선택하면 해당 장르의 상위 게임을 확인할 수 있습니다.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      회원가입을 해야 서비스를 이용할 수 있나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      게임 순위 조회는 회원가입 없이 누구나 무료로 이용 가능합니다. 다만 버그 신고 및 문의사항 게시판에 글을 작성하려면 회원가입 후 로그인이 필요합니다. 회원 정보는 서버에 저장되지 않으며, 브라우저 로컬 스토리지에만 저장됩니다.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      게임 이미지의 저작권은 어떻게 처리되나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      GSNS에 표시되는 게임 이미지(로고, 배너 등)는 각 게임사 및 퍼블리셔가 공식으로 제공하는 홍보용 아트워크입니다. 해당 이미지의 저작권은 각 게임사에 귀속되며, 본 서비스는 게임 정보 제공이라는 비상업적·정보적 목적으로만 사용합니다. 저작권 문의는 <a href="contact.html">제휴 문의 페이지</a>로 연락해 주시기 바랍니다.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
-      광고 또는 제휴 문의는 어떻게 하나요?
-      <span class="faq-arrow">▼</span>
-    </button>
-    <div class="faq-a">
-      게임사, 브랜드, 콘텐츠 크리에이터 등 다양한 형태의 파트너십 문의를 환영합니다. <a href="contact.html">제휴 문의 페이지</a>에서 양식을 작성하시거나 <a href="mailto:tenny003@gmail.com">tenny003@gmail.com</a>으로 직접 연락 주세요.
-    </div>
-  </div>
+<!-- FAQ 섹션 -->
+<section class="faq-section" id="faqSection">
+  <h2 id="faqTitle">자주 묻는 질문</h2>
+  <p class="faq-sub" id="faqSub">GSNS 서비스 이용 관련 궁금한 점을 정리했습니다.</p>
+  <div id="faqContainer"></div>
 </section>
 
 <!-- 광고: 푸터 상단 -->
@@ -934,7 +875,7 @@ header{padding:22px 80px;}
     <span class="footer-sep">|</span>
     <a id="footerContact" href="contact.html">제휴 문의</a>
   </div>
-  <p class="footer-source" style="opacity:.5;font-size:.72rem;margin-bottom:4px">게임 이미지: 각 게임사 공식 제공 홍보용 아트 © 해당 게임사. 본 사이트는 정보 제공 목적으로만 사용합니다.</p>
+  <p class="footer-source" id="footerCopyright" style="opacity:.5;font-size:.72rem;margin-bottom:4px">게임 이미지: 각 게임사 공식 제공 홍보용 아트 © 해당 게임사. 본 사이트는 정보 제공 목적으로만 사용합니다.</p>
   <p class="footer-source" id="footerSource">순위 데이터: SteamSpy CCU + 지역 가중치 | 매주 월요일 자동 업데이트</p>
   <p>© 2026 GSNS - Game Social Network Service</p>
 </footer>
@@ -2239,6 +2180,10 @@ const TRANS = {
     bugTagBug:'🐛 버그수정요청', bugTagInquiry:'💬 문의사항', bugTagSuggestion:'💡 기능건의',
     bugConfirmDel:'이 글을 삭제하시겠습니까?',
     bugAlertTitle:'제목을 입력해주세요.', bugAlertBody:'내용을 입력해주세요.',
+    footerCopyright:'게임 이미지: 각 게임사 공식 제공 홍보용 아트 © 해당 게임사. 본 사이트는 정보 제공 목적으로만 사용합니다.',
+    loginErrRequired:'이메일과 비밀번호를 입력해주세요.',
+    loginErrInvalid:'이메일 또는 비밀번호가 올바르지 않습니다.',
+    logoutBtn:'로그아웃',
   },
   en:{
     subtitle:'Global Weekly Game Rankings & Community Platform',
@@ -2274,6 +2219,10 @@ const TRANS = {
     bugTagBug:'🐛 Bug Report', bugTagInquiry:'💬 Inquiry', bugTagSuggestion:'💡 Feature Request',
     bugConfirmDel:'Delete this post?',
     bugAlertTitle:'Please enter a title.', bugAlertBody:'Please enter the content.',
+    footerCopyright:'Game images: Official promotional art © respective publishers. Used for informational purposes only.',
+    loginErrRequired:'Please enter your email and password.',
+    loginErrInvalid:'Invalid email or password.',
+    logoutBtn:'Logout',
   },
   zh:{
     subtitle:'全球每周游戏排行榜与社区平台',
@@ -2309,6 +2258,10 @@ const TRANS = {
     bugTagBug:'🐛 问题反馈', bugTagInquiry:'💬 咨询', bugTagSuggestion:'💡 功能建议',
     bugConfirmDel:'确定删除这条帖子？',
     bugAlertTitle:'请输入标题。', bugAlertBody:'请输入内容。',
+    footerCopyright:'游戏图片：各游戏公司官方提供的宣传素材 © 各游戏公司。本网站仅用于信息展示目的。',
+    loginErrRequired:'请输入邮箱和密码。',
+    loginErrInvalid:'邮箱或密码不正确。',
+    logoutBtn:'退出登录',
   },
   ja:{
     subtitle:'グローバル週間ゲームランキング & コミュニティプラットフォーム',
@@ -2344,6 +2297,10 @@ const TRANS = {
     bugTagBug:'🐛 バグ報告', bugTagInquiry:'💬 お問い合わせ', bugTagSuggestion:'💡 機能提案',
     bugConfirmDel:'この投稿を削除しますか？',
     bugAlertTitle:'タイトルを入力してください。', bugAlertBody:'内容を入力してください。',
+    footerCopyright:'ゲーム画像：各ゲーム会社が公式提供するプロモーション用アートワーク © 各ゲーム会社。本サイトは情報提供目的のみに使用します。',
+    loginErrRequired:'メールアドレスとパスワードを入力してください。',
+    loginErrInvalid:'メールアドレスまたはパスワードが正しくありません。',
+    logoutBtn:'ログアウト',
   }
 };
 function t(key){ return TRANS[currentLang][key]; }
@@ -2992,6 +2949,8 @@ function setLang(lang) {
   document.getElementById('footerPrivacy').textContent  = t('footerPrivacy');
   document.getElementById('footerContact').textContent  = t('footerContact');
   document.getElementById('footerSource').textContent   = t('footerSource');
+  setTxt('footerCopyright', t('footerCopyright'));
+  renderFaq();
   const navLabels = {
     ko:{continent:'대륙별 랭킹',asia:'아시아',na:'북미',europe:'유럽',global:'글로벌',newGames:'2026 신작 & 출시예정',back:'홈'},
     en:{continent:'Regions',    asia:'Asia',  na:'N. America',europe:'Europe',global:'Global',newGames:'2026 Upcoming',back:'Home'},
@@ -3118,7 +3077,37 @@ const MODAL_CONTENT = {
         <li>Non-Steam games: Estimated from official player data (Riot Games, Epic Games, etc.)</li>
         <li>Regional popularity weights applied for localized rankings</li>
       </ul>
-      <p>For partnership and advertising inquiries, visit our <a href="contact.html" style="color:#38bdf8">Partnership page</a>.</p>`
+      <p>For partnership and advertising inquiries, visit our <a href="contact.html" style="color:#38bdf8">Partnership page</a>.</p>`,
+    zh: `
+      <h3>🎮 关于 GSNS</h3>
+      <p>GSNS（Game Social Network Service）是一个<strong>每周游戏排行平台</strong>，帮助您一览全球游戏趋势。</p>
+      <ul>
+        <li><strong>覆盖地区</strong>：亚洲、北美、欧洲、全球</li>
+        <li><strong>游戏类型</strong>：RPG、射击、策略、动作、体育竞速、冒险、模拟</li>
+        <li><strong>更新周期</strong>：每周一自动更新</li>
+      </ul>
+      <p><strong>排名计算方式</strong></p>
+      <ul>
+        <li>Steam 游戏：基于 SteamSpy API 同时在线人数（CCU）+ 累计拥有者数量</li>
+        <li>非 Steam 游戏：基于 Riot Games、Epic Games 等官方公布的玩家数据估算</li>
+        <li>应用地区热度权重，提供本地化排名</li>
+      </ul>
+      <p>合作与广告咨询请访问我们的 <a href="contact.html" style="color:#38bdf8">合作页面</a>。</p>`,
+    ja: `
+      <h3>🎮 GSNS について</h3>
+      <p>GSNS（Game Social Network Service）は、世界中のゲームトレンドを一目で把握できる<strong>週間ゲームランキングプラットフォーム</strong>です。</p>
+      <ul>
+        <li><strong>対象地域</strong>：アジア、北米、ヨーロッパ、グローバル</li>
+        <li><strong>ジャンル</strong>：RPG、シューター、ストラテジー、アクション、スポーツ＆レーシング、アドベンチャー、シミュレーション</li>
+        <li><strong>更新サイクル</strong>：毎週月曜日に自動更新</li>
+      </ul>
+      <p><strong>ランキング算定方式</strong></p>
+      <ul>
+        <li>Steam ゲーム：SteamSpy API の同時接続者数（CCU）＋累計所有者数を基準に算出</li>
+        <li>非 Steam ゲーム：Riot Games・Epic Games 等の公式データによる推定値</li>
+        <li>地域別の人気度ウェイトを適用し、権域に最適化されたランキングを提供</li>
+      </ul>
+      <p>提携・広告のお問い合わせは <a href="contact.html" style="color:#38bdf8">パートナーシップページ</a> からどうぞ。</p>`
   },
   privacy: {
     ko: `
@@ -3164,7 +3153,51 @@ const MODAL_CONTENT = {
       </ul>
       <p><strong>Retention & deletion</strong>: Data is deleted promptly once its purpose is fulfilled.</p>
       <p>For privacy inquiries, please use our <a href="contact.html" style="color:#38bdf8">Partnership page</a>.</p>
-      <p style="margin-top:12px;font-size:.75rem;opacity:.6">Last updated: May 2026</p>`
+      <p style="margin-top:12px;font-size:.75rem;opacity:.6">Last updated: May 2026</p>`,
+    zh: `
+      <h3>🔒 隐私政策</h3>
+      <p><strong>我们收集的信息</strong></p>
+      <p>GSNS 可能会收集以下信息以提供服务。</p>
+      <ul>
+        <li>自动收集：访问 IP、浏览器类型、访问时间、服务使用记录</li>
+        <li>选填信息：提交合作咨询时的姓名和邮箱地址</li>
+      </ul>
+      <p><strong>使用目的</strong></p>
+      <ul>
+        <li>服务提供与改进</li>
+        <li>响应合作咨询</li>
+        <li>防止滥用并维护安全</li>
+      </ul>
+      <p><strong>第三方服务</strong></p>
+      <ul>
+        <li>Google AdSense：可能使用 Cookie 提供个性化广告</li>
+        <li>Cloudflare：CDN 及安全服务</li>
+      </ul>
+      <p><strong>保留与删除</strong>：数据在达成目的后及时删除。</p>
+      <p>隐私相关咨询请访问我们的 <a href="contact.html" style="color:#38bdf8">合作页面</a>。</p>
+      <p style="margin-top:12px;font-size:.75rem;opacity:.6">最后更新：2026年5月</p>`,
+    ja: `
+      <h3>🔒 プライバシーポリシー</h3>
+      <p><strong>収集する情報</strong></p>
+      <p>GSNS はサービス提供のために以下の情報を収集することがあります。</p>
+      <ul>
+        <li>自動収集：アクセス IP、ブラウザの種類、訪問日時、サービス利用記録</li>
+        <li>任意入力：提携お問い合わせ時のお名前・メールアドレス</li>
+      </ul>
+      <p><strong>利用目的</strong></p>
+      <ul>
+        <li>サービスの提供および改善</li>
+        <li>提携お問い合わせへの対応</li>
+        <li>不正利用の防止とセキュリティ維持</li>
+      </ul>
+      <p><strong>第三者サービス</strong></p>
+      <ul>
+        <li>Google AdSense：パーソナライズ広告のため Cookie を使用する場合があります</li>
+        <li>Cloudflare：CDN およびセキュリティサービス</li>
+      </ul>
+      <p><strong>保存期間・削除</strong>：収集目的が達成された後、速やかに削除します。</p>
+      <p>プライバシーに関するお問い合わせは <a href="contact.html" style="color:#38bdf8">パートナーシップページ</a> からどうぞ。</p>
+      <p style="margin-top:12px;font-size:.75rem;opacity:.6">最終更新：2026年5月</p>`
   }
 };
 
@@ -3312,15 +3345,12 @@ function getLoginModalHTML(tab) {
 
 function getUserProfileHTML() {
   const user = getCurrentUser();
-  const ko   = currentLang === 'ko';
   return `
     <div class="auth-profile">
       <div class="profile-icon">👤</div>
       <p class="profile-name">${user.name}</p>
       <p class="profile-email">${user.email}</p>
-      <button class="auth-logout" onclick="doLogout()">
-        ${ko?'로그아웃':'Logout'}
-      </button>
+      <button class="auth-logout" onclick="doLogout()">${t('logoutBtn')}</button>
     </div>`;
 }
 
@@ -3345,17 +3375,10 @@ function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pw    = document.getElementById('loginPassword').value;
   const errEl = document.getElementById('loginError');
-  const ko    = currentLang === 'ko';
-  if (!email || !pw) {
-    errEl.textContent = ko ? '이메일과 비밀번호를 입력해주세요.' : 'Please enter email and password.';
-    return;
-  }
+  if (!email || !pw) { errEl.textContent = t('loginErrRequired'); return; }
   const users = getUsers();
   const user  = users.find(u => u.email === email && u.pw === btoa(pw));
-  if (!user) {
-    errEl.textContent = ko ? '이메일 또는 비밀번호가 올바르지 않습니다.' : 'Invalid email or password.';
-    return;
-  }
+  if (!user) { errEl.textContent = t('loginErrInvalid'); return; }
   localStorage.setItem('gsns_user', JSON.stringify({name:user.name, email:user.email}));
   updateLoginButton();
   closeLoginModal();
@@ -3555,6 +3578,70 @@ function renderBugPosts() {
       </div>
     </div>
   `).join('');
+}
+
+const FAQ_DATA = {
+  ko:{
+    title:'자주 묻는 질문', sub:'GSNS 서비스 이용 관련 궁금한 점을 정리했습니다.',
+    items:[
+      {q:'GSNS 게임 순위는 어떤 방식으로 산정되나요?', a:'GSNS는 SteamSpy API에서 제공하는 동시접속자(CCU) 데이터와 누적 소유자 수를 기반으로 점수를 산정합니다. 리그 오브 레전드·발로란트 등 비Steam 게임은 각사 공식 발표 플레이어 수를 참고하며, 권역별 인기 가중치를 추가로 적용해 아시아·북미·유럽·글로벌 4개 지역에 최적화된 순위를 제공합니다. 순위는 매주 월요일 자동 갱신됩니다.'},
+      {q:'순위는 얼마나 자주 업데이트되나요?', a:"GSNS 게임 순위는 매주 월요일에 자동으로 갱신됩니다. 최신 데이터가 반영되면 페이지 상단의 '마지막 업데이트' 시간이 갱신됩니다. 수동으로 최신 데이터를 불러오고 싶다면 상단의 '↻ 새로고침' 버튼을 이용하세요."},
+      {q:'어떤 지역과 장르를 지원하나요?', a:'지역은 아시아(한국·일본·중국·동남아), 북미(미국·캐나다), 유럽(서·북·동유럽), 글로벌(전 세계 종합) 4개 권역을 제공합니다. 장르는 롤플레잉(RPG), 슈팅, 전략, 액션, 스포츠·레이싱, 어드벤처, 시뮬레이션 7개로 분류됩니다. 각 권역 내에서 장르 탭을 선택하면 해당 장르의 상위 게임을 확인할 수 있습니다.'},
+      {q:'회원가입을 해야 서비스를 이용할 수 있나요?', a:'게임 순위 조회는 회원가입 없이 누구나 무료로 이용 가능합니다. 다만 버그 신고 및 문의사항 게시판에 글을 작성하려면 회원가입 후 로그인이 필요합니다. 회원 정보는 서버에 저장되지 않으며, 브라우저 로컬 스토리지에만 저장됩니다.'},
+      {q:'게임 이미지의 저작권은 어떻게 처리되나요?', a:'GSNS에 표시되는 게임 이미지(로고, 배너 등)는 각 게임사 및 퍼블리셔가 공식으로 제공하는 홍보용 아트워크입니다. 해당 이미지의 저작권은 각 게임사에 귀속되며, 본 서비스는 게임 정보 제공이라는 비상업적·정보적 목적으로만 사용합니다. 저작권 문의는 <a href="contact.html">제휴 문의 페이지</a>로 연락해 주시기 바랍니다.'},
+      {q:'광고 또는 제휴 문의는 어떻게 하나요?', a:'게임사, 브랜드, 콘텐츠 크리에이터 등 다양한 형태의 파트너십 문의를 환영합니다. <a href="contact.html">제휴 문의 페이지</a>에서 양식을 작성하시거나 <a href="mailto:tenny003@gmail.com">tenny003@gmail.com</a>으로 직접 연락 주세요.'},
+    ]
+  },
+  en:{
+    title:'Frequently Asked Questions', sub:'Common questions about using the GSNS service.',
+    items:[
+      {q:'How are GSNS game rankings calculated?', a:'GSNS calculates scores based on concurrent user (CCU) data and cumulative owner counts from the SteamSpy API. For non-Steam titles like League of Legends and Valorant, official player counts from each publisher are referenced. Regional popularity weights are then applied to deliver rankings optimized for Asia, North America, Europe, and Global. Rankings update automatically every Monday.'},
+      {q:'How often are the rankings updated?', a:"Rankings refresh automatically every Monday. Once new data loads, the 'Last Updated' timestamp at the top of the page will change. To manually reload the latest data, click the '↻ Refresh' button in the header."},
+      {q:'Which regions and genres are supported?', a:'Four regions are covered: Asia (Korea, Japan, China, Southeast Asia), North America (US, Canada), Europe (Western, Northern, Eastern), and Global (worldwide). Games are classified into 7 genres: RPG, Shooter, Strategy, Action, Sports & Racing, Adventure, and Simulation. Select a genre tab within any region to see top games for that category.'},
+      {q:'Do I need to register to use the service?', a:"Game ranking browsing is free for everyone — no registration required. However, posting in the Bug Report & Inquiry board requires signing up and logging in. Account data is not stored on any server; it stays only in your browser's local storage."},
+      {q:'How are game image copyrights handled?', a:'Game images (logos, banners, etc.) displayed on GSNS are official promotional artwork provided by each game company and publisher. All copyrights remain with their respective owners. This service uses them solely for non-commercial, informational purposes. For copyright inquiries, please contact us via the <a href="contact.html">Partnership page</a>.'},
+      {q:'How can I inquire about advertising or partnerships?', a:'We welcome partnership inquiries from game studios, brands, and content creators. Fill out the form on the <a href="contact.html">Partnership page</a> or email us directly at <a href="mailto:tenny003@gmail.com">tenny003@gmail.com</a>.'},
+    ]
+  },
+  zh:{
+    title:'常见问题', sub:'关于 GSNS 服务使用的常见疑问。',
+    items:[
+      {q:'GSNS 游戏排名是如何计算的？', a:'GSNS 基于 SteamSpy API 提供的同时在线人数（CCU）及累计拥有者数量来计算分数。对于英雄联盟、Valorant 等非 Steam 游戏，则参考各发行商官方公布的玩家数据，并应用地区热度权重，为亚洲、北美、欧洲及全球四个地区提供本地化排名。排名每周一自动更新。'},
+      {q:'排名多久更新一次？', a:"游戏排名每周一自动刷新。数据更新后，页面顶部的「最后更新」时间将随之变化。若需手动加载最新数据，请点击顶部的「↻ 刷新」按钮。"},
+      {q:'支持哪些地区和游戏类型？', a:'覆盖四个地区：亚洲（韩国、日本、中国、东南亚）、北美（美国、加拿大）、欧洲（西欧、北欧、东欧）及全球（全球综合）。游戏分为 7 大类型：RPG、射击、策略、动作、体育与竞速、冒险和模拟。在各地区内选择类型标签，即可查看该类型的热门游戏。'},
+      {q:'需要注册才能使用服务吗？', a:'游戏排名浏览无需注册，所有人均可免费使用。但在问题反馈与咨询板块发帖需要注册并登录。账户信息不会存储在服务器上，仅保存在您浏览器的本地存储中。'},
+      {q:'游戏图片的版权如何处理？', a:'GSNS 上显示的游戏图片（标志、横幅等）均为各游戏公司及发行商提供的官方宣传素材。所有图片版权归各游戏公司所有，本服务仅出于非商业性信息展示目的使用。如有版权疑问，请通过<a href="contact.html">合作咨询页面</a>与我们联系。'},
+      {q:'如何咨询广告或合作事宜？', a:'我们欢迎来自游戏公司、品牌及内容创作者的各类合作咨询。请通过<a href="contact.html">合作咨询页面</a>填写表单，或直接发送邮件至 <a href="mailto:tenny003@gmail.com">tenny003@gmail.com</a>。'},
+    ]
+  },
+  ja:{
+    title:'よくある質問', sub:'GSNS サービスに関するよくある疑問をまとめました。',
+    items:[
+      {q:'GSNS のゲームランキングはどのように算定されますか？', a:'GSNS は SteamSpy API が提供する同時接続者数（CCU）と累計所有者数を基にスコアを算出します。リーグ・オブ・レジェンドや Valorant など非 Steam タイトルは各社公式発表のプレイヤー数を参照します。さらに地域別の人気度ウェイトを適用し、アジア・北米・ヨーロッパ・グローバルの 4 地域に最適化されたランキングを提供します。ランキングは毎週月曜日に自動更新されます。'},
+      {q:'ランキングはどのくらいの頻度で更新されますか？', a:"ゲームランキングは毎週月曜日に自動更新されます。データが更新されると、ページ上部の「最終更新」時刻が変わります。手動で最新データを読み込むには、ヘッダーの「↻ 更新」ボタンをクリックしてください。"},
+      {q:'どの地域とジャンルに対応していますか？', a:'4 つの地域をカバーしています：アジア（韓国・日本・中国・東南アジア）、北米（米国・カナダ）、ヨーロッパ（西欧・北欧・東欧）、グローバル（全世界集計）。ジャンルは RPG、シューター、ストラテジー、アクション、スポーツ＆レーシング、アドベンチャー、シミュレーションの 7 種類です。各地域内でジャンルタブを選択すると上位ゲームを確認できます。'},
+      {q:'サービスを利用するには会員登録が必要ですか？', a:'ゲームランキングの閲覧は会員登録不要で、どなたでも無料でご利用いただけます。ただし、バグ報告・お問い合わせ掲示板への投稿には会員登録とログインが必要です。アカウント情報はサーバーには保存されず、ブラウザのローカルストレージにのみ保存されます。'},
+      {q:'ゲーム画像の著作権はどのように扱われていますか？', a:'GSNS に表示されるゲーム画像（ロゴ、バナーなど）は、各ゲーム会社およびパブリッシャーが公式提供するプロモーション用アートワークです。画像の著作権は各ゲーム会社に帰属し、本サービスはゲーム情報提供という非商業的・情報的目的のためにのみ使用しています。著作権に関するお問い合わせは<a href="contact.html">パートナーシップページ</a>からご連絡ください。'},
+      {q:'広告や提携についてはどこに問い合わせればいいですか？', a:'ゲーム会社、ブランド、コンテンツクリエイターなど様々な形の提携をお待ちしています。<a href="contact.html">パートナーシップページ</a>のフォームからお問い合わせいただくか、<a href="mailto:tenny003@gmail.com">tenny003@gmail.com</a> まで直接メールをお送りください。'},
+    ]
+  }
+};
+
+function renderFaq() {
+  const container = document.getElementById('faqContainer');
+  if (!container) return;
+  const data = FAQ_DATA[currentLang] || FAQ_DATA.ko;
+  const h2  = document.getElementById('faqTitle');
+  const sub = document.getElementById('faqSub');
+  if (h2)  h2.textContent  = data.title;
+  if (sub) sub.textContent = data.sub;
+  container.innerHTML = data.items.map(item => `
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)" aria-expanded="false">
+        ${item.q}<span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-a">${item.a}</div>
+    </div>`).join('');
 }
 
 function toggleFaq(btn) {
