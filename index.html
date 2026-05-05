@@ -3432,6 +3432,7 @@ function getMetaColor(score) {
 const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};
 let currentContinent = 'asia';
 let lastUpdateTimestamp = null;
+let lastRankingsLoadTime = 0;
 
 function updateTimeDisplay() {
   if (!lastUpdateTimestamp) return;
@@ -3960,6 +3961,7 @@ function closeModal() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
 
 async function loadRankings() {
+  lastRankingsLoadTime = Date.now();
   try {
     const res = await fetch('/data/rankings.json?' + Date.now());
     if (!res.ok) return;
@@ -4211,7 +4213,10 @@ function showView(view) {
   document.getElementById('viewContinent').style.display  = view === 'continent'  ? 'block' : 'none';
   document.getElementById('viewNewGames').style.display   = view === 'newgames'   ? 'block' : 'none';
   document.getElementById('viewBugReport').style.display  = view === 'bugreport'  ? 'block' : 'none';
-  if (view === 'dashboard') renderDashboard();
+  if (view === 'dashboard') {
+    renderDashboard();
+    loadRankings();
+  }
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -4631,6 +4636,13 @@ window.onload = () => {
   renderDashboard();
   loadRankings();
 };
+
+// 탭 복귀 시 자동 새로고침 — 5분 이상 자리 비운 경우
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && Date.now() - lastRankingsLoadTime > 5 * 60 * 1000) {
+    loadRankings();
+  }
+});
 </script>
 
 <!-- ── 양옆 고정 사이드 광고 (뷰포트 1760px 이상에서 노출) ── -->
