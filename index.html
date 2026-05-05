@@ -41,7 +41,7 @@ header{
 h1{font-size:2.5rem;}
 .sub-text{color:var(--sub);margin-top:8px;}
 .nav-btn{
-  position:absolute;left:30px;top:50%;transform:translateY(-50%);
+  position:absolute;right:30px;top:50%;transform:translateY(-50%);
   padding:10px 22px;border-radius:50px;border:none;
   background:linear-gradient(135deg,#38bdf8,#2563eb);
   color:#fff;font-size:.85rem;font-weight:700;cursor:pointer;
@@ -53,7 +53,7 @@ h1{font-size:2.5rem;}
 
 /* 테마 토글 */
 .theme-toggle{
-  position:absolute;right:30px;top:50%;transform:translateY(-50%);
+  position:absolute;left:30px;top:50%;transform:translateY(-50%);
   display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;
 }
 .toggle-icon{font-size:1.2rem;transition:transform .4s;}
@@ -288,13 +288,49 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
 }
 .cta-btn:hover{opacity:.85;transform:translateY(-2px);}
 
+/* 로그인/회원가입 모달 */
+.login-modal-box{max-width:420px;}
+.auth-header{text-align:center;margin-bottom:20px;}
+.auth-header h3{font-size:1.3rem;font-weight:800;}
+.auth-tabs{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:20px;}
+.auth-tab{flex:1;padding:11px;border:none;background:transparent;color:var(--sub);
+  font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;}
+.auth-tab.active{background:linear-gradient(135deg,#38bdf8,#2563eb);color:#fff;}
+.auth-field{margin-bottom:13px;}
+.auth-field label{display:block;font-size:.8rem;color:var(--sub);margin-bottom:5px;font-weight:600;letter-spacing:.03em;}
+.auth-field input{
+  width:100%;padding:10px 14px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--control-bg);color:var(--control-color);
+  font-size:.9rem;outline:none;transition:border-color .2s,background .3s;font-family:inherit;
+}
+.auth-field input:focus{border-color:#38bdf8;}
+.auth-error{font-size:.8rem;color:#ef4444;margin-bottom:10px;padding:2px 4px;min-height:18px;}
+.auth-submit{
+  width:100%;padding:11px;border-radius:10px;border:none;margin-top:6px;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;
+  transition:opacity .2s,transform .15s;font-family:inherit;
+}
+.auth-submit:hover{opacity:.85;transform:translateY(-1px);}
+.auth-profile{text-align:center;padding:12px 0;}
+.auth-profile .profile-icon{font-size:3rem;margin-bottom:14px;}
+.auth-profile .profile-name{font-size:1.1rem;font-weight:700;margin-bottom:4px;}
+.auth-profile .profile-email{font-size:.83rem;color:var(--sub);margin-bottom:20px;}
+.auth-logout{
+  width:100%;padding:10px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+  color:#fff;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;
+  transition:opacity .2s;
+}
+.auth-logout:hover{opacity:.85;}
+
 footer{text-align:center;padding:30px;color:var(--footer-color);}
 </style>
 </head>
 <body>
 
 <header>
-  <a class="nav-btn" href="contact.html">🤝 Partnership</a>
+  <button class="nav-btn" id="loginNavBtn" onclick="showLoginModal()">🔑 로그인</button>
   <h1>🎮 GSNS</h1>
   <p class="sub-text" id="siteSubtitle">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
   <div class="live-bar">
@@ -342,7 +378,15 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <a class="cta-btn" id="ctaBtn" href="contact.html">제휴 문의하기 →</a>
 </section>
 
-<!-- 모달 -->
+<!-- 로그인/회원가입 모달 -->
+<div class="modal-overlay" id="loginModal" onclick="if(event.target===this)closeLoginModal()">
+  <div class="modal-box login-modal-box">
+    <button class="modal-close" onclick="closeLoginModal()">✕</button>
+    <div id="loginModalContent"></div>
+  </div>
+</div>
+
+<!-- 정보/개인정보 모달 -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">✕</button>
@@ -544,6 +588,96 @@ const descMap = {
   "Eternal Return":             "님블뉴런의 서바이벌 MOBA. 2D 아이소메트릭 스타일의 독특한 배틀로얄 국산 인디 게임.",
   "Delta Force":                "팀제이드의 무료 밀리터리 FPS. 대규모 전장 모드와 배틀로얄을 결합한 2024년 주목작.",
   "Aion 2":                     "엔씨소프트의 차세대 MMORPG. 2025년 11월 출시 후 한국 PC방 순위 6위 진입한 신작.",
+};
+
+const descMapEn = {
+  "League of Legends":          "Riot Games' 5v5 strategic MOBA. Played by over 100M players worldwide.",
+  "PUBG: Battlegrounds":        "The original 100-player battle royale. Korea's Krafton-developed global hit.",
+  "Genshin Impact":             "Free-to-play open-world RPG. HoYoverse's anime-style action adventure.",
+  "FC Online":                  "Korea's biggest online football game. Nexon's PC-exclusive soccer simulation.",
+  "Lost Ark":                   "Massive open-world MMO action RPG. Korea's flagship MMORPG by Smilegate RPG.",
+  "MapleStory":                 "Nexon's 2D side-scrolling MMORPG. A Korean gaming icon with 20+ years of service.",
+  "Valorant":                   "Skill-based 5v5 tactical shooter. Riot Games' PC-exclusive competitive FPS.",
+  "Dungeon & Fighter":          "Nexon's beat-em-up action RPG. Played by hundreds of millions in China.",
+  "Lineage":                    "NCsoft's classic MMORPG. The pioneer of Korean online gaming history.",
+  "Overwatch 2":                "Blizzard's team-based hero shooter. Strategic team gameplay with diverse heroes.",
+  "Counter-Strike 2":           "The world's top tactical FPS. Valve's latest entry in the CS series.",
+  "Dota 2":                     "Valve's complex strategy MOBA. Home to esports tournaments worth tens of millions annually.",
+  "Fortnite":                   "Epic Games' battle royale + creative mode. Over 300M registered players worldwide.",
+  "Minecraft":                  "Build worlds with blocks in this sandbox game. The best-selling game in history.",
+  "World of Warcraft":          "Blizzard's legendary MMORPG. Defined Western online RPG gaming for 20 years.",
+  "Free Fire":                  "Garena's mobile battle royale. A global hit with huge popularity in SEA and Latin America.",
+  "Apex Legends":               "EA's fast-paced team battle royale. Unique character skills and innovative ping system.",
+  "Call of Duty":               "Activision's military FPS mega-franchise. The world's best-selling shooter series.",
+  "Elden Ring":                 "FromSoftware's open-world action RPG. Story by George R.R. Martin. GOTY 2022.",
+  "Cyberpunk 2077":             "Open-world RPG set in near-future Night City. Developed by CD Projekt Red.",
+  "The Witcher 3":              "Open-world RPG featuring Geralt's final adventure. Multiple GOTY awards.",
+  "Baldur's Gate 3":            "Turn-based RPG based on D&D 5e. GOTY winner by Larian Studios.",
+  "Starfield":                  "Bethesda's space exploration open-world RPG. Explore 1,000+ planets.",
+  "Final Fantasy XIV":          "Square Enix's subscription MMORPG. Dramatically revived with major story expansions.",
+  "Honkai: Star Rail":          "HoYoverse's turn-based space sci-fi RPG. A global follow-up hit after Genshin Impact.",
+  "Diablo IV":                  "Blizzard's open-world hack-and-slash. Dark atmosphere action RPG.",
+  "Black Desert":               "Pearl Abyss' action MMORPG. Sophisticated character customization and real-time combat.",
+  "Blade & Soul":               "NCsoft's martial arts MMORPG. Flashy combo-based real-time combat system.",
+  "Elder Scrolls Online":       "Bethesda's MMORPG. Vast open world spanning the entire Tamriel continent.",
+  "New World":                  "Amazon Games' MMORPG. Colonial-era setting on an uncharted island.",
+  "Guild Wars 2":               "NCSoft's subscription-free MMORPG. Unique event-based world quest system.",
+  "RuneScape":                  "Jagex's classic MMORPG. A long-running Western online RPG with 20+ years of service.",
+  "StarCraft II":               "Blizzard's sci-fi real-time strategy. The legendary game that built Korean esports culture.",
+  "Clash of Clans":             "Supercell's mobile strategy game. Popular worldwide with village building and clan wars.",
+  "Age of Empires IV":          "Xbox's classic RTS. Lead historical civilizations and empires in strategic warfare.",
+  "Civilization VI":            "2K's turn-based civilization strategy. Guide humanity as historical leaders.",
+  "Hearts of Iron IV":          "Paradox's WWII grand strategy. The ultimate war simulation game.",
+  "Total War: Warhammer III":   "Sega's real-time battle + turn-based strategy. Set in the Warhammer Fantasy universe.",
+  "XCOM 2":                     "2K's sci-fi turn-based strategy. Command a resistance to liberate an alien-occupied Earth.",
+  "Halo Infinite":              "Xbox's flagship FPS. Master Chief's new open-world adventure.",
+  "Rocket League":              "Epic Games' vehicle + soccer sport. Competitive game with a unique physics engine.",
+  "NBA 2K25":                   "2K Sports' NBA basketball simulation. The most realistic basketball game.",
+  "EA Sports FC 25":            "EA's soccer simulation. Launched as a new brand replacing the FIFA franchise.",
+  "F1 24":                      "EA's official F1 racing game. Perfectly recreates real drivers and circuits.",
+  "Euro Truck Simulator 2":     "SCS Software's European truck driving sim. Especially popular across Europe.",
+  "Farming Simulator 22":       "GIANTS Software's farm management sim. Features licensed real agricultural equipment.",
+  "Microsoft Flight Simulator": "Xbox's aviation simulation. Fly anywhere on the real Earth at incredible scale.",
+  "Cities: Skylines":           "Paradox's city-building simulation. Design cities with traffic and economy management.",
+  "The Sims 4":                 "EA's life simulation. Freely customize your characters and homes.",
+  "Stardew Valley":             "A solo-dev indie legend. Farm management + warm relationship RPG.",
+  "Animal Crossing":            "Nintendo's relaxing life simulation. One of the best-selling Nintendo Switch titles.",
+  "Planet Zoo":                 "Frontier's zoo management simulation. Features realistic animal behavior AI.",
+  "Palworld":                   "Pocketpair's open-world survival game. A sensational hit at launch.",
+  "Valheim":                    "Viking-themed open-world survival. Explore and build in a mythological world.",
+  "Terraria":                   "Re-Logic's 2D open-world sandbox. An indie masterpiece with 30M+ copies sold.",
+  "Path of Exile":              "Free dark fantasy action RPG. Vast build system by Grinding Gear Games.",
+  "God of War":                 "Kratos' journey through Norse mythology. Sony's GOTY-winning action RPG.",
+  "Red Dead Redemption 2":      "Rockstar's open-world western epic. One of the most beautiful open worlds ever made.",
+  "Monster Hunter: World":      "Capcom's monster hunting action RPG. Cooperative hunting adventure with friends.",
+  "Devil May Cry 5":            "Capcom's stylish action game. Considered the best in the series for flashy combos.",
+  "Sekiro":                     "FromSoftware's feudal Japan action game. High-difficulty sword-fighting focused gameplay.",
+  "Dark Souls III":             "FromSoftware's dark fantasy action RPG. The pinnacle of the soulslike genre.",
+  "Hollow Knight":              "Team Cherry's metroidvania indie masterpiece. Explore the insect kingdom Hallownest.",
+  "Resident Evil Village":      "Capcom's first-person survival horror. Series' 8th entry set in a lavish village.",
+  "Deep Rock Galactic":         "1-4 player co-op FPS. Galactic dwarf miners exterminate bugs together.",
+  "Warframe":                   "Free-to-play ninja-style TPS by Digital Extremes. Vast frame and weapon collection.",
+  "Sea of Thieves":             "Xbox's open-world pirate adventure. Cooperative sailing and treasure hunting.",
+  "No Man's Sky":               "Hello Games' infinite space sandbox. Dramatically revived with consistent free updates.",
+  "Among Us":                   "Find the traitor aboard a spaceship. A global social deduction mega-hit.",
+  "Subnautica":                 "Unknown Worlds' underwater survival exploration. Beautiful and mysterious alien ocean.",
+  "Control":                    "505 Games' supernatural action-adventure. Unique SCP-inspired atmosphere.",
+  "Destiny 2":                  "Bungie's loot shooter FPS. A space hero saga best enjoyed with friends.",
+  "Rainbow Six Siege":          "Ubisoft's tactical team FPS. Intricate destruction physics and operator strategies.",
+  "Battlefield 2042":           "EA's large-scale battlefield FPS. 128-player battles with dynamic weather.",
+  "Need for Speed Heat":        "EA's street racing game. Legit races by day, police chases by night.",
+  "Escape from Tarkov":         "BSG's ultra-hardcore realistic FPS. Unique looting and survival-focused gameplay.",
+  "Ragnarok Online":            "Gravity's classic MMORPG. A long-running game with loyal fans in SEA and Korea.",
+  "Assassin's Creed Odyssey":   "Ubisoft's ancient Greece open-world action RPG.",
+  "The Elder Scrolls V: Skyrim":"Bethesda's northern continent open-world RPG. One of the best-selling RPGs ever.",
+  "Madden NFL 25":              "EA's official NFL football simulation. The dominant sports game in North America.",
+  "Sudden Attack":              "Nexon's PC-exclusive military FPS. Long dominated Korea's shooter game market.",
+  "Wuthering Waves":            "Kuro Games' open-world action RPG. A strong Genshin rival rapidly rising across Asia.",
+  "Roblox":                     "Roblox Corporation's metaverse platform. #1 global cross-platform CCU, massively popular with teens.",
+  "GTA 5":                      "Rockstar Games' open-world crime action. One of the best-selling games ever. GTA Online still thriving.",
+  "Eternal Return":             "Nimble Neuron's survival MOBA. A unique 2D isometric Korean indie battle royale.",
+  "Delta Force":                "Team Jade's free military FPS. A 2024 standout blending large-scale warfare and battle royale.",
+  "Aion 2":                     "NCsoft's next-gen MMORPG. Debuted at #6 in Korean PC rooms after its November 2025 launch.",
 };
 
 const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
@@ -1349,6 +1483,18 @@ const communityMap = {
 
 const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};
 let currentContinent = 'asia';
+let lastUpdateTimestamp = null;
+
+function updateTimeDisplay() {
+  if (!lastUpdateTimestamp) return;
+  const diffMs = Date.now() - lastUpdateTimestamp;
+  const diffD  = Math.floor(diffMs / 86400000);
+  const diffH  = Math.floor((diffMs % 86400000) / 3600000);
+  const timeStr = diffD > 0
+    ? `${diffD}${currentLang==='ko'?'일':'d'} ${diffH}${currentLang==='ko'?'시간 전':'h ago'}`
+    : `${diffH}${currentLang==='ko'?'시간 전':'h ago'}`;
+  document.getElementById('updateInfo').textContent = `${t('lastUpdated')}: ${timeStr}`;
+}
 let currentGenre = 'TOP 10';
 let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
@@ -1375,6 +1521,7 @@ function renderGames(list) {
         ${cLinks.reddit  ? `<a href="${cLinks.reddit}"  target="_blank" rel="noopener" class="community-btn reddit">Reddit</a>` : ''}
         ${cLinks.discord ? `<a href="${cLinks.discord}" target="_blank" rel="noopener" class="community-btn discord">Discord</a>` : ''}
       </div>` : '';
+    const desc   = currentLang === 'en' ? (descMapEn[game.name] || game.desc) : game.desc;
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
     const imgInner = banner
@@ -1402,7 +1549,7 @@ function renderGames(list) {
           <div class="genre-badge">${game.genre}</div>
         </div>
         <h3>${game.name}</h3>
-        ${game.desc ? `<p class="desc-text">${game.desc}</p>` : ''}
+        ${desc ? `<p class="desc-text">${desc}</p>` : ''}
         <p>${t('platform')}: ${game.platform}</p>
         <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
         <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
@@ -1495,6 +1642,8 @@ function setLang(lang) {
   updateSubRegionTabs();
   updateGenreTabs();
   updateSectionTitle();
+  updateTimeDisplay();
+  updateLoginButton();
   renderGames(getActiveGameList());
 }
 
@@ -1641,13 +1790,8 @@ async function loadRankings() {
     const data = await res.json();
 
     if (data.updated) {
-      const diffMs = Date.now() - new Date(data.updated).getTime();
-      const diffD  = Math.floor(diffMs / 86400000);
-      const diffH  = Math.floor((diffMs % 86400000) / 3600000);
-      const timeStr = diffD > 0
-        ? `${diffD}${currentLang==='ko'?'일':'d'} ${diffH}${currentLang==='ko'?'시간 전':'h ago'}`
-        : `${diffH}${currentLang==='ko'?'시간 전':'h ago'}`;
-      document.getElementById('updateInfo').textContent = `${t('lastUpdated')}: ${timeStr}`;
+      lastUpdateTimestamp = new Date(data.updated).getTime();
+      updateTimeDisplay();
     }
 
     for (const continent of ['asia','na','europe','global']) {
@@ -1680,6 +1824,162 @@ function toggleTheme() {
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 
+// ── 인증 ────────────────────────────────────────────────────────────────────
+function getCurrentUser() {
+  try { return JSON.parse(localStorage.getItem('gsns_user')); } catch { return null; }
+}
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem('gsns_users')) || []; } catch { return []; }
+}
+
+function updateLoginButton() {
+  const user = getCurrentUser();
+  const btn  = document.getElementById('loginNavBtn');
+  if (!btn) return;
+  if (user) {
+    btn.textContent = `👤 ${user.name}`;
+  } else {
+    btn.textContent = currentLang === 'ko' ? '🔑 로그인' : '🔑 Login';
+  }
+}
+
+function getLoginModalHTML(tab) {
+  const ko = currentLang === 'ko';
+  tab = tab || 'login';
+  return `
+    <div class="auth-header"><h3>🎮 GSNS</h3></div>
+    <div class="auth-tabs">
+      <button class="auth-tab${tab==='login'?' active':''}" onclick="switchAuthTab('login')">
+        ${ko?'로그인':'Login'}
+      </button>
+      <button class="auth-tab${tab==='signup'?' active':''}" onclick="switchAuthTab('signup')">
+        ${ko?'회원가입':'Sign Up'}
+      </button>
+    </div>
+    <div id="loginForm" style="display:${tab==='login'?'block':'none'}">
+      <div class="auth-field">
+        <label>${ko?'이메일':'Email'}</label>
+        <input type="email" id="loginEmail" placeholder="${ko?'이메일 주소 입력':'Enter email address'}" />
+      </div>
+      <div class="auth-field">
+        <label>${ko?'비밀번호':'Password'}</label>
+        <input type="password" id="loginPassword" placeholder="${ko?'비밀번호 입력':'Enter password'}" />
+      </div>
+      <p id="loginError" class="auth-error"></p>
+      <button class="auth-submit" onclick="doLogin()">${ko?'로그인':'Login'}</button>
+    </div>
+    <div id="signupForm" style="display:${tab==='signup'?'block':'none'}">
+      <div class="auth-field">
+        <label>${ko?'닉네임':'Nickname'}</label>
+        <input type="text" id="signupName" placeholder="${ko?'닉네임 입력 (2~12자)':'Enter nickname (2-12 chars)'}" />
+      </div>
+      <div class="auth-field">
+        <label>${ko?'이메일':'Email'}</label>
+        <input type="email" id="signupEmail" placeholder="${ko?'이메일 주소 입력':'Enter email address'}" />
+      </div>
+      <div class="auth-field">
+        <label>${ko?'비밀번호':'Password'}</label>
+        <input type="password" id="signupPw" placeholder="${ko?'비밀번호 입력 (6자 이상)':'Password (6+ characters)'}" />
+      </div>
+      <div class="auth-field">
+        <label>${ko?'비밀번호 확인':'Confirm Password'}</label>
+        <input type="password" id="signupPw2" placeholder="${ko?'비밀번호 재입력':'Re-enter password'}" />
+      </div>
+      <p id="signupError" class="auth-error"></p>
+      <button class="auth-submit" onclick="doSignup()">${ko?'회원가입':'Sign Up'}</button>
+    </div>`;
+}
+
+function getUserProfileHTML() {
+  const user = getCurrentUser();
+  const ko   = currentLang === 'ko';
+  return `
+    <div class="auth-profile">
+      <div class="profile-icon">👤</div>
+      <p class="profile-name">${user.name}</p>
+      <p class="profile-email">${user.email}</p>
+      <button class="auth-logout" onclick="doLogout()">
+        ${ko?'로그아웃':'Logout'}
+      </button>
+    </div>`;
+}
+
+function showLoginModal() {
+  const user = getCurrentUser();
+  document.getElementById('loginModalContent').innerHTML =
+    user ? getUserProfileHTML() : getLoginModalHTML('login');
+  document.getElementById('loginModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('loginModalContent').innerHTML = getLoginModalHTML(tab);
+}
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw    = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  const ko    = currentLang === 'ko';
+  if (!email || !pw) {
+    errEl.textContent = ko ? '이메일과 비밀번호를 입력해주세요.' : 'Please enter email and password.';
+    return;
+  }
+  const users = getUsers();
+  const user  = users.find(u => u.email === email && u.pw === btoa(pw));
+  if (!user) {
+    errEl.textContent = ko ? '이메일 또는 비밀번호가 올바르지 않습니다.' : 'Invalid email or password.';
+    return;
+  }
+  localStorage.setItem('gsns_user', JSON.stringify({name:user.name, email:user.email}));
+  updateLoginButton();
+  closeLoginModal();
+}
+
+function doSignup() {
+  const name  = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pw    = document.getElementById('signupPw').value;
+  const pw2   = document.getElementById('signupPw2').value;
+  const errEl = document.getElementById('signupError');
+  const ko    = currentLang === 'ko';
+  if (!name || !email || !pw || !pw2) {
+    errEl.textContent = ko ? '모든 항목을 입력해주세요.' : 'Please fill in all fields.'; return;
+  }
+  if (name.length < 2 || name.length > 12) {
+    errEl.textContent = ko ? '닉네임은 2~12자로 입력해주세요.' : 'Nickname must be 2-12 characters.'; return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = ko ? '유효한 이메일 주소를 입력해주세요.' : 'Please enter a valid email.'; return;
+  }
+  if (pw.length < 6) {
+    errEl.textContent = ko ? '비밀번호는 6자 이상이어야 합니다.' : 'Password must be at least 6 characters.'; return;
+  }
+  if (pw !== pw2) {
+    errEl.textContent = ko ? '비밀번호가 일치하지 않습니다.' : 'Passwords do not match.'; return;
+  }
+  const users = getUsers();
+  if (users.find(u => u.email === email)) {
+    errEl.textContent = ko ? '이미 등록된 이메일입니다.' : 'Email already registered.'; return;
+  }
+  users.push({name, email, pw:btoa(pw)});
+  localStorage.setItem('gsns_users', JSON.stringify(users));
+  localStorage.setItem('gsns_user',  JSON.stringify({name, email}));
+  updateLoginButton();
+  closeLoginModal();
+}
+
+function doLogout() {
+  localStorage.removeItem('gsns_user');
+  updateLoginButton();
+  closeLoginModal();
+}
+
 window.onload = () => {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'light') {
@@ -1691,6 +1991,7 @@ window.onload = () => {
     document.getElementById('themeBtn').textContent   = 'Dark Mode';
   }
   setLang(currentLang);
+  updateLoginButton();
   loadRankings();
 };
 </script>
