@@ -10,6 +10,8 @@
 <meta property="og:description" content="아시아, 북미, 유럽, 글로벌 지역별 주간 게임 순위. 롤플레잉·슈팅·전략·액션 장르별 인기 게임 확인." />
 <meta property="og:type" content="website" />
 <meta name="robots" content="index, follow" />
+<meta name="author" content="GSNS" />
+<link rel="canonical" href="https://gsns.pages.dev/" />
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
 
@@ -127,8 +129,17 @@ body.light .toggle-icon{transform:rotate(20deg);}
 }
 .game-banner{
   width:100%;height:100%;
-  object-fit:cover;object-position:center;
+  object-fit:cover;object-position:center 20%;
   display:block;
+}
+/* 배너 하단 그라디언트 — 이미지 상단 일부만 노출 */
+.img-wrap::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:52%;
+  background:linear-gradient(to top,rgba(17,24,39,.92),transparent);
+  z-index:2;pointer-events:none;
+}
+body.light .img-wrap::after{
+  background:linear-gradient(to top,rgba(241,245,249,.92),transparent);
 }
 .logo-layer{
   position:absolute;inset:0;
@@ -398,12 +409,13 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 
 <footer>
   <div class="footer-links">
-    <button id="footerAbout" onclick="showModal('about')">서비스 소개</button>
+    <a id="footerAbout" href="about.html">서비스 소개</a>
     <span class="footer-sep">|</span>
-    <button id="footerPrivacy" onclick="showModal('privacy')">개인정보처리방침</button>
+    <a id="footerPrivacy" href="privacy.html">개인정보처리방침</a>
     <span class="footer-sep">|</span>
     <a id="footerContact" href="contact.html">제휴 문의</a>
   </div>
+  <p class="footer-source" style="opacity:.5;font-size:.72rem;margin-bottom:4px">게임 이미지: 각 게임사 공식 제공 홍보용 아트 © 해당 게임사. 본 사이트는 정보 제공 목적으로만 사용합니다.</p>
   <p class="footer-source" id="footerSource">순위 데이터: SteamSpy CCU + 지역 가중치 | 매주 월요일 자동 업데이트</p>
   <p>© 2026 GSNS - Game Social Network Service</p>
 </footer>
@@ -1774,17 +1786,17 @@ function renderGames(list) {
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
     const imgInner = banner
-      ? `<img src="${banner}" class="game-banner" alt="${displayName}"
+      ? `<img src="${banner}" class="game-banner" alt="${displayName} 공식 배너 이미지" loading="lazy"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="logo-layer" style="display:none">
-            <img src="${logo}" class="logo-in-layer" alt=""
+            <img src="${logo}" class="logo-in-layer" alt="${displayName} 로고" loading="lazy"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="init-box" style="display:none">
               <div class="fi">${initials}</div><div class="fn">${displayName}</div>
             </div>
           </div>`
       : `<div class="logo-layer" style="display:flex">
-            <img src="${logo}" class="logo-in-layer" alt="${displayName}"
+            <img src="${logo}" class="logo-in-layer" alt="${displayName} 공식 로고" loading="lazy"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="init-box" style="display:none">
               <div class="fi">${initials}</div><div class="fn">${displayName}</div>
