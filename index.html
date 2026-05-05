@@ -682,6 +682,118 @@ const descMapEn = {
   "Aion 2":                     "NCsoft's next-gen MMORPG. Debuted at #6 in Korean PC rooms after its November 2025 launch.",
 };
 
+// ── 공식 현지화 게임 명칭 (각 게임 공식 홈페이지 기준) ────────────────────
+const gameNameMap = {
+  ko: {
+    "League of Legends":          "리그 오브 레전드",
+    "PUBG: Battlegrounds":        "배틀그라운드",
+    "Fortnite":                   "포트나이트",
+    "Among Us":                   "어몽 어스",
+    "Rocket League":              "로켓 리그",
+    "World of Warcraft":          "월드 오브 워크래프트",
+    "StarCraft II":               "스타크래프트 II",
+    "Lost Ark":                   "로스트아크",
+    "Clash of Clans":             "클래시 오브 클랜",
+    "Animal Crossing":            "모여봐요 동물의 숲",
+    "Lineage":                    "리니지",
+    "Sudden Attack":              "서든어택",
+    "Aion 2":                     "아이온 2",
+    "Eternal Return":             "이터널 리턴",
+    "FC Online":                  "FC 온라인",
+    "Stardew Valley":             "스타듀 밸리",
+    "Monster Hunter: World":      "몬스터 헌터: 월드",
+    "Rainbow Six Siege":          "레인보우 식스 시즈",
+    "Valheim":                    "발하임",
+    "Apex Legends":               "에이펙스 레전드",
+  },
+  zh: {
+    "League of Legends":          "英雄联盟",
+    "PUBG: Battlegrounds":        "绝地求生",
+    "Minecraft":                  "我的世界",
+    "Elden Ring":                 "艾尔登法环",
+    "Fortnite":                   "堡垒之夜",
+    "Clash of Clans":             "部落冲突",
+    "World of Warcraft":          "魔兽世界",
+    "Animal Crossing":            "集合啦！动物森友会",
+    "StarCraft II":               "星际争霸 II",
+    "Roblox":                     "罗布乐思",
+    "Civilization VI":            "文明VI",
+    "Sekiro":                     "只狼：影逝二度",
+    "Lineage":                    "天堂",
+    "Call of Duty":               "使命召唤",
+    "Monster Hunter: World":      "怪物猎人：世界",
+    "Valorant":                   "无畏契约",
+    "Apex Legends":               "Apex英雄",
+    "Stardew Valley":             "星露谷物语",
+    "The Witcher 3":              "巫师3：狂猎",
+    "Red Dead Redemption 2":      "荒野大镖客：救赎2",
+    "Rainbow Six Siege":          "彩虹六号：围攻",
+    "Warframe":                   "星际战甲",
+    "Among Us":                   "我们之间",
+    "Terraria":                   "泰拉瑞亚",
+    "Path of Exile":              "流放之路",
+    "Destiny 2":                  "命运2",
+    "Valheim":                    "英灵神殿",
+    "Cyberpunk 2077":             "赛博朋克2077",
+    "Baldur's Gate 3":            "博德之门3",
+    "The Sims 4":                 "模拟人生4",
+    "Cities: Skylines":           "城市：天际线",
+    "Battlefield 2042":           "战地2042",
+    "Halo Infinite":              "光环：无限",
+    "Team Fortress 2":            "军团要塞2",
+    "Euro Truck Simulator 2":     "欧洲卡车模拟2",
+    "GTA 5":                      "侠盗猎车手5",
+  },
+  ja: {
+    "League of Legends":          "リーグ・オブ・レジェンド",
+    "Fortnite":                   "フォートナイト",
+    "Rocket League":              "ロケットリーグ",
+    "Clash of Clans":             "クラッシュ・オブ・クラン",
+    "Animal Crossing":            "あつまれ どうぶつの森",
+    "Among Us":                   "アモングアス",
+    "Monster Hunter: World":      "モンスターハンター：ワールド",
+    "Sekiro":                     "隻狼 SHADOWS DIE TWICE",
+    "Lineage":                    "リネージュ",
+    "Eternal Return":             "エターナルリターン",
+    "Apex Legends":               "エーペックスレジェンズ",
+    "Valorant":                   "ヴァロラント",
+    "Stardew Valley":             "スターデューバレー",
+    "Baldur's Gate 3":            "バルダーズ・ゲート3",
+    "Red Dead Redemption 2":      "レッド・デッド・リデンプション2",
+    "Cyberpunk 2077":             "サイバーパンク2077",
+    "The Witcher 3":              "ウィッチャー3 ワイルドハント",
+    "Civilization VI":            "シヴィライゼーション VI",
+    "The Sims 4":                 "ザ・シムズ4",
+    "Cities: Skylines":           "シティーズ：スカイライン",
+    "Battlefield 2042":           "バトルフィールド2042",
+    "Halo Infinite":              "ヘイロー インフィニット",
+    "Warframe":                   "ウォーフレーム",
+    "Elden Ring":                 "エルデンリング",
+    "Valheim":                    "ヴァルヘイム",
+    "Rainbow Six Siege":          "レインボーシックス シージ",
+    "World of Warcraft":          "ワールド オブ ウォークラフト",
+    "Terraria":                   "テラリア",
+    "Path of Exile":              "パス オブ エグザイル",
+    "Destiny 2":                  "デスティニー2",
+    "GTA 5":                      "グランド・セフト・オートV",
+    "Roblox":                     "ロブロックス",
+    "Minecraft":                  "マインクラフト",
+    "Euro Truck Simulator 2":     "ユーロトラック シミュレーター2",
+    "Team Fortress 2":            "チームフォートレス2",
+    "Lost Ark":                   "ロストアーク",
+    "Palworld":                   "パルワールド",
+    "Call of Duty":               "コール オブ デューティ",
+    "PUBG: Battlegrounds":        "PUBG: バトルグラウンズ",
+  },
+};
+
+function getLocalizedGameName(name) {
+  if (currentLang === 'ko') return gameNameMap.ko[name] || name;
+  if (currentLang === 'zh') return gameNameMap.zh[name] || name;
+  if (currentLang === 'ja') return gameNameMap.ja[name] || name;
+  return name;
+}
+
 const descMapZh = {
   "League of Legends":          "Riot Games 的 5v5 战略 MOBA。全球超 1 亿玩家热爱的竞技游戏。",
   "PUBG: Battlegrounds":        "百人生存大逃杀的鼻祖。韩国 Krafton 开发的全球爆款。",
@@ -1598,6 +1710,7 @@ function renderGames(list) {
   const pageList = list.slice(start, start + GAMES_PER_PAGE);
   pageList.forEach((game, i) => {
     const rank = start + i + 1;
+    const displayName = getLocalizedGameName(game.name);
     const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
     const cLinks = communityMap[game.name];
     const communityHTML = cLinks ? `
@@ -1612,20 +1725,20 @@ function renderGames(list) {
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
     const imgInner = banner
-      ? `<img src="${banner}" class="game-banner" alt="${game.name}"
+      ? `<img src="${banner}" class="game-banner" alt="${displayName}"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="logo-layer" style="display:none">
             <img src="${logo}" class="logo-in-layer" alt=""
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="init-box" style="display:none">
-              <div class="fi">${initials}</div><div class="fn">${game.name}</div>
+              <div class="fi">${initials}</div><div class="fn">${displayName}</div>
             </div>
           </div>`
       : `<div class="logo-layer" style="display:flex">
-            <img src="${logo}" class="logo-in-layer" alt="${game.name}"
+            <img src="${logo}" class="logo-in-layer" alt="${displayName}"
               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="init-box" style="display:none">
-              <div class="fi">${initials}</div><div class="fn">${game.name}</div>
+              <div class="fi">${initials}</div><div class="fn">${displayName}</div>
             </div>
           </div>`;
     grid.innerHTML += `
@@ -1635,7 +1748,7 @@ function renderGames(list) {
           <div class="rank-badge">#${rank}</div>
           <div class="genre-badge">${game.genre}</div>
         </div>
-        <h3>${game.name}</h3>
+        <h3>${displayName}</h3>
         ${desc ? `<p class="desc-text">${desc}</p>` : ''}
         <p>${t('platform')}: ${game.platform}</p>
         <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
