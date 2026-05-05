@@ -42,7 +42,8 @@ header{
   position:sticky;top:0;z-index:10;
   transition:background .3s;box-shadow:0 2px 10px rgba(0,0,0,.15);
 }
-h1{font-size:2.5rem;}
+h1{font-size:2.5rem;display:flex;align-items:center;justify-content:center;gap:10px;}
+.gsns-mark{width:2.2rem;height:2.2rem;vertical-align:middle;display:inline-block;}
 .sub-text{color:var(--sub);margin-top:8px;}
 .nav-btn{
   position:absolute;right:30px;top:50%;transform:translateY(-50%);
@@ -344,7 +345,7 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
 
 <header>
   <button class="nav-btn" id="loginNavBtn" onclick="showLoginModal()">🔑 로그인</button>
-  <h1>🎮 GSNS</h1>
+  <h1><img src="/favicon.svg" class="gsns-mark" alt="GSNS 마크"> GSNS</h1>
   <p class="sub-text" id="siteSubtitle">한국 게임 & 글로벌 게임 주간 랭킹 플랫폼</p>
   <div class="live-bar">
     <span class="live-badge"><span class="live-dot"></span>WEEKLY</span>
@@ -2132,7 +2133,7 @@ function getLoginModalHTML(tab) {
   const lbl = k => labels[k][L] || labels[k]['en'];
   tab = tab || 'login';
   return `
-    <div class="auth-header"><h3>🎮 GSNS</h3></div>
+    <div class="auth-header"><h3><img src="/favicon.svg" style="width:1.4rem;height:1.4rem;vertical-align:middle;margin-right:6px;" alt="GSNS">GSNS</h3></div>
     <div class="auth-tabs">
       <button class="auth-tab${tab==='login'?' active':''}" onclick="switchAuthTab('login')">${lbl('login')}</button>
       <button class="auth-tab${tab==='signup'?' active':''}" onclick="switchAuthTab('signup')">${lbl('signup')}</button>
