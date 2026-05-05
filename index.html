@@ -683,7 +683,7 @@ header{padding:22px 80px;}
     </button>
     <div class="drawer-nav-divider"></div>
     <button class="drawer-nav-btn bug-report" onclick="navigateToBugReport()">
-      <span class="nav-icon">🐛</span><span>버그수정요청 &amp; 문의사항</span>
+      <span class="nav-icon">🐛</span><span id="navBugReport">버그수정요청 &amp; 문의사항</span>
     </button>
   </nav>
 </div>
@@ -742,12 +742,12 @@ header{padding:22px 80px;}
   <div id="viewBugReport" class="view-container" style="display:none">
     <div class="view-topbar">
       <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
-      <h2 class="view-title">🐛 버그수정요청 &amp; 문의사항</h2>
+      <h2 class="view-title" id="bugViewTitle">🐛 버그수정요청 &amp; 문의사항</h2>
     </div>
 
     <!-- 글쓰기 폼 -->
     <div class="bug-write-box">
-      <div class="bug-write-title">✏️ 새 글 작성</div>
+      <div class="bug-write-title" id="bugWriteLabel">✏️ 새 글 작성</div>
       <div class="bug-field-row">
         <select class="bug-select" id="bugCategory">
           <option value="bug">🐛 버그수정요청</option>
@@ -759,13 +759,13 @@ header{padding:22px 80px;}
       <textarea class="bug-textarea" id="bugContentInput" placeholder="내용을 입력하세요. 버그의 경우 발생 상황, 어떤 화면에서 발생했는지 등 구체적으로 적어주시면 빠르게 수정할 수 있습니다."></textarea>
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
         <input class="bug-input" id="bugNickInput" type="text" placeholder="닉네임 (선택)" maxlength="20" style="max-width:180px">
-        <button class="bug-submit-btn" onclick="submitBugPost()">게시하기 →</button>
+        <button class="bug-submit-btn" id="bugSubmitBtn" onclick="submitBugPost()">게시하기 →</button>
       </div>
     </div>
 
     <!-- 게시글 목록 -->
     <div class="bug-posts-header">
-      <span class="bug-posts-title">📋 접수된 글</span>
+      <span class="bug-posts-title" id="bugPostsLabel">📋 접수된 글</span>
       <span class="bug-post-count" id="bugPostCount"></span>
     </div>
     <div id="bugPostList"></div>
@@ -2096,6 +2096,19 @@ const TRANS = {
     ctaBtn:'제휴 문의하기 →',
     footerAbout:'서비스 소개', footerPrivacy:'개인정보처리방침', footerContact:'제휴 문의',
     footerSource:'순위 데이터: SteamSpy CCU + 지역 가중치 | 매주 월요일 자동 업데이트',
+    navBugReport:'버그수정요청 & 문의사항',
+    bugPageTitle:'🐛 버그수정요청 & 문의사항',
+    bugWriteTitle:'✏️ 새 글 작성',
+    bugCatBug:'🐛 버그수정요청', bugCatInquiry:'💬 문의사항', bugCatSuggestion:'💡 기능건의',
+    bugTitlePh:'제목을 입력하세요',
+    bugBodyPh:'내용을 입력하세요. 버그의 경우 발생 상황, 어떤 화면에서 발생했는지 등 구체적으로 적어주시면 빠르게 수정할 수 있습니다.',
+    bugNickPh:'닉네임 (선택)', bugSubmit:'게시하기 →',
+    bugPostsTitle:'📋 접수된 글', bugTotal:n=>`총 ${n}건`,
+    bugEmpty:'아직 접수된 글이 없습니다.\n버그나 문의사항이 있으면 위 양식에 작성해 주세요 😊',
+    bugStatusOpen:'접수됨', bugDel:'삭제', bugAnon:'익명',
+    bugTagBug:'🐛 버그수정요청', bugTagInquiry:'💬 문의사항', bugTagSuggestion:'💡 기능건의',
+    bugConfirmDel:'이 글을 삭제하시겠습니까?',
+    bugAlertTitle:'제목을 입력해주세요.', bugAlertBody:'내용을 입력해주세요.',
   },
   en:{
     subtitle:'Global Weekly Game Rankings & Community Platform',
@@ -2118,6 +2131,19 @@ const TRANS = {
     ctaBtn:'Contact Us →',
     footerAbout:'About GSNS', footerPrivacy:'Privacy Policy', footerContact:'Partnership',
     footerSource:'Ranking data: SteamSpy CCU + regional weights | Updated every Monday',
+    navBugReport:'Bug Report & Inquiry',
+    bugPageTitle:'🐛 Bug Report & Inquiry',
+    bugWriteTitle:'✏️ Write a Post',
+    bugCatBug:'🐛 Bug Report', bugCatInquiry:'💬 Inquiry', bugCatSuggestion:'💡 Feature Request',
+    bugTitlePh:'Enter a title',
+    bugBodyPh:'Describe the issue. For bugs, please include when/where it occurred for faster resolution.',
+    bugNickPh:'Nickname (optional)', bugSubmit:'Submit →',
+    bugPostsTitle:'📋 Submitted Posts', bugTotal:n=>`${n} posts`,
+    bugEmpty:'No posts yet.\nFeel free to report bugs or ask questions above 😊',
+    bugStatusOpen:'Open', bugDel:'Delete', bugAnon:'Anonymous',
+    bugTagBug:'🐛 Bug Report', bugTagInquiry:'💬 Inquiry', bugTagSuggestion:'💡 Feature Request',
+    bugConfirmDel:'Delete this post?',
+    bugAlertTitle:'Please enter a title.', bugAlertBody:'Please enter the content.',
   },
   zh:{
     subtitle:'全球每周游戏排行榜与社区平台',
@@ -2140,6 +2166,19 @@ const TRANS = {
     ctaBtn:'联系我们 →',
     footerAbout:'关于我们', footerPrivacy:'隐私政策', footerContact:'合作咨询',
     footerSource:'排名数据：SteamSpy CCU + 地区权重 | 每周一自动更新',
+    navBugReport:'反馈与咨询',
+    bugPageTitle:'🐛 问题反馈 & 咨询',
+    bugWriteTitle:'✏️ 发布帖子',
+    bugCatBug:'🐛 问题反馈', bugCatInquiry:'💬 咨询', bugCatSuggestion:'💡 功能建议',
+    bugTitlePh:'请输入标题',
+    bugBodyPh:'请描述问题详情。如是bug，请说明发生的场景和界面，以便我们快速修复。',
+    bugNickPh:'昵称（可选）', bugSubmit:'发布 →',
+    bugPostsTitle:'📋 已提交帖子', bugTotal:n=>`共 ${n} 条`,
+    bugEmpty:'暂无帖子。\n如有问题或建议，请在上方填写 😊',
+    bugStatusOpen:'已接收', bugDel:'删除', bugAnon:'匿名',
+    bugTagBug:'🐛 问题反馈', bugTagInquiry:'💬 咨询', bugTagSuggestion:'💡 功能建议',
+    bugConfirmDel:'确定删除这条帖子？',
+    bugAlertTitle:'请输入标题。', bugAlertBody:'请输入内容。',
   },
   ja:{
     subtitle:'グローバル週間ゲームランキング & コミュニティプラットフォーム',
@@ -2162,6 +2201,19 @@ const TRANS = {
     ctaBtn:'お問い合わせ →',
     footerAbout:'サービス紹介', footerPrivacy:'プライバシーポリシー', footerContact:'パートナーシップ',
     footerSource:'ランキングデータ：SteamSpy CCU + 地域ウェイト | 毎週月曜日自動更新',
+    navBugReport:'バグ報告 & お問い合わせ',
+    bugPageTitle:'🐛 バグ報告 & お問い合わせ',
+    bugWriteTitle:'✏️ 新規投稿',
+    bugCatBug:'🐛 バグ報告', bugCatInquiry:'💬 お問い合わせ', bugCatSuggestion:'💡 機能提案',
+    bugTitlePh:'タイトルを入力してください',
+    bugBodyPh:'内容を入力してください。バグの場合は発生状況や画面を具体的に記載していただくと迅速に対応できます。',
+    bugNickPh:'ニックネーム（任意）', bugSubmit:'投稿する →',
+    bugPostsTitle:'📋 受付済み投稿', bugTotal:n=>`${n} 件`,
+    bugEmpty:'まだ投稿がありません。\nバグや質問があれば上のフォームからご記入ください 😊',
+    bugStatusOpen:'受付済み', bugDel:'削除', bugAnon:'匿名',
+    bugTagBug:'🐛 バグ報告', bugTagInquiry:'💬 お問い合わせ', bugTagSuggestion:'💡 機能提案',
+    bugConfirmDel:'この投稿を削除しますか？',
+    bugAlertTitle:'タイトルを入力してください。', bugAlertBody:'内容を入力してください。',
   }
 };
 function t(key){ return TRANS[currentLang][key]; }
@@ -2829,12 +2881,30 @@ function setLang(lang) {
   updateTimeDisplay();
   updateLoginButton();
   updateFilterRow();
+  // bug report view i18n
+  setTxt('navBugReport', t('navBugReport'));
+  setTxt('bugViewTitle', t('bugPageTitle'));
+  setTxt('bugWriteLabel', t('bugWriteTitle'));
+  setTxt('bugPostsLabel', t('bugPostsTitle'));
+  const bugSubmitBtn = document.getElementById('bugSubmitBtn');
+  if (bugSubmitBtn) bugSubmitBtn.textContent = t('bugSubmit');
+  const bugCat = document.getElementById('bugCategory');
+  if (bugCat) bugCat.innerHTML = `<option value="bug">${t('bugCatBug')}</option><option value="inquiry">${t('bugCatInquiry')}</option><option value="suggestion">${t('bugCatSuggestion')}</option>`;
+  const bugTitleIn = document.getElementById('bugTitleInput');
+  if (bugTitleIn) bugTitleIn.placeholder = t('bugTitlePh');
+  const bugBodyIn = document.getElementById('bugContentInput');
+  if (bugBodyIn) bugBodyIn.placeholder = t('bugBodyPh');
+  const bugNickIn = document.getElementById('bugNickInput');
+  if (bugNickIn) bugNickIn.placeholder = t('bugNickPh');
+
   if (currentView === 'continent') {
     const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
     setTxt('continentViewTitle', emojis[currentContinent] + ' ' + t('continent')[currentContinent]);
     renderGames(getActiveGameList());
   } else if (currentView === 'newgames') {
     renderNewGamesPage();
+  } else if (currentView === 'bugreport') {
+    renderBugPosts();
   }
   renderDashboard();
 }
@@ -3266,10 +3336,10 @@ function submitBugPost() {
   const cat   = document.getElementById('bugCategory').value;
   const title = document.getElementById('bugTitleInput').value.trim();
   const body  = document.getElementById('bugContentInput').value.trim();
-  const nick  = document.getElementById('bugNickInput').value.trim() || '익명';
+  const nick  = document.getElementById('bugNickInput').value.trim() || t('bugAnon');
 
-  if (!title) { alert('제목을 입력해주세요.'); return; }
-  if (!body)  { alert('내용을 입력해주세요.'); return; }
+  if (!title) { alert(t('bugAlertTitle')); return; }
+  if (!body)  { alert(t('bugAlertBody')); return; }
 
   const posts = getBugPosts();
   posts.unshift({
@@ -3287,7 +3357,7 @@ function submitBugPost() {
 }
 
 function deleteBugPost(id) {
-  if (!confirm('이 글을 삭제하시겠습니까?')) return;
+  if (!confirm(t('bugConfirmDel'))) return;
   saveBugPosts(getBugPosts().filter(p => p.id !== id));
   renderBugPosts();
 }
@@ -3298,14 +3368,14 @@ function renderBugPosts() {
   if (!list) return;
   const posts = getBugPosts();
 
-  if (count) count.textContent = `총 ${posts.length}건`;
+  if (count) count.textContent = t('bugTotal')(posts.length);
 
   if (!posts.length) {
-    list.innerHTML = '<div class="bug-empty">아직 접수된 글이 없습니다.<br>버그나 문의사항이 있으면 위 양식에 작성해 주세요 😊</div>';
+    list.innerHTML = `<div class="bug-empty">${t('bugEmpty').replace(/\n/g,'<br>')}</div>`;
     return;
   }
 
-  const catLabel = { bug:'🐛 버그수정요청', inquiry:'💬 문의사항', suggestion:'💡 기능건의' };
+  const catLabel = { bug:t('bugTagBug'), inquiry:t('bugTagInquiry'), suggestion:t('bugTagSuggestion') };
   const catClass = { bug:'bug', inquiry:'inquiry', suggestion:'suggestion' };
 
   list.innerHTML = posts.map(p => `
@@ -3313,12 +3383,12 @@ function renderBugPosts() {
       <div class="bug-post-top">
         <span class="bug-tag ${catClass[p.cat]||'bug'}">${catLabel[p.cat]||p.cat}</span>
         <span class="bug-post-title-text">${escHtml(p.title)}</span>
-        <span class="bug-status-badge open">접수됨</span>
+        <span class="bug-status-badge open">${t('bugStatusOpen')}</span>
       </div>
       <div class="bug-post-body">${escHtml(p.body)}</div>
       <div class="bug-post-footer">
         <span class="bug-post-meta">${escHtml(p.nick)} · ${p.date}</span>
-        <button class="bug-del-btn" onclick="deleteBugPost(${p.id})">삭제</button>
+        <button class="bug-del-btn" onclick="deleteBugPost(${p.id})">${t('bugDel')}</button>
       </div>
     </div>
   `).join('');
