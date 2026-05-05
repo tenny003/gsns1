@@ -339,6 +339,59 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
 .auth-logout:hover{opacity:.85;}
 
 footer{text-align:center;padding:30px;color:var(--footer-color);}
+
+/* ── 메타스코어 점수 뱃지 ── */
+.score-row{display:flex;gap:6px;margin-bottom:10px;align-items:center;}
+.meta-badge{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px 9px;border-radius:8px;min-width:44px;
+}
+.meta-badge.green{background:#16a34a;color:#fff;}
+.meta-badge.yellow{background:#ca8a04;color:#fff;}
+.meta-badge.orange{background:#ea580c;color:#fff;}
+.meta-badge.gray{background:var(--control-bg);color:var(--sub);border:1px solid var(--border);}
+.meta-badge .s-val{font-size:.92rem;font-weight:900;line-height:1;}
+.meta-badge .s-lbl{font-size:.57rem;font-weight:700;opacity:.85;margin-top:2px;letter-spacing:.02em;}
+.user-badge{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:4px 9px;border-radius:8px;min-width:44px;
+  border:1.5px solid var(--border);
+}
+.user-badge .s-val{font-size:.92rem;font-weight:900;line-height:1;color:var(--text);}
+.user-badge .s-lbl{font-size:.57rem;font-weight:700;color:var(--sub);margin-top:2px;letter-spacing:.02em;}
+.release-chip{font-size:.7rem;color:var(--sub);font-weight:600;margin-left:auto;
+  background:var(--control-bg);padding:2px 7px;border-radius:50px;border:1px solid var(--border);}
+
+/* ── Must-Play 배지 ── */
+.must-play-wrap{margin-bottom:5px;}
+.must-play-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  color:#fff;padding:3px 10px;border-radius:50px;
+  font-size:.67rem;font-weight:800;letter-spacing:.06em;
+  box-shadow:0 2px 8px rgba(245,158,11,.4);
+}
+
+/* ── 필터 & 정렬 컨트롤 ── */
+.filter-row{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;
+  margin-bottom:18px;padding:10px 14px;
+  background:var(--control-bg);border-radius:12px;border:1px solid var(--border);
+}
+.filter-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.filter-label{font-size:.73rem;font-weight:700;color:var(--sub);white-space:nowrap;padding-right:2px;}
+.filter-btn{
+  padding:5px 11px;border-radius:50px;border:1.5px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.76rem;font-weight:600;
+  cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;
+}
+.filter-btn:hover{border-color:#38bdf8;color:#38bdf8;}
+.filter-btn.active{
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  border-color:transparent;color:#fff;
+  box-shadow:0 2px 8px rgba(56,189,248,.35);
+}
+.filter-sep{width:1px;height:26px;background:var(--border);opacity:.5;margin:0 2px;}
 </style>
 </head>
 <body>
@@ -379,6 +432,9 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   <div class="search-row">
     <input type="text" id="searchInput" placeholder="🔍  게임 검색" oninput="searchGame()" />
   </div>
+
+  <!-- 필터 & 정렬 -->
+  <div class="filter-row" id="filterRow"></div>
 
   <div class="divider"></div>
   <h2 class="section-title" id="sectionTitle"></h2>
@@ -510,6 +566,11 @@ const pubMap = {
   "Eternal Return":            "Nimble Neuron",
   "Delta Force":               "Team Jade",
   "Aion 2":                    "NCSoft",
+  "Monster Hunter Wilds":      "Capcom",
+  "Split Fiction":             "Electronic Arts / Hazelight",
+  "Clair Obscur: Expedition 33":"Kepler Interactive",
+  "Hades II":                  "Supergiant Games",
+  "Blue Prince":               "Raw Fury / Dogubomb",
   "Elden Ring":                "Bandai Namco",
   "Diablo IV":                 "Blizzard Entertainment",
   "Cyberpunk 2077":            "CD Projekt Red",
@@ -605,6 +666,11 @@ const descMap = {
   "Eternal Return":             "님블뉴런의 서바이벌 MOBA. 2D 아이소메트릭 스타일의 독특한 배틀로얄 국산 인디 게임.",
   "Delta Force":                "팀제이드의 무료 밀리터리 FPS. 대규모 전장 모드와 배틀로얄을 결합한 2024년 주목작.",
   "Aion 2":                     "엔씨소프트의 차세대 MMORPG. 2025년 11월 출시 후 한국 PC방 순위 6위 진입한 신작.",
+  "Monster Hunter Wilds":       "Capcom의 2025년 최고 기대작. 황야 지형 변화와 기후 시스템을 결합한 오픈 필드 몬스터 헌팅 액션 RPG.",
+  "Split Fiction":              "Hazelight의 2인 협동 어드벤처. EA 오리지널 타이틀로, 2025년 메타크리틱 최고 협동 게임.",
+  "Clair Obscur: Expedition 33":"Sandfall Interactive의 턴제 RPG. 프랑스풍 아트와 시네마틱 전투로 극찬받은 2025년 깜짝 GOTY 후보.",
+  "Hades II":                   "수퍼자이언트 게임즈의 로그라이크 속편. 올림포스 신화를 배경으로 한 2025년 메타크리틱 최고 평점 게임.",
+  "Blue Prince":                "독창적인 퍼즐 로그라이크. 방을 탐험할 때마다 구조가 바뀌는 미스터리 저택을 배경으로 한 2025년 인디 명작.",
 };
 
 const descMapEn = {
@@ -695,6 +761,11 @@ const descMapEn = {
   "Eternal Return":             "Nimble Neuron's survival MOBA. A unique 2D isometric Korean indie battle royale.",
   "Delta Force":                "Team Jade's free military FPS. A 2024 standout blending large-scale warfare and battle royale.",
   "Aion 2":                     "NCsoft's next-gen MMORPG. Debuted at #6 in Korean PC rooms after its November 2025 launch.",
+  "Monster Hunter Wilds":       "Capcom's most anticipated 2025 title. Open-field monster hunting action RPG with dynamic terrain and weather systems.",
+  "Split Fiction":              "Hazelight's 2-player co-op adventure. EA Originals title and 2025's highest-rated co-op game on Metacritic.",
+  "Clair Obscur: Expedition 33":"Sandfall Interactive's turn-based RPG. Acclaimed for its French-inspired art and cinematic combat — a 2025 GOTY contender.",
+  "Hades II":                   "Supergiant Games' rogue-like sequel. Set in Olympian mythology and 2025's top-rated game on Metacritic.",
+  "Blue Prince":                "A unique puzzle rogue-like. A 2025 indie masterpiece set in a mysterious manor whose layout changes every run.",
 };
 
 // ── 공식 현지화 게임 명칭 (각 게임 공식 홈페이지 기준) ────────────────────
@@ -733,6 +804,10 @@ const gameNameMap = {
     "Blade & Soul":               "블레이드 앤 소울",
     "Escape from Tarkov":         "타르코프",
     "Final Fantasy XIV":          "파이널 판타지 XIV",
+    "Monster Hunter Wilds":       "몬스터 헌터 와일즈",
+    "Clair Obscur: Expedition 33":"클레르 옵스퀴르: 원정대 33",
+    "Hades II":                   "하데스 II",
+    "Blue Prince":                "블루 프린스",
   },
   zh: {
     "League of Legends":          "英雄联盟",
@@ -789,6 +864,10 @@ const gameNameMap = {
     "Hollow Knight":              "空洞骑士",
     "No Man's Sky":               "无人深空",
     "Subnautica":                 "深海迷航",
+    "Monster Hunter Wilds":       "怪物猎人：荒野",
+    "Clair Obscur: Expedition 33":"光与暗：第33远征队",
+    "Hades II":                   "哈迪斯II",
+    "Blue Prince":                "蓝色王子",
   },
   ja: {
     "League of Legends":          "リーグ・オブ・レジェンド",
@@ -846,6 +925,10 @@ const gameNameMap = {
     "Hollow Knight":              "ホロウナイト",
     "No Man's Sky":               "ノーマンズスカイ",
     "Subnautica":                 "サブノーティカ",
+    "Monster Hunter Wilds":       "モンスターハンターワイルズ",
+    "Clair Obscur: Expedition 33":"クレール・オブスキュール：遠征33",
+    "Hades II":                   "ハデス II",
+    "Blue Prince":                "ブルー・プリンス",
   },
 };
 
@@ -877,6 +960,11 @@ const descMapZh = {
   "GTA 5":                      "Rockstar Games 开放世界犯罪动作游戏。史上最畅销游戏之一，GTA Online 至今活跃。",
   "Roblox":                     "Roblox 公司的元宇宙平台。全球跨平台同时在线人数第一，深受青少年喜爱。",
   "Stardew Valley":             "独立开发者传奇之作。农场经营 + 温暖的村庄关系 RPG。",
+  "Monster Hunter Wilds":       "Capcom 2025年最期待作品。融合动态地形与天气系统的开放野外怪物猎杀动作RPG。",
+  "Split Fiction":              "Hazelight 双人协作冒险游戏。EA Originals 出品，2025年Metacritic最高评分合作游戏。",
+  "Clair Obscur: Expedition 33":"Sandfall Interactive 的回合制RPG。以法式美术风格和电影级战斗惊艳业界，2025年年度游戏候选。",
+  "Hades II":                   "超级巨人游戏的Rogue-like续作。以奥林匹斯神话为背景，荣获2025年Metacritic最高评分。",
+  "Blue Prince":                "独特的解谜Rogue-like。以每次布局随机变化的神秘庄园为舞台，2025年独立游戏杰作。",
 };
 
 const descMapJa = {
@@ -900,6 +988,11 @@ const descMapJa = {
   "Stardew Valley":             "1人開発インディーの伝説。農場経営＋村人との温かい関係RPG。",
   "GTA 5":                      "RockstarGamesのオープンワールド犯罪アクション。史上最も売れたゲームのひとつ。GTA Onlineも今なお活発。",
   "Roblox":                     "Roblox Corporationのメタバースプラットフォーム。全世界クロスプラットフォームCCU1位、10代に圧倒的人気。",
+  "Monster Hunter Wilds":       "Capcomの2025年期待作。ダイナミックな地形変化と天候システムを組み合わせたオープンフィールドの狩猟アクションRPG。",
+  "Split Fiction":              "Hazeligtの2人協力アドベンチャー。EA Originalsタイトルで、2025年Metacriticで最高評価の協力ゲーム。",
+  "Clair Obscur: Expedition 33":"Sandfall InteractiveのターンベースRPG。フランス風アートと映画的な戦闘で高評価、2025年GOTY候補作。",
+  "Hades II":                   "SupergiantのローグライクRPG続編。オリュンポス神話を舞台にした2025年Metacritic最高点ゲーム。",
+  "Blue Prince":                "独創的なパズルローグライク。毎回構造が変わる謎の邸宅を舞台にした2025年インディ傑作。",
 };
 
 const L = (name,genre,platform,site,pub) => ({name,genre,platform,publisher:pub||pubMap[name]||'',site,logo:logoMap[name]||'',desc:descMap[name]||''});
@@ -994,6 +1087,11 @@ const logoMap = {
   "Escape from Tarkov":       "https://upload.wikimedia.org/wikipedia/en/2/20/Escape_from_Tarkov.jpg",
   "Roblox":                   "https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg",
   "Aion 2":                   "https://cdn.gamemeca.com/gmdb/g001/43/65/gm307250_31223.jpg",
+  "Monster Hunter Wilds":     "https://cdn.cloudflare.steamstatic.com/steam/apps/2246340/logo.png",
+  "Split Fiction":            "https://cdn.cloudflare.steamstatic.com/steam/apps/2552290/logo.png",
+  "Clair Obscur: Expedition 33":"https://cdn.cloudflare.steamstatic.com/steam/apps/2881650/logo.png",
+  "Hades II":                 "https://cdn.cloudflare.steamstatic.com/steam/apps/1145350/logo.png",
+  "Blue Prince":              "https://cdn.cloudflare.steamstatic.com/steam/apps/1569580/logo.png",
 };
 
 const bannerMap = {
@@ -1072,6 +1170,11 @@ const bannerMap = {
   "Lineage":                   "https://blogfiles.ncsoft.net/news/090df2c4-59ab-4c99-b304-aa4657ab68a9.png",
   "Animal Crossing":           "https://images.launchbox-app.com/570d7043-465f-426d-b7b6-b00a380a9018.png",
   "Team Fortress 2":           "https://cdn.cloudflare.steamstatic.com/steam/apps/440/header.jpg",
+  "Monster Hunter Wilds":      "https://cdn.cloudflare.steamstatic.com/steam/apps/2246340/header.jpg",
+  "Split Fiction":             "https://cdn.cloudflare.steamstatic.com/steam/apps/2552290/header.jpg",
+  "Clair Obscur: Expedition 33":"https://cdn.cloudflare.steamstatic.com/steam/apps/2881650/header.jpg",
+  "Hades II":                  "https://cdn.cloudflare.steamstatic.com/steam/apps/1145350/header.jpg",
+  "Blue Prince":               "https://cdn.cloudflare.steamstatic.com/steam/apps/1569580/header.jpg",
 };
 
 const gameData = {
@@ -1180,6 +1283,13 @@ const gameData = {
       L('Valheim','Survival','PC','https://www.valheimgame.com/'),
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld'),
       L("No Man's Sky",'Space Sim','PC/Console','https://www.nomanssky.com/')
+    ],
+    '2025 신작': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
+      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
+      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
+      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
+      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
     ]
   },
   na: {
@@ -1280,6 +1390,13 @@ const gameData = {
       L('Terraria','Sandbox','PC','https://terraria.org/'),
       L('Valheim','Survival','PC','https://www.valheimgame.com/'),
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld')
+    ],
+    '2025 신작': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
+      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
+      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
+      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
+      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
     ]
   },
   europe: {
@@ -1370,6 +1487,13 @@ const gameData = {
       L('Microsoft Flight Simulator','Flight Sim','PC','https://www.flightsimulator.com/'),
       L('Planet Zoo','Management Sim','PC','https://www.planetzoo.game/'),
       L('Stardew Valley','Farming Sim','PC/Console','https://www.stardewvalley.net/')
+    ],
+    '2025 신작': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
+      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
+      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
+      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
+      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
     ]
   },
   global: {
@@ -1478,6 +1602,13 @@ const gameData = {
       L('Planet Zoo','Management Sim','PC','https://www.planetzoo.game/'),
       L('Valheim','Survival','PC','https://www.valheimgame.com/'),
       L('Palworld','Open World Sim','PC/Console','https://www.pocketpair.jp/palworld')
+    ],
+    '2025 신작': [
+      L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/','Capcom'),
+      L('Split Fiction','Co-op Adventure','PC/Console','https://www.ea.com/games/split-fiction','Electronic Arts / Hazelight'),
+      L("Clair Obscur: Expedition 33",'RPG','PC/Console','https://www.clair-obscur.com/','Kepler Interactive'),
+      L('Hades II','Rogue-like RPG','PC/Console','https://www.supergiantgames.com/games/hades-II/','Supergiant Games'),
+      L('Blue Prince','Puzzle','PC/Console','https://store.steampowered.com/app/1569580/Blue_Prince/','Raw Fury / Dogubomb'),
     ]
   }
 };
@@ -1493,8 +1624,12 @@ const TRANS = {
     loading:'순위 불러오는 중...', loadFail:'순위 불러오기 실패',
     lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
     continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','2025 신작':'2025 신작'},
+    sortBy:'정렬', sortDefault:'기본순', sortScore:'점수순↓', sortName:'이름순', sortRelease:'출시연도↓',
+    pfLabel:'플랫폼', pfAll:'전체', pfPC:'PC', pfMobile:'모바일', pfConsole:'콘솔',
+    critic:'평론가', user:'유저',
     sourceTop:'SteamSpy 동시접속자(CCU) + 지역 가중치 기반 | 매주 월요일 업데이트',
+    source2025:'Metacritic 2025 신작 상위 타이틀 | 출처: Metacritic, Steam',
     sourceGenre:'장르별 인기 게임 목록 | 출처: SteamSpy · Riot Games · 각 게임사 공개 지표',
     ctaTitle:'함께 성장할 파트너를 찾고 있나요?',
     ctaSub:'게임사, 브랜드, 콘텐츠 크리에이터 등 다양한 제휴를 환영합니다.',
@@ -1511,8 +1646,12 @@ const TRANS = {
     loading:'Loading rankings...', loadFail:'Failed to load rankings',
     lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
     continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','2025 신작':'2025 New'},
+    sortBy:'Sort', sortDefault:'Default', sortScore:'Score↓', sortName:'Name', sortRelease:'Year↓',
+    pfLabel:'Platform', pfAll:'All', pfPC:'PC', pfMobile:'Mobile', pfConsole:'Console',
+    critic:'Critic', user:'User',
     sourceTop:'Based on SteamSpy CCU + regional weights | Updated every Monday',
+    source2025:'Top 2025 Titles | Source: Metacritic, Steam',
     sourceGenre:'Genre game list | Sources: SteamSpy · Riot Games · official player data',
     ctaTitle:'Looking for a partner to grow with?',
     ctaSub:'We welcome partnerships with game studios, brands, and content creators.',
@@ -1529,8 +1668,12 @@ const TRANS = {
     loading:'加载排名中...', loadFail:'加载排名失败',
     lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
     continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','2025 신작':'2025 新作'},
+    sortBy:'排序', sortDefault:'默认', sortScore:'评分↓', sortName:'名称', sortRelease:'年份↓',
+    pfLabel:'平台', pfAll:'全部', pfPC:'PC', pfMobile:'手游', pfConsole:'主机',
+    critic:'评论家', user:'用户',
     sourceTop:'基于 SteamSpy 同时在线人数 + 地区权重 | 每周一更新',
+    source2025:'2025年度佳作 | 数据来源：Metacritic, Steam',
     sourceGenre:'按类型分类的游戏列表 | 来源：SteamSpy · Riot Games · 官方数据',
     ctaTitle:'正在寻找合作伙伴？',
     ctaSub:'欢迎游戏公司、品牌、内容创作者等各类合作。',
@@ -1547,8 +1690,12 @@ const TRANS = {
     loading:'ランキングを読み込み中...', loadFail:'ランキングの読み込みに失敗しました',
     lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
     continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション'},
+    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','2025 신작':'2025 新作'},
+    sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'スコア↓', sortName:'名前', sortRelease:'年度↓',
+    pfLabel:'プラットフォーム', pfAll:'全て', pfPC:'PC', pfMobile:'モバイル', pfConsole:'コンソール',
+    critic:'批評家', user:'ユーザー',
     sourceTop:'SteamSpy 同時接続者数 + 地域ウェイト | 毎週月曜日更新',
+    source2025:'2025年注目タイトル | 出典：Metacritic, Steam',
     sourceGenre:'ジャンル別ゲームリスト | 出典：SteamSpy · Riot Games · 公式データ',
     ctaTitle:'一緒に成長するパートナーを探していますか？',
     ctaSub:'ゲーム会社、ブランド、コンテンツクリエイターなど様々な提携を歓迎します。',
@@ -1788,7 +1935,118 @@ const communityMap = {
   "Madden NFL 25":             {reddit:"https://reddit.com/r/Madden",               discord:"https://discord.gg/madden"},
   "Need for Speed Heat":       {reddit:"https://reddit.com/r/needforspeed",         discord:"https://discord.gg/needforspeed"},
   "Planet Zoo":                {reddit:"https://reddit.com/r/PlanetZoo",            discord:"https://discord.gg/planetzoo"},
+  // ── 2025 신작 ──
+  "Monster Hunter Wilds":      {reddit:"https://reddit.com/r/MonsterHunter",         discord:"https://discord.gg/monsterhunter"},
+  "Split Fiction":             {reddit:"https://reddit.com/r/SplitFiction",          discord:"https://discord.gg/itsaboutgames"},
+  "Clair Obscur: Expedition 33":{reddit:"https://reddit.com/r/ClairObscur",          discord:"https://discord.gg/clairobscur"},
+  "Hades II":                  {reddit:"https://reddit.com/r/HadesTheGame",          discord:"https://discord.gg/supergiantgames"},
+  "Blue Prince":               {reddit:"https://reddit.com/r/BluePrince",            discord:"https://discord.gg/rawfury"},
 };
+
+// ── 메타스코어 / 유저스코어 / 출시연도 ────────────────────────────────────────
+// meta=0 → 미집계, user=0 → 미집계
+const scoreMap = {
+  "League of Legends":          { meta: 87, user: 82, release: 2009 },
+  "PUBG: Battlegrounds":        { meta: 86, user: 75, release: 2017 },
+  "Genshin Impact":             { meta: 84, user: 79, release: 2020 },
+  "FC Online":                  { meta: 0,  user: 74, release: 2014 },
+  "Lost Ark":                   { meta: 75, user: 76, release: 2022 },
+  "MapleStory":                 { meta: 0,  user: 78, release: 2003 },
+  "Valorant":                   { meta: 80, user: 77, release: 2020 },
+  "Dungeon & Fighter":          { meta: 0,  user: 82, release: 2005 },
+  "Lineage":                    { meta: 0,  user: 66, release: 1998 },
+  "Overwatch 2":                { meta: 72, user: 55, release: 2022 },
+  "Aion 2":                     { meta: 0,  user: 70, release: 2025 },
+  "Wuthering Waves":            { meta: 76, user: 80, release: 2024 },
+  "Honkai: Star Rail":          { meta: 87, user: 82, release: 2023 },
+  "Black Desert":               { meta: 74, user: 71, release: 2015 },
+  "Blade & Soul":               { meta: 65, user: 60, release: 2012 },
+  "Elder Scrolls Online":       { meta: 80, user: 73, release: 2014 },
+  "New World":                  { meta: 67, user: 64, release: 2021 },
+  "Guild Wars 2":               { meta: 90, user: 85, release: 2012 },
+  "Final Fantasy XIV":          { meta: 90, user: 87, release: 2013 },
+  "Diablo IV":                  { meta: 87, user: 74, release: 2023 },
+  "World of Warcraft":          { meta: 93, user: 78, release: 2004 },
+  "Baldur's Gate 3":            { meta: 97, user: 93, release: 2023 },
+  "Starfield":                  { meta: 83, user: 67, release: 2023 },
+  "Path of Exile":              { meta: 84, user: 79, release: 2013 },
+  "The Elder Scrolls V: Skyrim":{ meta: 96, user: 83, release: 2011 },
+  "Elden Ring":                 { meta: 96, user: 88, release: 2022 },
+  "Dark Souls III":             { meta: 89, user: 91, release: 2016 },
+  "RuneScape":                  { meta: 85, user: 74, release: 2001 },
+  "Warframe":                   { meta: 73, user: 77, release: 2013 },
+  "Counter-Strike 2":           { meta: 82, user: 71, release: 2023 },
+  "Dota 2":                     { meta: 90, user: 85, release: 2013 },
+  "Fortnite":                   { meta: 81, user: 76, release: 2017 },
+  "Minecraft":                  { meta: 93, user: 87, release: 2011 },
+  "Free Fire":                  { meta: 0,  user: 76, release: 2017 },
+  "Apex Legends":               { meta: 89, user: 79, release: 2019 },
+  "Call of Duty":               { meta: 82, user: 71, release: 2023 },
+  "Destiny 2":                  { meta: 75, user: 71, release: 2019 },
+  "Rainbow Six Siege":          { meta: 79, user: 77, release: 2015 },
+  "Battlefield 2042":           { meta: 68, user: 54, release: 2021 },
+  "Halo Infinite":              { meta: 87, user: 72, release: 2021 },
+  "Escape from Tarkov":         { meta: 0,  user: 75, release: 2016 },
+  "Sudden Attack":              { meta: 0,  user: 71, release: 2005 },
+  "Ragnarok Online":            { meta: 81, user: 82, release: 2002 },
+  "StarCraft II":               { meta: 93, user: 85, release: 2010 },
+  "Age of Empires IV":          { meta: 81, user: 79, release: 2021 },
+  "Civilization VI":            { meta: 88, user: 80, release: 2016 },
+  "Total War: Warhammer III":   { meta: 84, user: 76, release: 2022 },
+  "Hearts of Iron IV":          { meta: 81, user: 85, release: 2016 },
+  "XCOM 2":                     { meta: 88, user: 83, release: 2016 },
+  "Clash of Clans":             { meta: 74, user: 77, release: 2012 },
+  "Eternal Return":             { meta: 0,  user: 75, release: 2020 },
+  "Delta Force":                { meta: 0,  user: 72, release: 2024 },
+  "God of War":                 { meta: 94, user: 90, release: 2022 },
+  "Red Dead Redemption 2":      { meta: 97, user: 86, release: 2018 },
+  "Assassin's Creed Odyssey":   { meta: 83, user: 77, release: 2018 },
+  "The Witcher 3":              { meta: 93, user: 92, release: 2015 },
+  "Cyberpunk 2077":             { meta: 86, user: 73, release: 2020 },
+  "Control":                    { meta: 82, user: 80, release: 2019 },
+  "Sea of Thieves":             { meta: 73, user: 79, release: 2018 },
+  "No Man's Sky":               { meta: 72, user: 81, release: 2016 },
+  "Subnautica":                 { meta: 87, user: 93, release: 2018 },
+  "Among Us":                   { meta: 85, user: 79, release: 2018 },
+  "GTA 5":                      { meta: 97, user: 78, release: 2013 },
+  "Sekiro":                     { meta: 91, user: 86, release: 2019 },
+  "Monster Hunter: World":      { meta: 90, user: 89, release: 2018 },
+  "Devil May Cry 5":            { meta: 90, user: 89, release: 2019 },
+  "Hollow Knight":              { meta: 87, user: 94, release: 2017 },
+  "Resident Evil Village":      { meta: 84, user: 83, release: 2021 },
+  "Deep Rock Galactic":         { meta: 85, user: 95, release: 2020 },
+  "Palworld":                   { meta: 79, user: 82, release: 2024 },
+  "Valheim":                    { meta: 83, user: 90, release: 2021 },
+  "Terraria":                   { meta: 83, user: 94, release: 2011 },
+  "Stardew Valley":             { meta: 89, user: 95, release: 2016 },
+  "Roblox":                     { meta: 0,  user: 78, release: 2006 },
+  "The Sims 4":                 { meta: 70, user: 64, release: 2014 },
+  "Cities: Skylines":           { meta: 85, user: 85, release: 2015 },
+  "Microsoft Flight Simulator": { meta: 91, user: 84, release: 2020 },
+  "Farming Simulator 22":       { meta: 73, user: 79, release: 2021 },
+  "Planet Zoo":                 { meta: 84, user: 85, release: 2019 },
+  "Animal Crossing":            { meta: 90, user: 82, release: 2020 },
+  "Rocket League":              { meta: 86, user: 87, release: 2015 },
+  "NBA 2K25":                   { meta: 77, user: 68, release: 2024 },
+  "EA Sports FC 25":            { meta: 76, user: 66, release: 2024 },
+  "F1 24":                      { meta: 73, user: 69, release: 2024 },
+  "Euro Truck Simulator 2":     { meta: 80, user: 90, release: 2012 },
+  "Madden NFL 25":              { meta: 77, user: 54, release: 2024 },
+  "Need for Speed Heat":        { meta: 73, user: 72, release: 2019 },
+  // 2025 신작
+  "Monster Hunter Wilds":       { meta: 93, user: 88, release: 2025 },
+  "Split Fiction":              { meta: 91, user: 92, release: 2025 },
+  "Clair Obscur: Expedition 33":{ meta: 92, user: 88, release: 2025 },
+  "Hades II":                   { meta: 95, user: 91, release: 2025 },
+  "Blue Prince":                { meta: 91, user: 86, release: 2025 },
+};
+
+function getMetaColor(score) {
+  if (!score || score === 0) return 'gray';
+  if (score >= 90) return 'green';
+  if (score >= 75) return 'yellow';
+  return 'orange';
+}
 
 const continentLabels = {asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'};
 let currentContinent = 'asia';
@@ -1808,8 +2066,79 @@ let currentGenre = 'TOP 10';
 let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
 let currentSubRegion = 'all';
+let currentSort = 'default';
+let currentPlatformFilter = 'all';
 
-function renderGames(list) {
+function applyFiltersAndSort(list) {
+  let result = list.slice();
+  // 플랫폼 필터
+  if (currentPlatformFilter !== 'all') {
+    const pf = currentPlatformFilter;
+    result = result.filter(g => {
+      const p = (g.platform || '').toLowerCase();
+      if (pf === 'PC')      return p.includes('pc');
+      if (pf === 'Mobile')  return p.includes('mobile');
+      if (pf === 'Console') return p.includes('console') || p.includes('switch');
+      return true;
+    });
+  }
+  // 정렬
+  if (currentSort === 'score') {
+    result.sort((a, b) => {
+      const sa = scoreMap[a.name] ? scoreMap[a.name].meta : 0;
+      const sb = scoreMap[b.name] ? scoreMap[b.name].meta : 0;
+      return sb - sa;
+    });
+  } else if (currentSort === 'name') {
+    result.sort((a, b) => getLocalizedGameName(a.name).localeCompare(getLocalizedGameName(b.name)));
+  } else if (currentSort === 'release') {
+    result.sort((a, b) => {
+      const ya = scoreMap[a.name] ? scoreMap[a.name].release : 0;
+      const yb = scoreMap[b.name] ? scoreMap[b.name].release : 0;
+      return yb - ya;
+    });
+  }
+  return result;
+}
+
+function updateFilterRow() {
+  const c = document.getElementById('filterRow');
+  if (!c) return;
+  const s = currentSort, p = currentPlatformFilter;
+  c.innerHTML = `
+    <div class="filter-group">
+      <span class="filter-label">${t('sortBy')}</span>
+      <button class="filter-btn${s==='default'?' active':''}" onclick="setSort('default')">${t('sortDefault')}</button>
+      <button class="filter-btn${s==='score'?' active':''}" onclick="setSort('score')">${t('sortScore')}</button>
+      <button class="filter-btn${s==='name'?' active':''}" onclick="setSort('name')">${t('sortName')}</button>
+      <button class="filter-btn${s==='release'?' active':''}" onclick="setSort('release')">${t('sortRelease')}</button>
+    </div>
+    <div class="filter-sep"></div>
+    <div class="filter-group">
+      <span class="filter-label">${t('pfLabel')}</span>
+      <button class="filter-btn${p==='all'?' active':''}" onclick="setPlatform('all')">${t('pfAll')}</button>
+      <button class="filter-btn${p==='PC'?' active':''}" onclick="setPlatform('PC')">${t('pfPC')}</button>
+      <button class="filter-btn${p==='Mobile'?' active':''}" onclick="setPlatform('Mobile')">${t('pfMobile')}</button>
+      <button class="filter-btn${p==='Console'?' active':''}" onclick="setPlatform('Console')">${t('pfConsole')}</button>
+    </div>`;
+}
+
+function setSort(sort) {
+  currentSort = sort;
+  currentPage = 1;
+  updateFilterRow();
+  renderGames(getActiveGameList());
+}
+
+function setPlatform(pf) {
+  currentPlatformFilter = pf;
+  currentPage = 1;
+  updateFilterRow();
+  renderGames(getActiveGameList());
+}
+
+function renderGames(rawList) {
+  const list = applyFiltersAndSort(rawList || []);
   const grid = document.getElementById('rankGrid');
   grid.innerHTML = '';
   if (!list || list.length === 0) {
@@ -1837,6 +2166,31 @@ function renderGames(list) {
                  : game.desc;
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
+    // 점수 뱃지
+    const sc = scoreMap[game.name];
+    let scoreHTML = '';
+    if (sc) {
+      const metaColor = getMetaColor(sc.meta);
+      const metaVal   = sc.meta > 0 ? sc.meta : '—';
+      const userVal   = sc.user > 0 ? sc.user : '—';
+      const yearChip  = sc.release ? `<span class="release-chip">${sc.release}</span>` : '';
+      scoreHTML = `
+        <div class="score-row">
+          <div class="meta-badge ${metaColor}">
+            <span class="s-val">${metaVal}</span>
+            <span class="s-lbl">${t('critic')}</span>
+          </div>
+          <div class="user-badge">
+            <span class="s-val">${userVal}</span>
+            <span class="s-lbl">${t('user')}</span>
+          </div>
+          ${yearChip}
+        </div>`;
+    }
+    // Must-Play 배지 (메타스코어 90+)
+    const mustPlay = sc && sc.meta >= 90
+      ? `<div class="must-play-wrap"><span class="must-play-badge">⭐ MUST-PLAY</span></div>`
+      : '';
     const imgInner = banner
       ? `<img src="${banner}" class="game-banner" alt="${displayName} 공식 배너 이미지" loading="lazy"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
@@ -1861,7 +2215,9 @@ function renderGames(list) {
           <div class="rank-badge">#${rank}</div>
           <div class="genre-badge">${game.genre}</div>
         </div>
+        ${mustPlay}
         <h3>${displayName}</h3>
+        ${scoreHTML}
         ${desc ? `<p class="desc-text">${desc}</p>` : ''}
         <p>${t('platform')}: ${game.platform}</p>
         <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
@@ -1960,6 +2316,7 @@ function setLang(lang) {
   updateSectionTitle();
   updateTimeDisplay();
   updateLoginButton();
+  updateFilterRow();
   renderGames(getActiveGameList());
 }
 
@@ -1972,7 +2329,9 @@ function updateSectionTitle() {
   document.getElementById('sectionTitle').textContent =
     `${emoji[currentContinent]} ${cLabel}${subLabel} — ${gLabel}`;
   document.getElementById('rankSource').textContent =
-    currentGenre === 'TOP 10' ? t('sourceTop') : t('sourceGenre');
+    currentGenre === '2025 신작' ? t('source2025')
+    : currentGenre === 'TOP 10' ? t('sourceTop')
+    : t('sourceGenre');
 }
 
 function setContinent(region) {
@@ -1983,18 +2342,24 @@ function setContinent(region) {
   currentPage = 1;
   document.getElementById('searchInput').value = '';
   document.getElementById('genreTabs').style.display = 'flex';
+  currentSort = 'default';
+  currentPlatformFilter = 'all';
   updateContinentTabs();
   updateSubRegionTabs();
   updateGenreTabs();
   updateSectionTitle();
+  updateFilterRow();
   renderGames(getActiveGameList());
 }
 
 function setGenre(genre) {
   currentGenre = genre;
   currentPage = 1;
+  currentSort = 'default';
+  currentPlatformFilter = 'all';
   updateGenreTabs();
   updateSectionTitle();
+  updateFilterRow();
   document.getElementById('searchInput').value = '';
   renderGames(getActiveGameList());
 }
@@ -2342,6 +2707,7 @@ window.onload = () => {
   }
   setLang(currentLang);
   updateLoginButton();
+  updateFilterRow();
   loadRankings();
 };
 </script>
