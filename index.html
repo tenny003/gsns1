@@ -524,7 +524,78 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   border:1.5px solid rgba(56,189,248,.3);color:#38bdf8;margin-top:4px;
 }
 .drawer-nav-btn.new-games:hover{background:rgba(56,189,248,.2);}
+.drawer-nav-btn.bug-report{
+  background:linear-gradient(135deg,rgba(239,68,68,.1),rgba(251,146,60,.1));
+  border:1.5px solid rgba(239,68,68,.3);color:#f87171;margin-top:4px;
+}
+.drawer-nav-btn.bug-report:hover{background:rgba(239,68,68,.18);}
 .drawer-nav-divider{height:1px;background:var(--border);margin:8px 4px;}
+
+/* ── 버그/문의 게시판 ── */
+.bug-write-box{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:16px;padding:22px 24px;margin-bottom:28px;
+}
+.bug-write-title{font-size:1.05rem;font-weight:800;margin-bottom:16px;color:var(--text);}
+.bug-field-row{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.bug-select,.bug-input{
+  padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:.9rem;font-family:inherit;
+  outline:none;transition:border-color .2s;
+}
+.bug-select:focus,.bug-input:focus{border-color:#38bdf8;}
+.bug-select{min-width:150px;}
+.bug-input{flex:1;min-width:200px;}
+.bug-textarea{
+  width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg);color:var(--text);font-size:.9rem;font-family:inherit;
+  outline:none;resize:vertical;min-height:110px;box-sizing:border-box;
+  transition:border-color .2s;margin-bottom:12px;
+}
+.bug-textarea:focus{border-color:#38bdf8;}
+.bug-submit-btn{
+  padding:11px 28px;border-radius:50px;border:none;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;font-size:.92rem;font-weight:800;cursor:pointer;
+  font-family:inherit;transition:opacity .2s;
+}
+.bug-submit-btn:hover{opacity:.85;}
+.bug-posts-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.bug-posts-title{font-size:1rem;font-weight:800;color:var(--text);}
+.bug-post-count{font-size:.82rem;color:var(--sub);}
+.bug-post-card{
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:14px;padding:18px 20px;margin-bottom:12px;
+  transition:border-color .2s;
+}
+.bug-post-card:hover{border-color:rgba(56,189,248,.4);}
+.bug-post-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.bug-tag{
+  display:inline-flex;align-items:center;padding:3px 10px;
+  border-radius:50px;font-size:.75rem;font-weight:800;
+}
+.bug-tag.bug{background:rgba(239,68,68,.15);color:#f87171;}
+.bug-tag.inquiry{background:rgba(56,189,248,.15);color:#38bdf8;}
+.bug-tag.suggestion{background:rgba(168,85,247,.15);color:#c084fc;}
+.bug-post-title-text{font-size:.97rem;font-weight:800;color:var(--text);flex:1;}
+.bug-post-meta{font-size:.76rem;color:var(--sub);}
+.bug-post-body{font-size:.88rem;color:var(--sub);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+.bug-post-footer{display:flex;justify-content:flex-end;margin-top:10px;gap:8px;}
+.bug-del-btn{
+  padding:4px 12px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--sub);font-size:.76rem;cursor:pointer;
+  font-family:inherit;transition:all .2s;
+}
+.bug-del-btn:hover{border-color:#ef4444;color:#ef4444;}
+.bug-empty{text-align:center;padding:40px 0;color:var(--sub);font-size:.9rem;}
+.bug-status-badge{
+  padding:3px 10px;border-radius:50px;font-size:.72rem;font-weight:800;
+  background:rgba(34,197,94,.15);color:#4ade80;
+}
+.bug-status-badge.open{background:rgba(251,191,36,.12);color:#fbbf24;}
 
 /* ── 앱 콘텐츠 뷰 ── */
 #appContent{max-width:1400px;margin:auto;padding:0 24px;}
@@ -610,6 +681,10 @@ header{padding:22px 80px;}
     <button class="drawer-nav-btn new-games" onclick="navigateToNewGames()">
       <span class="nav-icon">🆕</span><span id="navNewGames">2026 신작 & 출시예정</span>
     </button>
+    <div class="drawer-nav-divider"></div>
+    <button class="drawer-nav-btn bug-report" onclick="navigateToBugReport()">
+      <span class="nav-icon">🐛</span><span>버그수정요청 &amp; 문의사항</span>
+    </button>
   </nav>
 </div>
 
@@ -661,6 +736,39 @@ header{padding:22px 80px;}
       <p class="rank-source" id="upcomingGamesSource"></p>
       <div class="rank-grid" id="upcomingGamesGrid"></div>
     </div>
+  </div>
+
+  <!-- 뷰: 버그수정요청 & 문의사항 -->
+  <div id="viewBugReport" class="view-container" style="display:none">
+    <div class="view-topbar">
+      <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
+      <h2 class="view-title">🐛 버그수정요청 &amp; 문의사항</h2>
+    </div>
+
+    <!-- 글쓰기 폼 -->
+    <div class="bug-write-box">
+      <div class="bug-write-title">✏️ 새 글 작성</div>
+      <div class="bug-field-row">
+        <select class="bug-select" id="bugCategory">
+          <option value="bug">🐛 버그수정요청</option>
+          <option value="inquiry">💬 문의사항</option>
+          <option value="suggestion">💡 기능건의</option>
+        </select>
+        <input class="bug-input" id="bugTitleInput" type="text" placeholder="제목을 입력하세요" maxlength="100">
+      </div>
+      <textarea class="bug-textarea" id="bugContentInput" placeholder="내용을 입력하세요. 버그의 경우 발생 상황, 어떤 화면에서 발생했는지 등 구체적으로 적어주시면 빠르게 수정할 수 있습니다."></textarea>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <input class="bug-input" id="bugNickInput" type="text" placeholder="닉네임 (선택)" maxlength="20" style="max-width:180px">
+        <button class="bug-submit-btn" onclick="submitBugPost()">게시하기 →</button>
+      </div>
+    </div>
+
+    <!-- 게시글 목록 -->
+    <div class="bug-posts-header">
+      <span class="bug-posts-title">📋 접수된 글</span>
+      <span class="bug-post-count" id="bugPostCount"></span>
+    </div>
+    <div id="bugPostList"></div>
   </div>
 
 </div>
@@ -3133,8 +3241,91 @@ function showView(view) {
   document.getElementById('viewDashboard').style.display  = view === 'dashboard'  ? 'block' : 'none';
   document.getElementById('viewContinent').style.display  = view === 'continent'  ? 'block' : 'none';
   document.getElementById('viewNewGames').style.display   = view === 'newgames'   ? 'block' : 'none';
+  document.getElementById('viewBugReport').style.display  = view === 'bugreport'  ? 'block' : 'none';
   if (view === 'dashboard') renderDashboard();
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── 버그/문의 게시판 ─────────────────────────────────────────────────────────
+function navigateToBugReport() {
+  closeDrawer();
+  renderBugPosts();
+  showView('bugreport');
+}
+
+function getBugPosts() {
+  try { return JSON.parse(localStorage.getItem('gsns_bug_posts') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveBugPosts(posts) {
+  localStorage.setItem('gsns_bug_posts', JSON.stringify(posts));
+}
+
+function submitBugPost() {
+  const cat   = document.getElementById('bugCategory').value;
+  const title = document.getElementById('bugTitleInput').value.trim();
+  const body  = document.getElementById('bugContentInput').value.trim();
+  const nick  = document.getElementById('bugNickInput').value.trim() || '익명';
+
+  if (!title) { alert('제목을 입력해주세요.'); return; }
+  if (!body)  { alert('내용을 입력해주세요.'); return; }
+
+  const posts = getBugPosts();
+  posts.unshift({
+    id: Date.now(),
+    cat, title, body, nick,
+    date: new Date().toLocaleString('ko-KR'),
+    status: 'open'
+  });
+  saveBugPosts(posts);
+
+  document.getElementById('bugTitleInput').value   = '';
+  document.getElementById('bugContentInput').value = '';
+  document.getElementById('bugNickInput').value    = '';
+  renderBugPosts();
+}
+
+function deleteBugPost(id) {
+  if (!confirm('이 글을 삭제하시겠습니까?')) return;
+  saveBugPosts(getBugPosts().filter(p => p.id !== id));
+  renderBugPosts();
+}
+
+function renderBugPosts() {
+  const list  = document.getElementById('bugPostList');
+  const count = document.getElementById('bugPostCount');
+  if (!list) return;
+  const posts = getBugPosts();
+
+  if (count) count.textContent = `총 ${posts.length}건`;
+
+  if (!posts.length) {
+    list.innerHTML = '<div class="bug-empty">아직 접수된 글이 없습니다.<br>버그나 문의사항이 있으면 위 양식에 작성해 주세요 😊</div>';
+    return;
+  }
+
+  const catLabel = { bug:'🐛 버그수정요청', inquiry:'💬 문의사항', suggestion:'💡 기능건의' };
+  const catClass = { bug:'bug', inquiry:'inquiry', suggestion:'suggestion' };
+
+  list.innerHTML = posts.map(p => `
+    <div class="bug-post-card">
+      <div class="bug-post-top">
+        <span class="bug-tag ${catClass[p.cat]||'bug'}">${catLabel[p.cat]||p.cat}</span>
+        <span class="bug-post-title-text">${escHtml(p.title)}</span>
+        <span class="bug-status-badge open">접수됨</span>
+      </div>
+      <div class="bug-post-body">${escHtml(p.body)}</div>
+      <div class="bug-post-footer">
+        <span class="bug-post-meta">${escHtml(p.nick)} · ${p.date}</span>
+        <button class="bug-del-btn" onclick="deleteBugPost(${p.id})">삭제</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function navigateToContinent(continent) {
