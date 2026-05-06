@@ -4939,7 +4939,7 @@ async function loadRankings() {
   lastRankingsLoadTime = Date.now();
   try {
     const res = await fetch('/data/rankings.json?' + Date.now());
-    if (!res.ok) return;
+    if (!res.ok) { renderDashboard(); return; }
     const data = await res.json();
 
     if (data.updated) {
@@ -4962,6 +4962,7 @@ async function loadRankings() {
     renderDashboard();
   } catch(e) {
     document.getElementById('updateInfo').textContent = t('loadFail');
+    renderDashboard();
   }
 }
 
@@ -5605,11 +5606,9 @@ window.onload = () => {
   } else {
     document.getElementById('toggleIcon').textContent = '🌙';
   }
-  currentView = 'dashboard';
   setLang(currentLang);
   updateLoginButton();
-  renderDashboard();
-  loadRankings();
+  showView('dashboard');
 };
 
 // 탭 복귀 시 자동 새로고침 — 5분 이상 자리 비운 경우
