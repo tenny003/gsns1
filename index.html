@@ -4670,6 +4670,7 @@ function setLang(lang) {
   document.getElementById('footerAbout').textContent    = t('footerAbout');
   document.getElementById('footerPrivacy').textContent  = t('footerPrivacy');
   document.getElementById('footerContact').textContent  = t('footerContact');
+  const setTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent=txt; };
   document.getElementById('footerSource').textContent   = t('footerSource');
   setTxt('footerCopyright', t('footerCopyright'));
   renderFaq();
@@ -4680,7 +4681,6 @@ function setLang(lang) {
     ja:{continent:'地域別ランキング',asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル',newGames:'2026 近日発売',back:'ホーム'},
   };
   const nl = navLabels[lang] || navLabels.en;
-  const setTxt = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent=txt; };
   setTxt('navLabelContinent', nl.continent);
   setTxt('navAsia', nl.asia); setTxt('navNA', nl.na);
   setTxt('navEurope', nl.europe); setTxt('navGlobal', nl.global);
