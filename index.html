@@ -362,6 +362,33 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
 }
 .auth-logout:hover{opacity:.85;}
 
+/* ── 주간 동접자 뱃지 ── */
+.ccu-row{display:flex;align-items:center;margin-bottom:10px;}
+.ccu-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,rgba(56,189,248,.12),rgba(37,99,235,.12));
+  border:1px solid rgba(56,189,248,.3);
+  padding:5px 12px;border-radius:50px;
+}
+.ccu-val{font-size:.98rem;font-weight:900;color:#38bdf8;letter-spacing:-.02em;}
+.ccu-lbl{font-size:.6rem;font-weight:700;color:var(--sub);letter-spacing:.04em;text-transform:uppercase;}
+.dash-ccu{font-size:.73rem;font-weight:800;color:#38bdf8;flex-shrink:0;letter-spacing:-.01em;}
+/* ── 콘솔 플랫폼 배지 ── */
+.platform-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 11px;border-radius:50px;
+  font-size:.72rem;font-weight:800;letter-spacing:.04em;margin-bottom:8px;
+}
+.platform-badge.ps5{background:linear-gradient(135deg,#003087,#0066cc);color:#fff;box-shadow:0 2px 8px rgba(0,48,135,.35);}
+.platform-badge.ps4{background:linear-gradient(135deg,#00439c,#1060c0);color:#fff;box-shadow:0 2px 8px rgba(0,67,156,.35);}
+.platform-badge.switch2{background:linear-gradient(135deg,#c0392b,#e63027);color:#fff;box-shadow:0 2px 8px rgba(192,57,43,.35);}
+.platform-badge.switch1{background:linear-gradient(135deg,#7b241c,#c0392b);color:#fff;box-shadow:0 2px 8px rgba(123,36,28,.3);}
+.drawer-nav-btn.console-btn{
+  background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));
+  border:1.5px solid rgba(99,102,241,.3);color:#a78bfa;
+}
+.drawer-nav-btn.console-btn:hover{background:rgba(99,102,241,.2);}
+
 footer{text-align:center;padding:30px;color:var(--footer-color);}
 .ad-slot{width:100%;max-width:1400px;margin:0 auto;padding:10px 24px;text-align:center;overflow:hidden;}
 .ad-slot ins{display:block;}
@@ -730,6 +757,20 @@ header{padding:22px 80px;}
       <span class="nav-icon">🌐</span><span id="navGlobal">글로벌</span>
     </button>
     <div class="drawer-nav-divider"></div>
+    <div class="drawer-nav-section-label" id="navLabelConsole">게임기별 랭킹</div>
+    <button class="drawer-nav-btn console-btn" onclick="navigateToPlatform('ps5')">
+      <span class="nav-icon">🎮</span><span id="navPS5">PS5 랭킹</span>
+    </button>
+    <button class="drawer-nav-btn console-btn" onclick="navigateToPlatform('ps4')">
+      <span class="nav-icon">🕹️</span><span id="navPS4">PS4 랭킹</span>
+    </button>
+    <button class="drawer-nav-btn console-btn" onclick="navigateToPlatform('switch2')">
+      <span class="nav-icon">🔴</span><span id="navSwitch2">닌텐도 스위치2</span>
+    </button>
+    <button class="drawer-nav-btn console-btn" onclick="navigateToPlatform('switch1')">
+      <span class="nav-icon">🟡</span><span id="navSwitch1">닌텐도 스위치1</span>
+    </button>
+    <div class="drawer-nav-divider"></div>
     <button class="drawer-nav-btn new-games" onclick="navigateToNewGames()">
       <span class="nav-icon">🆕</span><span id="navNewGames">2026 신작 & 출시예정</span>
     </button>
@@ -835,6 +876,20 @@ header{padding:22px 80px;}
       <span class="bug-post-count" id="bugPostCount"></span>
     </div>
     <div id="bugPostList"></div>
+  </div>
+
+  <!-- 뷰: 게임기별 랭킹 -->
+  <div id="viewConsole" class="view-container" style="display:none">
+    <div class="view-topbar">
+      <button class="back-btn" onclick="showView('dashboard')">← <span class="backBtnLabel">홈</span></button>
+      <h2 class="view-title" id="consoleViewTitle"></h2>
+    </div>
+    <div class="search-row">
+      <input type="text" id="consoleSearchInput" placeholder="🔍  게임 검색" oninput="filterConsoleGames()" />
+    </div>
+    <p class="rank-source" id="consoleRankSource"></p>
+    <div class="rank-grid" id="consoleRankGrid"></div>
+    <div class="pagination" id="consolePaginationContainer"></div>
   </div>
 
 </div>
@@ -1211,6 +1266,52 @@ const descMap = {
   "Powerwash Simulator":        "퓨처랩의 힐링 청소 시뮬레이션. 고압 세척기로 더러운 장소를 깨끗이 청소하는 독특한 게임.",
   "Zenless Zone Zero":          "HoYoverse의 도시 배경 액션 RPG. 원신·붕괴 스타레일에 이어 출시된 신세계선 중심 전투 게임.",
   "Blue Archive":               "넥슨·요스타의 전술 학원 RPG. 키보토스 학생들과의 일상과 전투를 결합한 모바일 서브컬처 게임.",
+  // ── PS5 타이틀 ──
+  "Spider-Man 2":               "인섬니악 게임즈의 PS5 독점 슈퍼히어로 액션. 피터 파커와 마일스 모랄레스의 듀얼 오픈월드 어드벤처.",
+  "God of War: Ragnarök":       "산타모니카 스튜디오의 노르드 신화 액션 RPG. 크라토스와 아트레우스의 운명을 건 마지막 여정.",
+  "Astro Bot":                  "팀 아소비의 PS5 독점 3D 플랫포머. 플레이스테이션 역사 속 캐릭터들과 함께하는 우주 구출 작전.",
+  "Final Fantasy XVI":          "스퀘어 에닉스의 PS5 독점 다크 판타지 액션 RPG. 크리스탈리스에서 펼쳐지는 장대한 권력 투쟁.",
+  "Gran Turismo 7":             "폴리포니 디지털의 레이싱 시뮬레이션. 400종 이상 자동차 수록한 PS5/PS4 최강 레이싱.",
+  "Ghost of Yōtei":             "석커 펀치의 PS5 독점 오픈월드 액션 RPG. 홋카이도 요테이산을 배경으로 한 사무라이 복수극.",
+  "Ratchet & Clank: Rift Apart":"인섬니악 게임즈의 PS5 독점 3D 플랫폼 액션. 차원 균열 속 리벳과 클랭크의 평행 우주 모험.",
+  "The Last of Us Part II Remastered":"너티독의 PS5 리마스터. 엘리의 복수와 구원을 다룬 명작을 4K/60fps로 재경험.",
+  "Returnal":                   "하우스마르크의 PS5 독점 로그라이크 TPS. 타임루프 외계 행성에서 반복되는 극한의 생존 전투.",
+  "Demon's Souls":              "블루포인트의 PS5 전용 리메이크. 소울 시리즈의 원조 고난이도 액션 RPG를 현대적으로 재탄생.",
+  // ── PS4 타이틀 ──
+  "The Last of Us Part II":     "너티독의 PS4 포스트아포칼립스 서바이벌. 엘리의 복수와 구원을 다룬 감동적인 역작.",
+  "Marvel's Spider-Man":        "인섬니악 게임즈의 PS4 오픈월드 슈퍼히어로. 뉴욕 도시를 자유롭게 누비는 피터 파커 어드벤처.",
+  "Detroit: Become Human":      "퀀틱 드림의 PS4 인터랙티브 드라마. AI 안드로이드들이 자유를 위해 싸우는 미래 디트로이트 이야기.",
+  "Uncharted 4":                "너티독의 PS4 어드벤처 명작. 네이선 드레이크의 마지막 보물 사냥 여정.",
+  "The Last of Us Part I":      "너티독의 PS5 리메이크. 조엘과 엘리의 포스트아포칼립스 생존기를 완전히 새롭게 재탄생.",
+  "Horizon Zero Dawn":          "게릴라 게임즈의 PS4 오픈월드 RPG. 알로이가 기계 생명체들로 가득한 세상을 탐험하는 역작.",
+  "Horizon Forbidden West":     "게릴라 게임즈의 PS5/PS4 오픈월드 RPG. 알로이가 서부 황야의 위협을 마주하는 속편.",
+  "Bloodborne":                 "프롬소프트웨어의 PS4 독점 고딕 공포 액션. 저주받은 도시 야남에서 짐승을 사냥하는 암울한 여정.",
+  "Like a Dragon: Infinite Wealth":"료가 게임즈의 야쿠자 시리즈 최신작. 이치반 카스가와 기류 카자마가 하와이에서 펼치는 대모험.",
+  "Ghost of Tsushima":          "석커 펀치의 PS4/PS5 사무라이 오픈월드. 몽골 침략에 맞서는 쓰시마 무사 진 사카이의 이야기.",
+  "Death Stranding":            "코지마 프로덕션의 PS4/PC 포스트아포칼립스 게임. 분단된 미국을 연결하는 샘의 고독한 배달 여정.",
+  "Nioh 2":                     "팀 닌자의 PS4 소울라이크 액션 RPG. 반인반요괴 하이드의 전국시대 일본 모험.",
+  // ── 닌텐도 스위치1 타이틀 ──
+  "Animal Crossing: New Horizons": "닌텐도의 스위치 생활 시뮬레이션 명작. 무인도에서 자유롭게 자신만의 낙원을 꾸미는 힐링 게임.",
+  "Mario Kart 8 Deluxe":        "닌텐도의 스위치 레이싱 게임. 전 세계에서 가장 많이 팔린 레이싱 게임 중 하나.",
+  "The Legend of Zelda: Tears of the Kingdom": "닌텐도의 스위치 오픈월드 어드벤처 걸작. 하늘과 지하 세계까지 확장된 광대한 하이룰 탐험.",
+  "Super Smash Bros. Ultimate": "닌텐도의 스위치 파티 대전 격투. 역대 최다 80명 이상의 게임 캐릭터가 등장하는 대전 명작.",
+  "Pokémon Scarlet/Violet":     "닌텐도·게임프리크의 스위치 오픈월드 포켓몬 RPG. 팔데아 지방을 자유롭게 탐험하는 최초의 오픈월드 포켓몬.",
+  "Splatoon 3":                 "닌텐도의 스위치 오징어 슈팅 게임. 팀 기반 잉크 전투의 닌텐도 독점 시리즈 3탄.",
+  "Super Mario Odyssey":        "닌텐도의 스위치 3D 플랫포머. 마리오가 전 세계 왕국을 모자 캐피와 함께 탐험하는 명작.",
+  "Fire Emblem: Three Houses":  "닌텐도·인텔리전트 시스템의 스위치 전략 JRPG. 세 귀족 가문의 학생들과 함께하는 대규모 전쟁 서사극.",
+  "The Legend of Zelda: Breath of the Wild": "닌텐도의 스위치/WiiU 오픈월드 혁명작. 광활한 하이룰을 자유롭게 탐험하는 링크의 여정.",
+  "Pokémon Legends: Arceus":    "닌텐도·게임프리크의 스위치 오픈월드 포켓몬 RPG. 고대 시날 지방에서 펼쳐지는 포켓몬 포획 모험.",
+  "Super Mario Bros. Wonder":   "닌텐도의 스위치 2D 마리오 시리즈 신작. 원더 꽃으로 세계가 뒤바뀌는 창의적인 플랫폼 어드벤처.",
+  "Monster Hunter Rise":        "캡콤의 스위치 몬스터 헌팅 액션 RPG. 와이어 벅 시스템으로 더 기동적인 전투를 즐기는 최신작.",
+  "Xenoblade Chronicles 3":     "닌텐도·모노리스 소프트의 스위치 JRPG 대작. 전투와 탐험이 융합된 광활한 세계 속 깊은 서사시.",
+  "Pikmin 4":                   "닌텐도의 스위치 전략 퍼즐 게임. 귀여운 피크민들을 이끌고 행성을 탐험하는 독특한 어드벤처.",
+  // ── 닌텐도 스위치2 타이틀 ──
+  "Mario Kart World":           "닌텐도의 닌텐도 스위치2 런치 타이틀. 오픈월드 탐험 요소가 추가된 마리오 카트 시리즈 혁명작.",
+  "Pokémon Legends: Z-A":       "닌텐도·게임프리크의 스위치2 포켓몬 RPG. 루미오스 시티 재개발을 배경으로 한 오픈월드 포켓몬.",
+  "Metroid Prime 4: Beyond":    "닌텐도·레트로 스튜디오의 스위치2 1인칭 어드벤처. 바운티 헌터 사무스의 우주 탐험 시리즈 최신작.",
+  "Donkey Kong Bananza":        "닌텐도의 스위치2 3D 플랫폼 액션. 동키콩이 지하 세계를 파괴하며 탐험하는 파워풀한 어드벤처.",
+  "Kirby Air Riders":           "닌텐도·HAL 연구소의 스위치2 레이싱 게임. 커비와 친구들이 공중 차량을 타고 경주하는 액션 레이서.",
+  "Super Mario Party Jamboree": "닌텐도의 스위치 파티 게임. 112개의 미니게임이 수록된 역대 최대 규모의 마리오 파티.",
 };
 
 const descMapEn = {
@@ -1367,6 +1468,52 @@ const descMapEn = {
   "Powerwash Simulator":        "FuturLab's relaxing cleaning sim. A unique game where you clean dirty places with a pressure washer.",
   "Zenless Zone Zero":          "HoYoverse's urban action RPG. A combat-focused game set in New Eridu.",
   "Blue Archive":               "Nexon/Yostar's tactical academy RPG. Mobile subculture game combining school life with strategic combat.",
+  // ── PS5 titles ──
+  "Spider-Man 2":               "Insomniac's PS5 exclusive superhero action. Peter Parker and Miles Morales unite in dual open-world adventure.",
+  "God of War: Ragnarök":       "Santa Monica Studio's Norse mythology action RPG. Kratos and Atreus face their ultimate fate in Ragnarök.",
+  "Astro Bot":                  "Team Asobi's PS5 exclusive 3D platformer. A magical universe rescue mission featuring PlayStation's iconic characters.",
+  "Final Fantasy XVI":          "Square Enix's PS5 exclusive dark fantasy action RPG. An epic power struggle across the world of Valisthea.",
+  "Gran Turismo 7":             "Polyphony Digital's ultimate racing simulation. Over 400 cars in the definitive PS5/PS4 racing experience.",
+  "Ghost of Yōtei":             "Sucker Punch's PS5 exclusive open-world action RPG. A samurai revenge story set in Hokkaido's Mount Yōtei.",
+  "Ratchet & Clank: Rift Apart":"Insomniac Games' PS5 exclusive 3D platformer. Rivet and Clank adventure across parallel dimensions.",
+  "The Last of Us Part II Remastered":"Naughty Dog's PS5 remaster. Experience Ellie's harrowing journey in stunning 4K/60fps.",
+  "Returnal":                   "Housemarque's PS5 exclusive roguelike TPS. Survive an alien time-loop planet in relentless third-person action.",
+  "Demon's Souls":              "Bluepoint's PS5 remake. The original Souls-like reborn with stunning modern visuals and performance.",
+  // ── PS4 titles ──
+  "The Last of Us Part II":     "Naughty Dog's PS4 post-apocalyptic masterpiece. Ellie's harrowing journey of revenge and redemption.",
+  "Marvel's Spider-Man":        "Insomniac Games' PS4 open-world superhero. Swing through New York as Peter Parker in an iconic adventure.",
+  "Detroit: Become Human":      "Quantic Dream's PS4 interactive drama. Android AI protagonists fight for freedom in a near-future Detroit.",
+  "Uncharted 4":                "Naughty Dog's PS4 adventure masterpiece. Nathan Drake's final treasure hunting journey.",
+  "The Last of Us Part I":      "Naughty Dog's PS5 remake. Joel and Ellie's post-apocalyptic survival story reborn with stunning visuals.",
+  "Horizon Zero Dawn":          "Guerrilla Games' PS4 open-world RPG. Aloy explores a world reclaimed by mechanical creatures.",
+  "Horizon Forbidden West":     "Guerrilla Games' PS5/PS4 open-world RPG. Aloy battles new threats across the forbidden western frontier.",
+  "Bloodborne":                 "FromSoftware's PS4 exclusive gothic horror action. Hunt the beasts cursing the plagued city of Yharnam.",
+  "Like a Dragon: Infinite Wealth":"Ryu Ga Gotoku Studio's latest Yakuza. Ichiban and Kiryu's grand adventure unfolds in Hawaii.",
+  "Ghost of Tsushima":          "Sucker Punch's PS4/PS5 samurai open world. Tsushima warrior Jin Sakai stands against the Mongol invasion.",
+  "Death Stranding":            "Kojima Productions' PS4/PC delivery adventure. Sam connects a divided America in a lonely post-apocalyptic journey.",
+  "Nioh 2":                     "Team Ninja's PS4 Souls-like action RPG. Half-human half-yokai Hide battles through Sengoku-era Japan.",
+  // ── Nintendo Switch 1 titles ──
+  "Animal Crossing: New Horizons": "Nintendo's Switch life simulation masterpiece. Build your perfect island paradise at your own relaxing pace.",
+  "Mario Kart 8 Deluxe":        "Nintendo's Switch racing phenomenon. One of the best-selling racing games of all time.",
+  "The Legend of Zelda: Tears of the Kingdom": "Nintendo's Switch open-world masterpiece. Explore sky islands and underground depths in expanded Hyrule.",
+  "Super Smash Bros. Ultimate": "Nintendo's Switch platform fighter. 80+ fighters from gaming history in the ultimate crossover battle.",
+  "Pokémon Scarlet/Violet":     "Nintendo/Game Freak's Switch open-world Pokemon RPG. Freely explore the Paldea region in Pokemon's first true open world.",
+  "Splatoon 3":                 "Nintendo's Switch ink-based shooter. Team-based color battles in Nintendo's beloved competitive series.",
+  "Super Mario Odyssey":        "Nintendo's Switch 3D platformer. Mario and Cap-shaped Cappy travel the world's kingdoms in a joyful adventure.",
+  "Fire Emblem: Three Houses":  "Nintendo/IS' Switch tactical JRPG. Lead students from three noble houses through a grand war saga.",
+  "The Legend of Zelda: Breath of the Wild": "Nintendo's open-world revolution on Switch/WiiU. Link freely explores the vast kingdom of Hyrule.",
+  "Pokémon Legends: Arceus":    "Nintendo/Game Freak's Switch open-world Pokemon RPG. Catch Pokemon in ancient Sinnoh's Hisui region.",
+  "Super Mario Bros. Wonder":   "Nintendo's Switch 2D Mario platformer. Creative stages transformed by Wonder Flowers in a vibrant new adventure.",
+  "Monster Hunter Rise":        "Capcom's Switch monster hunting action RPG. Dynamic Wirebug movement brings a new dimension to hunting.",
+  "Xenoblade Chronicles 3":     "Monolith Soft's Switch JRPG epic. A vast open world with deep combat and emotional storytelling.",
+  "Pikmin 4":                   "Nintendo's Switch strategy puzzle game. Lead adorable Pikmin through planetary exploration in a charming adventure.",
+  // ── Nintendo Switch 2 titles ──
+  "Mario Kart World":           "Nintendo's Switch 2 launch title. The newest Mario Kart with revolutionary open-world exploration elements.",
+  "Pokémon Legends: Z-A":       "Nintendo/Game Freak's Switch 2 Pokemon RPG. An open-world Pokemon adventure set in Lumiose City redevelopment.",
+  "Metroid Prime 4: Beyond":    "Nintendo/Retro Studios' Switch 2 FPS adventure. Bounty hunter Samus' highly anticipated return to first-person.",
+  "Donkey Kong Bananza":        "Nintendo's Switch 2 3D platformer. Donkey Kong destroys and explores the underground world in powerful action.",
+  "Kirby Air Riders":           "Nintendo/HAL Laboratory's Switch 2 racing game. Kirby and friends race on air vehicles in action-packed races.",
+  "Super Mario Party Jamboree": "Nintendo's Switch party game. The biggest Mario Party ever with 112 mini-games included.",
 };
 
 // ── 공식 현지화 게임 명칭 (각 게임 공식 홈페이지 기준) ────────────────────
@@ -1966,6 +2113,35 @@ const logoMap = {
   "Powerwash Simulator":      "https://cdn.cloudflare.steamstatic.com/steam/apps/1290000/logo.png",
   "Zenless Zone Zero":        "https://cdn.cloudflare.steamstatic.com/steam/apps/2406526/logo.png",
   "Blue Archive":             "https://upload.wikimedia.org/wikipedia/en/6/65/Blue_Archive_logo.png",
+  // ── PS5/PS4 타이틀 ──
+  "Spider-Man 2":             "https://upload.wikimedia.org/wikipedia/en/8/8e/Spider-Man_2_video_game_logo.png",
+  "God of War: Ragnarök":     "https://upload.wikimedia.org/wikipedia/en/3/3c/God_of_War_Ragnar%C3%B6k_logo.png",
+  "Astro Bot":                "https://upload.wikimedia.org/wikipedia/en/6/6d/Astro_Bot_logo.png",
+  "Final Fantasy XVI":        "https://upload.wikimedia.org/wikipedia/en/4/43/Final_Fantasy_XVI_logo.png",
+  "Gran Turismo 7":           "https://upload.wikimedia.org/wikipedia/en/7/74/Gran_Turismo_7_logo.png",
+  "Ghost of Yōtei":           "https://upload.wikimedia.org/wikipedia/en/a/a1/Ghost_of_Yotei_logo.png",
+  "Returnal":                 "https://upload.wikimedia.org/wikipedia/en/3/38/Returnal_logo.png",
+  "Demon's Souls":            "https://upload.wikimedia.org/wikipedia/en/0/04/Demon%27s_Souls_PS5_logo.png",
+  "The Last of Us Part II":   "https://upload.wikimedia.org/wikipedia/en/4/4e/The_Last_of_Us_Part_II_Logo.png",
+  "Marvel's Spider-Man":      "https://upload.wikimedia.org/wikipedia/en/c/c3/Marvel%27s_Spider-Man_logo.png",
+  "Bloodborne":               "https://upload.wikimedia.org/wikipedia/en/8/88/Bloodborne_Cover_Wallpaper.jpg",
+  "Horizon Zero Dawn":        "https://cdn.cloudflare.steamstatic.com/steam/apps/1151640/logo.png",
+  "Horizon Forbidden West":   "https://upload.wikimedia.org/wikipedia/en/3/3e/Horizon_Forbidden_West_logo.png",
+  "Ghost of Tsushima":        "https://cdn.cloudflare.steamstatic.com/steam/apps/2215430/logo.png",
+  "Death Stranding":          "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/logo.png",
+  // ── 닌텐도 스위치 타이틀 ──
+  "Mario Kart World":         "https://upload.wikimedia.org/wikipedia/en/a/ae/Mario_Kart_World_logo.png",
+  "Animal Crossing: New Horizons": "https://upload.wikimedia.org/wikipedia/en/5/5e/Animal_Crossing_New_Horizons.png",
+  "Mario Kart 8 Deluxe":      "https://upload.wikimedia.org/wikipedia/en/8/8d/Mario_Kart_8_Deluxe_Logo.png",
+  "Super Smash Bros. Ultimate":"https://upload.wikimedia.org/wikipedia/en/3/3d/Super_Smash_Bros_Ultimate_logo.png",
+  "Pokémon Scarlet/Violet":   "https://upload.wikimedia.org/wikipedia/en/2/23/Pok%C3%A9mon_Scarlet_and_Violet_logo.png",
+  "Splatoon 3":               "https://upload.wikimedia.org/wikipedia/en/3/37/Splatoon_3_logo.png",
+  "The Legend of Zelda: Tears of the Kingdom": "https://upload.wikimedia.org/wikipedia/en/6/60/The_Legend_of_Zelda_Tears_of_the_Kingdom_Logo.png",
+  "The Legend of Zelda: Breath of the Wild": "https://upload.wikimedia.org/wikipedia/en/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.png",
+  "Super Mario Odyssey":      "https://upload.wikimedia.org/wikipedia/en/8/8e/Super_Mario_Odyssey_logo.png",
+  "Metroid Prime 4: Beyond":  "https://upload.wikimedia.org/wikipedia/en/3/34/Metroid_Prime_4_Beyond_logo.png",
+  "Pokémon Legends: Z-A":     "https://upload.wikimedia.org/wikipedia/en/7/73/Pok%C3%A9mon_Legends_Z-A_logo.png",
+  "Donkey Kong Bananza":      "https://upload.wikimedia.org/wikipedia/en/2/2e/Donkey_Kong_Bananza_logo.png",
 };
 
 const bannerMap = {
@@ -2102,6 +2278,30 @@ const bannerMap = {
   "Powerwash Simulator":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1290000/header.jpg",
   "Zenless Zone Zero":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2406526/header.jpg",
   "Blue Archive":              "https://images.launchbox-app.com/c00ddbab-9b51-461b-a0ee-4b5e8e8e0512.jpg",
+  // ── PS5/PS4 타이틀 배너 ──
+  "Spider-Man 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/2166950/header.jpg",
+  "God of War: Ragnarök":      "https://image.api.playstation.com/vulcan/ap/rnd/202207/1410/jd7zFLGe9HRjbEpBjkNvkOSg.png",
+  "Astro Bot":                 "https://image.api.playstation.com/vulcan/ap/rnd/202407/3118/e5fe9e0b57bc56ef8508fe45dab445da6b8f3e64e89a2c88.png",
+  "Final Fantasy XVI":         "https://image.api.playstation.com/vulcan/ap/rnd/202309/0714/dc462538f92d96f1cad7b96e6dcea43ce3fbe64c69db3ad3.png",
+  "Gran Turismo 7":            "https://image.api.playstation.com/vulcan/ap/rnd/202109/1321/VlRalHbCIQ0BbJJGCRKYJLMH.png",
+  "Ghost of Yōtei":            "https://image.api.playstation.com/vulcan/ap/rnd/202409/2400/5fb0ceca1c014011d7eb36a1b9d90d98fa38b1e5c4a5c0ee.png",
+  "Returnal":                  "https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/CdLqE4B27XPLGM5J3JNYS5TQ.png",
+  "Demon's Souls":             "https://image.api.playstation.com/vulcan/ap/rnd/202011/0402/P2BYIqXEjKJDLFJqENAQqJjn.png",
+  "The Last of Us Part II":    "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA07820_00/7/i_dce47b0be3f54bab18b39e36a1fb9f7b5a6c7ce93ea58e90d6c3b8a2e94d0a4b/i/icon0.png",
+  "Marvel's Spider-Man":       "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA02299_00/6/i_c0b0e3d09534cbdf5e89fdee4f1cebcc/i/icon0.png",
+  "Bloodborne":                "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA00900_00/6/i_c4b24e4f6a8a4f3c5f04c0fd44b3f52e/i/icon0.png",
+  "Horizon Zero Dawn":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1151640/header.jpg",
+  "Horizon Forbidden West":    "https://image.api.playstation.com/vulcan/ap/rnd/202107/3100/HO8vkO9pfXhwbHi5WHECQJdN.png",
+  "Ghost of Tsushima":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2215430/header.jpg",
+  "Death Stranding":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg",
+  // ── 닌텐도 스위치 타이틀 배너 ──
+  "Mario Kart World":          "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch-2/70010000081985/e7348e45ce83cabb7de3f2fe8cde41cbebaaff7e7cc6a0ef9c0ab2be40f3d3b3",
+  "Animal Crossing: New Horizons": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000025130/2a9f17bde9e77e1d5c0fc4e219ef92cf3d4f0ebf1b1f5f1cc6985fdfc59ca6e2",
+  "Mario Kart 8 Deluxe":       "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000000153/5454a2b17b03264c6a06bd8d3c65b3dc5d5e9e4e6e4e6e4e6",
+  "Super Smash Bros. Ultimate":"https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000012398/aab4c5c3a6e4f5e3e4e3e4e3e4e3e4e3e4e3e4e3e4e3e4e3e",
+  "Splatoon 3":                "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000053657/e22e28c0c5e2d53c5e2d53c5e2d53c5e2d53c5e2d53c5e2d5",
+  "The Legend of Zelda: Tears of the Kingdom": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000063714/5ce9e32c37b12ffd02b09b0f94f5d8c8abc23c1f10b8fa1e6",
+  "Metroid Prime 4: Beyond":   "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch-2/70010000081986/e7348e45ce83cabb7de3f2fe8cde41cbebaaff7e7cc6a0ef9c",
 };
 
 // ── 2025 인기 신작 게임 (출시 완료) ─────────────────────────────────────────
@@ -2808,7 +3008,7 @@ const TRANS = {
     lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
     continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','출시예정':'출시예정'},
-    sortBy:'정렬', sortDefault:'기본순', sortScore:'점수순↓', sortName:'이름순', sortRelease:'출시연도↓',
+    sortBy:'정렬', sortDefault:'기본순', sortScore:'동접자↓', sortName:'이름순', sortRelease:'출시연도↓',
     pfLabel:'플랫폼', pfAll:'전체', pfPC:'PC', pfMobile:'모바일', pfConsole:'콘솔',
     critic:'평론가', user:'유저',
     sourceTop:'SteamSpy 동시접속자(CCU) + 지역 가중치 기반 | 매주 월요일 업데이트',
@@ -2847,7 +3047,7 @@ const TRANS = {
     lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
     continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','출시예정':'Upcoming 2026'},
-    sortBy:'Sort', sortDefault:'Default', sortScore:'Score↓', sortName:'Name', sortRelease:'Year↓',
+    sortBy:'Sort', sortDefault:'Default', sortScore:'Players↓', sortName:'Name', sortRelease:'Year↓',
     pfLabel:'Platform', pfAll:'All', pfPC:'PC', pfMobile:'Mobile', pfConsole:'Console',
     critic:'Critic', user:'User',
     sourceTop:'Based on SteamSpy CCU + regional weights | Updated every Monday',
@@ -2886,7 +3086,7 @@ const TRANS = {
     lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
     continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','출시예정':'2026即将发售'},
-    sortBy:'排序', sortDefault:'默认', sortScore:'评分↓', sortName:'名称', sortRelease:'年份↓',
+    sortBy:'排序', sortDefault:'默认', sortScore:'在线↓', sortName:'名称', sortRelease:'年份↓',
     pfLabel:'平台', pfAll:'全部', pfPC:'PC', pfMobile:'手游', pfConsole:'主机',
     critic:'评论家', user:'用户',
     sourceTop:'基于 SteamSpy 同时在线人数 + 地区权重 | 每周一更新',
@@ -2925,7 +3125,7 @@ const TRANS = {
     lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
     continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','출시예정':'2026年近日発売'},
-    sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'スコア↓', sortName:'名前', sortRelease:'年度↓',
+    sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'同接↓', sortName:'名前', sortRelease:'年度↓',
     pfLabel:'プラットフォーム', pfAll:'全て', pfPC:'PC', pfMobile:'モバイル', pfConsole:'コンソール',
     critic:'批評家', user:'ユーザー',
     sourceTop:'SteamSpy 同時接続者数 + 地域ウェイト | 毎週月曜日更新',
@@ -4393,6 +4593,245 @@ const scoreMap = {
   "Blue Archive":               { meta: 0,  user: 81, release: 2021 },
 };
 
+// ── 주간 동접자 수 (Weekly CCU) ──────────────────────────────────────────────
+let rankingsPlayerCounts = {};  // rankings.json에서 로드
+const playerCountMap = {
+  // ── PC/온라인 게임 ──
+  "Counter-Strike 2":          1860000,
+  "Fortnite":                  9750000,
+  "League of Legends":         5800000,
+  "Roblox":                    4940000,
+  "Minecraft":                 1900000,
+  "PUBG: Battlegrounds":        314682,
+  "Dota 2":                     657000,
+  "Valorant":                  1200000,
+  "GTA 5":                      800000,
+  "Call of Duty":               150000,
+  "FC Online":                  120000,
+  "MapleStory":                  95000,
+  "Genshin Impact":             430000,
+  "Dungeon & Fighter":           88000,
+  "Lost Ark":                    72000,
+  "Overwatch 2":                 98000,
+  "Lineage":                     62000,
+  "Wuthering Waves":             85000,
+  "Apex Legends":                96000,
+  "World of Warcraft":           74000,
+  "Elden Ring":                  60000,
+  "Cyberpunk 2077":              55000,
+  "Monster Hunter Wilds":       320000,
+  "Baldur's Gate 3":            120000,
+  "Final Fantasy XIV":           95000,
+  "Path of Exile":               68000,
+  "Diablo IV":                   82000,
+  "Destiny 2":                   71000,
+  "Rainbow Six Siege":           88000,
+  "Halo Infinite":               32000,
+  "Escape from Tarkov":          42000,
+  "Starfield":                   28000,
+  "The Witcher 3":               42000,
+  "Red Dead Redemption 2":       52000,
+  "Civilization VI":             48000,
+  "The Sims 4":                  95000,
+  "Rocket League":               88000,
+  "Euro Truck Simulator 2":      45000,
+  "Warframe":                    48000,
+  "Team Fortress 2":             62000,
+  "Sea of Thieves":              38000,
+  "Deep Rock Galactic":          52000,
+  "Stardew Valley":              68000,
+  "Terraria":                    45000,
+  "Palworld":                    38000,
+  "Honkai: Star Rail":          280000,
+  "Zenless Zone Zero":          195000,
+  "Monster Hunter: World":       52000,
+  "God of War":                  48000,
+  "Sekiro":                      35000,
+  "Elden Ring: Nightreign":      95000,
+  "Split Fiction":               85000,
+  "Clair Obscur: Expedition 33": 72000,
+  "Hades II":                    62000,
+  "Hades":                       45000,
+  "Helldivers 2":                88000,
+  "Ghost of Tsushima":           68000,
+  "Ghost of Tsushima: Director's Cut": 68000,
+  "Lies of P":                   32000,
+  "Dark Souls III":              42000,
+  "Hollow Knight":               35000,
+  "Cuphead":                     22000,
+  "It Takes Two":                48000,
+  "Aion 2":                      55000,
+  "Sudden Attack":               42000,
+  "StarCraft II":                52000,
+  "Eternal Return":              38000,
+  "Delta Force":                 62000,
+  "Black Desert":                72000,
+  "Blade & Soul":                38000,
+  "Free Fire":                   950000,
+  "Among Us":                    32000,
+  "Satisfactory":                55000,
+  "Valheim":                     38000,
+  "V Rising":                    42000,
+  "Rimworld":                    48000,
+  "Blue Archive":                65000,
+  "Persona 5 Royal":             35000,
+  "Death Stranding 2: On the Beach": 230000,
+  "Metal Gear Solid Delta: Snake Eater": 58000,
+  "Doom: The Dark Ages":         75000,
+  "Avowed":                      32000,
+  // ── PS5 독점/주요 타이틀 ──
+  "Spider-Man 2":               480000,
+  "God of War: Ragnarök":       420000,
+  "Final Fantasy XVI":          180000,
+  "Horizon Forbidden West":     160000,
+  "Gran Turismo 7":             320000,
+  "Ghost of Yōtei":             280000,
+  "Ratchet & Clank: Rift Apart": 75000,
+  "Demon's Souls":               55000,
+  "The Last of Us Part II Remastered": 110000,
+  "Astro Bot":                  340000,
+  "Returnal":                    65000,
+  "Bloodborne":                  90000,
+  "The Last of Us Part II":     130000,
+  "Marvel's Spider-Man":        110000,
+  "Detroit: Become Human":       55000,
+  "Uncharted 4":                 65000,
+  "The Last of Us Part I":       85000,
+  "Horizon Zero Dawn":          100000,
+  "Like a Dragon: Infinite Wealth": 75000,
+  "Nioh 2":                      38000,
+  "Wo Long: Fallen Dynasty":     32000,
+  // ── 닌텐도 스위치1 타이틀 ──
+  "Animal Crossing: New Horizons": 580000,
+  "Mario Kart 8 Deluxe":        520000,
+  "The Legend of Zelda: Tears of the Kingdom": 380000,
+  "Super Smash Bros. Ultimate": 460000,
+  "Pokémon Scarlet/Violet":     320000,
+  "Splatoon 3":                 280000,
+  "Super Mario Odyssey":        230000,
+  "Fire Emblem: Three Houses":  110000,
+  "Kirby and the Forgotten Land": 85000,
+  "Pikmin 4":                    95000,
+  "The Legend of Zelda: Breath of the Wild": 290000,
+  "Xenoblade Chronicles 3":      75000,
+  "Pokémon Legends: Arceus":    140000,
+  "Super Mario Bros. Wonder":   210000,
+  "Metroid Dread":               78000,
+  "Bayonetta 3":                 45000,
+  "Monster Hunter Rise":        180000,
+  "Kirby's Return to Dream Land Deluxe": 62000,
+  // ── 닌텐도 스위치2 타이틀 ──
+  "Mario Kart World":           780000,
+  "Pokémon Legends: Z-A":       530000,
+  "Metroid Prime 4: Beyond":    380000,
+  "Donkey Kong Bananza":        330000,
+  "Kirby Air Riders":           260000,
+  "Xenoblade Chronicles X: Definitive Edition": 150000,
+  "Super Mario Party Jamboree": 200000,
+};
+
+function getGameCCU(gameName) {
+  return rankingsPlayerCounts[gameName] || playerCountMap[gameName] || 0;
+}
+function formatCCU(count) {
+  if (!count || count === 0) return null;
+  if (count >= 1000000) return (count/1000000).toFixed(1) + 'M';
+  if (count >= 1000) return Math.round(count/1000) + 'K';
+  return count.toLocaleString();
+}
+
+// ── 콘솔 게임 데이터 ──────────────────────────────────────────────────────────
+const Lc = (name, genre, platform, site, pub) => ({
+  name, genre, platform,
+  publisher: pub || '',
+  site,
+  logo: logoMap[name] || '',
+  desc: descMap[name] || ''
+});
+
+const consoleData = {
+  ps5: [
+    Lc('Spider-Man 2',          'Action',        'PS5',        'https://www.playstation.com/games/marvels-spider-man-2/', 'Insomniac Games / PlayStation Studios'),
+    Lc('God of War: Ragnarök',  'Action RPG',    'PS5/PS4',    'https://www.playstation.com/games/god-of-war-ragnarok/', 'Santa Monica Studio'),
+    Lc('Astro Bot',             'Platform',      'PS5',        'https://www.playstation.com/games/astro-bot/', 'Team Asobi / PlayStation Studios'),
+    Lc('Final Fantasy XVI',     'Action RPG',    'PS5',        'https://www.finalfantasyxvi.com/', 'Square Enix'),
+    Lc('Gran Turismo 7',        'Racing',        'PS5/PS4',    'https://www.gran-turismo.com/world/gts/', 'Polyphony Digital / PlayStation Studios'),
+    Lc('Ghost of Yōtei',        'Action RPG',    'PS5',        'https://www.playstation.com/games/ghost-of-yotei/', 'Sucker Punch Productions'),
+    Lc('Ratchet & Clank: Rift Apart', 'Platform', 'PS5',       'https://www.playstation.com/games/ratchet-and-clank-rift-apart/', 'Insomniac Games'),
+    Lc('The Last of Us Part II Remastered', 'Action', 'PS5',   'https://www.playstation.com/games/the-last-of-us-part-ii-remastered/', 'Naughty Dog'),
+    Lc('Returnal',              'Roguelike',     'PS5',        'https://www.playstation.com/games/returnal/', 'Housemarque / PlayStation Studios'),
+    Lc('Demon\'s Souls',        'Action RPG',    'PS5',        'https://www.playstation.com/games/demons-souls/', 'Bluepoint Games / PlayStation Studios'),
+    Lc('Like a Dragon: Infinite Wealth', 'RPG',  'PS5/PS4',    'https://store.steampowered.com/app/2072450/', 'Ryu Ga Gotoku Studio'),
+    Lc('Final Fantasy VII Rebirth', 'Action RPG','PS5',        'https://ffvii-rebirth.square-enix-games.com/', 'Square Enix'),
+    Lc('Horizon Forbidden West','Action RPG',    'PS5/PS4',    'https://www.playstation.com/games/horizon-forbidden-west/', 'Guerrilla Games'),
+    Lc('Death Stranding 2: On the Beach','Action','PS5',       'https://www.kojimaproductions.jp/en/death-stranding-2', 'Kojima Productions'),
+  ],
+  ps4: [
+    Lc('The Last of Us Part II','Action',        'PS4/PS5',    'https://www.playstation.com/games/the-last-of-us-part-ii/', 'Naughty Dog'),
+    Lc('Ghost of Tsushima',     'Action RPG',    'PS4/PS5',    'https://www.playstation.com/games/ghost-of-tsushima/', 'Sucker Punch Productions'),
+    Lc('Marvel\'s Spider-Man',  'Action',        'PS4',        'https://www.playstation.com/games/marvels-spider-man/', 'Insomniac Games'),
+    Lc('God of War',            'Action RPG',    'PS4/PC',     'https://store.steampowered.com/app/1593500/', 'Santa Monica Studio'),
+    Lc('Bloodborne',            'Action RPG',    'PS4',        'https://www.playstation.com/games/bloodborne/', 'FromSoftware / PlayStation Studios'),
+    Lc('Horizon Zero Dawn',     'Action RPG',    'PS4/PC',     'https://store.steampowered.com/app/1151640/', 'Guerrilla Games'),
+    Lc('Death Stranding',       'Action',        'PS4/PC',     'https://store.steampowered.com/app/1190460/', 'Kojima Productions'),
+    Lc('Detroit: Become Human', 'Adventure',     'PS4/PC',     'https://store.steampowered.com/app/1222140/', 'Quantic Dream'),
+    Lc('Persona 5 Royal',       'RPG',           'PS4',        'https://store.steampowered.com/app/1687950/', 'Atlus'),
+    Lc('Uncharted 4',           'Action',        'PS4',        'https://www.playstation.com/games/uncharted-4-a-thiefs-end/', 'Naughty Dog'),
+    Lc('The Last of Us Part I', 'Action',        'PS5/PC',     'https://store.steampowered.com/app/1888930/', 'Naughty Dog'),
+    Lc('Horizon Forbidden West','Action RPG',    'PS5/PS4',    'https://www.playstation.com/games/horizon-forbidden-west/', 'Guerrilla Games'),
+    Lc('Nioh 2',                'Action RPG',    'PS4/PC',     'https://store.steampowered.com/app/1325200/', 'Team Ninja / Koei Tecmo'),
+    Lc('Gran Turismo 7',        'Racing',        'PS5/PS4',    'https://www.gran-turismo.com/world/gts/', 'Polyphony Digital'),
+  ],
+  switch2: [
+    Lc('Mario Kart World',      'Racing',        'Switch2',    'https://www.nintendo.com/us/store/products/mario-kart-world-switch-2/', 'Nintendo'),
+    Lc('Pokémon Legends: Z-A',  'RPG',           'Switch2',    'https://www.pokemon.com/us/pokemon-video-games/pokemon-legends-z-a/', 'Game Freak / Nintendo'),
+    Lc('Metroid Prime 4: Beyond','FPS',          'Switch2',    'https://www.nintendo.com/us/store/products/metroid-prime-4-beyond-switch-2/', 'Retro Studios / Nintendo'),
+    Lc('Donkey Kong Bananza',   'Platform',      'Switch2',    'https://www.nintendo.com/us/store/products/donkey-kong-bananza-switch-2/', 'Nintendo'),
+    Lc('Kirby Air Riders',      'Racing',        'Switch2',    'https://www.nintendo.com/us/store/products/kirby-air-riders-switch-2/', 'HAL Laboratory / Nintendo'),
+    Lc('The Legend of Zelda: Tears of the Kingdom', 'Action RPG', 'Switch/Switch2', 'https://www.nintendo.com/us/store/products/the-legend-of-zelda-tears-of-the-kingdom-switch/', 'Nintendo'),
+    Lc('Super Mario Party Jamboree', 'Party',    'Switch',     'https://www.nintendo.com/us/store/products/super-mario-party-jamboree-switch/', 'Nintendo'),
+    Lc('Xenoblade Chronicles X: Definitive Edition', 'RPG', 'Switch2', 'https://www.nintendo.com/us/store/products/xenoblade-chronicles-x-definitive-edition-switch-2/', 'Monolith Soft / Nintendo'),
+  ],
+  switch1: [
+    Lc('Animal Crossing: New Horizons', 'Simulation', 'Switch', 'https://www.nintendo.com/us/store/products/animal-crossing-new-horizons-switch/', 'Nintendo'),
+    Lc('Mario Kart 8 Deluxe',   'Racing',        'Switch',     'https://www.nintendo.com/us/store/products/mario-kart-8-deluxe-switch/', 'Nintendo'),
+    Lc('The Legend of Zelda: Tears of the Kingdom', 'Action RPG', 'Switch', 'https://www.nintendo.com/us/store/products/the-legend-of-zelda-tears-of-the-kingdom-switch/', 'Nintendo'),
+    Lc('Super Smash Bros. Ultimate', 'Fighting',  'Switch',    'https://www.nintendo.com/us/store/products/super-smash-bros-ultimate-switch/', 'Nintendo'),
+    Lc('Pokémon Scarlet/Violet', 'RPG',           'Switch',    'https://www.pokemon.com/us/pokemon-video-games/pokemon-scarlet-and-pokemon-violet/', 'Game Freak / Nintendo'),
+    Lc('Splatoon 3',            'Shooter',        'Switch',    'https://www.nintendo.com/us/store/products/splatoon-3-switch/', 'Nintendo'),
+    Lc('The Legend of Zelda: Breath of the Wild', 'Action RPG', 'Switch', 'https://www.nintendo.com/us/store/products/the-legend-of-zelda-breath-of-the-wild-switch/', 'Nintendo'),
+    Lc('Super Mario Odyssey',   'Platform',       'Switch',    'https://www.nintendo.com/us/store/products/super-mario-odyssey-switch/', 'Nintendo'),
+    Lc('Super Mario Bros. Wonder','Platform',     'Switch',    'https://www.nintendo.com/us/store/products/super-mario-bros-wonder-switch/', 'Nintendo'),
+    Lc('Pokémon Legends: Arceus','RPG',           'Switch',    'https://www.nintendo.com/us/store/products/pokemon-legends-arceus-switch/', 'Game Freak / Nintendo'),
+    Lc('Monster Hunter Rise',   'Action RPG',     'Switch/PC', 'https://store.steampowered.com/app/1446780/', 'Capcom'),
+    Lc('Xenoblade Chronicles 3','RPG',            'Switch',    'https://www.nintendo.com/us/store/products/xenoblade-chronicles-3-switch/', 'Monolith Soft / Nintendo'),
+    Lc('Fire Emblem: Three Houses','Strategy RPG','Switch',    'https://www.nintendo.com/us/store/products/fire-emblem-three-houses-switch/', 'Intelligent Systems / Nintendo'),
+    Lc('Pikmin 4',              'Strategy',       'Switch',    'https://www.nintendo.com/us/store/products/pikmin-4-switch/', 'Nintendo'),
+    Lc('Super Mario Party Jamboree','Party',      'Switch',    'https://www.nintendo.com/us/store/products/super-mario-party-jamboree-switch/', 'Nintendo'),
+  ]
+};
+
+let currentConsolePlatform = 'ps5';
+let consoleCurrentPage = 1;
+let consoleSearchQuery = '';
+
+function getConsolePlatformLabel(platform) {
+  const labels = { ps5:'PS5', ps4:'PS4', switch2:'닌텐도 스위치2', switch1:'닌텐도 스위치1' };
+  return labels[platform] || platform.toUpperCase();
+}
+
+function getConsolePlatformLabelEn(platform) {
+  const labels = { ps5:'PS5', ps4:'PS4', switch2:'Nintendo Switch 2', switch1:'Nintendo Switch 1' };
+  return labels[platform] || platform.toUpperCase();
+}
+
+function getConsolePlatformLabelLocalized(platform) {
+  if (currentLang === 'en' || currentLang === 'zh' || currentLang === 'ja') {
+    return getConsolePlatformLabelEn(platform);
+  }
+  return getConsolePlatformLabel(platform);
+}
+
 function getMetaColor(score) {
   if (!score || score === 0) return 'gray';
   if (score >= 90) return 'green';
@@ -4437,11 +4876,7 @@ function applyFiltersAndSort(list) {
   }
   // 정렬
   if (currentSort === 'score') {
-    result.sort((a, b) => {
-      const sa = scoreMap[a.name] ? scoreMap[a.name].meta : 0;
-      const sb = scoreMap[b.name] ? scoreMap[b.name].meta : 0;
-      return sb - sa;
-    });
+    result.sort((a, b) => getGameCCU(b.name) - getGameCCU(a.name));
   } else if (currentSort === 'name') {
     result.sort((a, b) => getLocalizedGameName(a.name).localeCompare(getLocalizedGameName(b.name)));
   } else if (currentSort === 'release') {
@@ -4519,30 +4954,21 @@ function renderGames(rawList) {
                  : game.desc;
     const banner = bannerMap[game.name] || '';
     const logo   = game.logo || '';
-    // 점수 뱃지
-    const sc = scoreMap[game.name];
-    let scoreHTML = '';
-    if (sc) {
-      const metaColor = getMetaColor(sc.meta);
-      const metaVal   = sc.meta > 0 ? sc.meta : '—';
-      const userVal   = sc.user > 0 ? sc.user : '—';
-      const yearChip  = sc.release ? `<span class="release-chip">${sc.release}</span>` : '';
-      scoreHTML = `
-        <div class="score-row">
-          <div class="meta-badge ${metaColor}">
-            <span class="s-val">${metaVal}</span>
-            <span class="s-lbl">${t('critic')}</span>
-          </div>
-          <div class="user-badge">
-            <span class="s-val">${userVal}</span>
-            <span class="s-lbl">${t('user')}</span>
-          </div>
-          ${yearChip}
-        </div>`;
-    }
-    // Must-Play 배지 (메타스코어 90+)
-    const mustPlay = sc && sc.meta >= 90
-      ? `<div class="must-play-wrap"><span class="must-play-badge">⭐ MUST-PLAY</span></div>`
+    // 주간 동접자 뱃지
+    const ccuCount = getGameCCU(game.name);
+    const ccuFormatted = formatCCU(ccuCount);
+    const ccuLbl = currentLang === 'ko' ? '주간 동접자' : currentLang === 'zh' ? '周同时在线' : currentLang === 'ja' ? '週間同時接続' : 'Weekly CCU';
+    const scoreHTML = ccuFormatted ? `
+      <div class="ccu-row">
+        <div class="ccu-badge">
+          <span class="ccu-val">${ccuFormatted}</span>
+          <span class="ccu-lbl">${ccuLbl}</span>
+        </div>
+      </div>` : '';
+    const mustPlay = ccuCount >= 1000000
+      ? `<div class="must-play-wrap"><span class="must-play-badge">🔥 HOT</span></div>`
+      : ccuCount >= 500000
+      ? `<div class="must-play-wrap"><span class="must-play-badge">⭐ POPULAR</span></div>`
       : '';
     const imgInner = banner
       ? `<img src="${banner}" class="game-banner" alt="${displayName} 공식 배너 이미지" loading="lazy"
@@ -4675,16 +5101,21 @@ function setLang(lang) {
   setTxt('footerCopyright', t('footerCopyright'));
   renderFaq();
   const navLabels = {
-    ko:{continent:'대륙별 랭킹',asia:'아시아',na:'북미',europe:'유럽',global:'글로벌',newGames:'2026 신작 & 출시예정',back:'홈'},
-    en:{continent:'Regions',    asia:'Asia',  na:'N. America',europe:'Europe',global:'Global',newGames:'2026 Upcoming',back:'Home'},
-    zh:{continent:'地区排名',   asia:'亚洲',  na:'北美',     europe:'欧洲',  global:'全球',  newGames:'2026 即将发售',back:'首页'},
-    ja:{continent:'地域別ランキング',asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル',newGames:'2026 近日発売',back:'ホーム'},
+    ko:{continent:'대륙별 랭킹',asia:'아시아',na:'북미',europe:'유럽',global:'글로벌',newGames:'2026 신작 & 출시예정',back:'홈',consoleSec:'게임기별 랭킹',ps5:'PS5 랭킹',ps4:'PS4 랭킹',switch2:'닌텐도 스위치2',switch1:'닌텐도 스위치1'},
+    en:{continent:'Regions',    asia:'Asia',  na:'N. America',europe:'Europe',global:'Global',newGames:'2026 Upcoming',back:'Home',consoleSec:'By Console',ps5:'PS5 Ranking',ps4:'PS4 Ranking',switch2:'Nintendo Switch 2',switch1:'Nintendo Switch 1'},
+    zh:{continent:'地区排名',   asia:'亚洲',  na:'北美',     europe:'欧洲',  global:'全球',  newGames:'2026 即将发售',back:'首页',consoleSec:'主机排名',ps5:'PS5 排名',ps4:'PS4 排名',switch2:'任天堂 Switch 2',switch1:'任天堂 Switch 1'},
+    ja:{continent:'地域別ランキング',asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル',newGames:'2026 近日発売',back:'ホーム',consoleSec:'ゲーム機別',ps5:'PS5 ランキング',ps4:'PS4 ランキング',switch2:'Nintendo Switch 2',switch1:'Nintendo Switch 1'},
   };
   const nl = navLabels[lang] || navLabels.en;
   setTxt('navLabelContinent', nl.continent);
   setTxt('navAsia', nl.asia); setTxt('navNA', nl.na);
   setTxt('navEurope', nl.europe); setTxt('navGlobal', nl.global);
   setTxt('navNewGames', nl.newGames);
+  setTxt('navLabelConsole', nl.consoleSec);
+  setTxt('navPS5', nl.ps5);
+  setTxt('navPS4', nl.ps4);
+  setTxt('navSwitch2', nl.switch2);
+  setTxt('navSwitch1', nl.switch1);
   document.querySelectorAll('.backBtnLabel, #backBtnLabel').forEach(el => el.textContent = nl.back);
   updateSubRegionTabs();
   updateGenreTabs();
@@ -4713,6 +5144,8 @@ function setLang(lang) {
     renderNewGamesPage();
   } else if (currentView === 'bugreport') {
     renderBugPosts();
+  } else if (currentView === 'console') {
+    renderConsolePage();
   }
   renderDashboard();
 }
@@ -4945,6 +5378,10 @@ async function loadRankings() {
     if (data.updated) {
       lastUpdateTimestamp = new Date(data.updated).getTime();
       updateTimeDisplay();
+    }
+
+    if (data.playerCounts) {
+      rankingsPlayerCounts = data.playerCounts;
     }
 
     for (const continent of ['asia','na','europe','global']) {
@@ -5189,11 +5626,149 @@ function showView(view) {
   document.getElementById('viewContinent').style.display  = view === 'continent'  ? 'block' : 'none';
   document.getElementById('viewNewGames').style.display   = view === 'newgames'   ? 'block' : 'none';
   document.getElementById('viewBugReport').style.display  = view === 'bugreport'  ? 'block' : 'none';
+  document.getElementById('viewConsole').style.display    = view === 'console'    ? 'block' : 'none';
   if (view === 'dashboard') {
     renderDashboard();
     loadRankings();
   }
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── 콘솔 플랫폼 페이지 ───────────────────────────────────────────────────────
+function navigateToPlatform(platform) {
+  closeDrawer();
+  currentConsolePlatform = platform;
+  consoleCurrentPage = 1;
+  consoleSearchQuery = '';
+  showView('console');
+  renderConsolePage();
+}
+
+const CONSOLE_PER_PAGE = 12;
+
+function renderConsolePage() {
+  const platform = currentConsolePlatform;
+  const platformLabel = getConsolePlatformLabelLocalized(platform);
+  const titleEl = document.getElementById('consoleViewTitle');
+  if (titleEl) {
+    const icons = { ps5:'🎮', ps4:'🕹️', switch2:'🔴', switch1:'🟡' };
+    titleEl.textContent = `${icons[platform]||'🎮'} ${platformLabel}`;
+  }
+
+  const srcEl = document.getElementById('consoleRankSource');
+  if (srcEl) {
+    srcEl.textContent = currentLang === 'ko'
+      ? `${platformLabel} 주요 타이틀 · 주간 동접자 기준 정렬`
+      : `${platformLabel} Major Titles · Sorted by Weekly CCU`;
+  }
+
+  const searchEl = document.getElementById('consoleSearchInput');
+  if (searchEl) {
+    searchEl.value = consoleSearchQuery;
+    searchEl.placeholder = currentLang === 'ko' ? '🔍  게임 검색' : '🔍  Search games';
+  }
+
+  let list = (consoleData[platform] || []).slice();
+  list.sort((a, b) => getGameCCU(b.name) - getGameCCU(a.name));
+
+  if (consoleSearchQuery) {
+    const q = consoleSearchQuery.toLowerCase();
+    list = list.filter(g => g.name.toLowerCase().includes(q) || (g.desc||'').toLowerCase().includes(q));
+  }
+
+  const grid = document.getElementById('consoleRankGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  if (!list.length) {
+    grid.innerHTML = `<p style="color:var(--sub);padding:20px">${currentLang === 'ko' ? '게임이 없습니다.' : 'No games found.'}</p>`;
+    document.getElementById('consolePaginationContainer').innerHTML = '';
+    return;
+  }
+
+  const totalPages = Math.ceil(list.length / CONSOLE_PER_PAGE);
+  if (consoleCurrentPage > totalPages) consoleCurrentPage = 1;
+  const start = (consoleCurrentPage - 1) * CONSOLE_PER_PAGE;
+  const pageList = list.slice(start, start + CONSOLE_PER_PAGE);
+
+  const pBadgeClass = { ps5:'ps5', ps4:'ps4', switch2:'switch2', switch1:'switch1' }[platform] || 'ps5';
+  const pBadgeLabel = { ps5:'PS5', ps4:'PS4', switch2:'Switch 2', switch1:'Switch 1' }[platform] || '';
+
+  pageList.forEach((game, i) => {
+    const rank = start + i + 1;
+    const displayName = getLocalizedGameName(game.name);
+    const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
+    const banner = bannerMap[game.name] || '';
+    const logo   = game.logo || '';
+    const desc   = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
+                 : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
+                 : currentLang === 'ja' ? (descMapJa[game.name] || descMapEn[game.name] || game.desc)
+                 : game.desc;
+    const ccuCount = getGameCCU(game.name);
+    const ccuFormatted = formatCCU(ccuCount);
+    const ccuLbl = currentLang === 'ko' ? '주간 동접자' : currentLang === 'zh' ? '周同时在线' : currentLang === 'ja' ? '週間同時接続' : 'Weekly CCU';
+    const ccuHTML = ccuFormatted ? `<div class="ccu-row"><div class="ccu-badge"><span class="ccu-val">${ccuFormatted}</span><span class="ccu-lbl">${ccuLbl}</span></div></div>` : '';
+
+    const imgInner = banner
+      ? `<img src="${banner}" class="game-banner" alt="${displayName}" loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="logo-layer" style="display:none">
+            <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+          </div>`
+      : `<div class="logo-layer" style="display:flex">
+            <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="init-box" style="display:none"><div class="fi">${initials}</div><div class="fn">${displayName}</div></div>
+          </div>`;
+
+    grid.innerHTML += `
+      <div class="card">
+        <div class="img-wrap">
+          ${imgInner}
+          <div class="rank-badge">#${rank}</div>
+          <div class="genre-badge">${game.genre}</div>
+        </div>
+        <span class="platform-badge ${pBadgeClass}">${pBadgeLabel}</span>
+        <h3>${displayName}</h3>
+        ${ccuHTML}
+        ${desc ? `<p class="desc-text">${desc}</p>` : ''}
+        <p>${t('platform')}: ${game.platform}</p>
+        <p class="pub-text">${t('publisher')}: ${game.publisher}</p>
+        <button class="site-btn" onclick="window.open('${game.site}','_blank')">${t('officialSite')}</button>
+      </div>`;
+  });
+
+  // 페이지네이션
+  const pc = document.getElementById('consolePaginationContainer');
+  if (pc) {
+    pc.innerHTML = '';
+    if (totalPages > 1) {
+      const prev = `<button class="page-btn"${consoleCurrentPage===1?' disabled':''} onclick="consoleGoToPage(${consoleCurrentPage-1})">←</button>`;
+      const next = `<button class="page-btn"${consoleCurrentPage===totalPages?' disabled':''} onclick="consoleGoToPage(${consoleCurrentPage+1})">→</button>`;
+      const s = Math.max(1, consoleCurrentPage - 2);
+      const e = Math.min(totalPages, s + 4);
+      let pages = '';
+      for (let p = s; p <= e; p++) {
+        pages += `<button class="page-btn${p===consoleCurrentPage?' active':''}" onclick="consoleGoToPage(${p})">${p}</button>`;
+      }
+      pc.innerHTML = prev + pages + next;
+    }
+  }
+}
+
+function consoleGoToPage(page) {
+  consoleCurrentPage = page;
+  renderConsolePage();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function filterConsoleGames() {
+  const input = document.getElementById('consoleSearchInput');
+  consoleSearchQuery = input ? input.value : '';
+  consoleCurrentPage = 1;
+  renderConsolePage();
 }
 
 // ── 버그/문의 게시판 ─────────────────────────────────────────────────────────
@@ -5558,17 +6133,16 @@ function renderDashboard() {
     const contLabel = t('continent')[cont];
     const items = top10.map((game, i) => {
       const rank = i + 1;
-      const sc = scoreMap[game.name];
-      const metaVal = sc && sc.meta > 0 ? sc.meta : null;
-      const scoreColor = sc ? getMetaColor(sc.meta) : 'gray';
-      const scoreBadge = metaVal ? `<span class="dash-score ${scoreColor}">${metaVal}</span>` : '';
+      const ccuCount = getGameCCU(game.name);
+      const ccuStr = formatCCU(ccuCount);
+      const ccuBadge = ccuStr ? `<span class="dash-ccu">${ccuStr}</span>` : '';
       const trendHTML = getTrendHTML(game.name);
       const displayName = getLocalizedGameName(game.name);
       return `<li class="dash-rank-item" onclick="openDrawerGenre('${cont}','TOP 10')">
         <span class="dash-rank-num${rank<=3?' top3':''}">${rank}</span>
         ${trendHTML}
         <span class="dash-game-name">${displayName}</span>
-        ${scoreBadge}
+        ${ccuBadge}
       </li>`;
     }).join('');
     return `<div class="dash-panel">
