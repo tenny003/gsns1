@@ -951,7 +951,7 @@ header{padding:22px 80px;}
 </footer>
 
 <script>
-const GAMES_PER_PAGE = 10;
+const GAMES_PER_PAGE = 12;
 
 const pubMap = {
   "League of Legends":         "Riot Games",
@@ -4594,7 +4594,8 @@ const scoreMap = {
 };
 
 // ── 주간 동접자 수 (Weekly CCU) ──────────────────────────────────────────────
-let rankingsPlayerCounts = {};  // rankings.json에서 로드
+let rankingsPlayerCounts = {};          // rankings.json playerCounts (전체)
+let rankingsRegionalPlayerCounts = {};  // rankings.json regionalPlayerCounts (지역별)
 const playerCountMap = {
   // ── PC/온라인 게임 ──
   "Counter-Strike 2":          1860000,
@@ -4730,9 +4731,44 @@ const playerCountMap = {
   "Super Mario Party Jamboree": 200000,
 };
 
-function getGameCCU(gameName) {
+function getRegionalCCU(gameName, continent, subRegion) {
+  // 소지역 우선 (korea, japan, china, sea, us, canada, western, nordic)
+  if (subRegion && subRegion !== 'all') {
+    const reg = rankingsRegionalPlayerCounts[subRegion];
+    if (reg && reg[gameName]) return reg[gameName];
+  }
+  // 대륙 (asia, na, europe)
+  if (continent && continent !== 'global') {
+    const reg = rankingsRegionalPlayerCounts[continent];
+    if (reg && reg[gameName]) return reg[gameName];
+  }
+  // 전체 글로벌 폴백
   return rankingsPlayerCounts[gameName] || playerCountMap[gameName] || 0;
 }
+
+function getGameCCU(gameName) {
+  // 대륙뷰에서는 현재 선택된 지역 기준 CCU 반환
+  if (currentView === 'continent') {
+    return getRegionalCCU(gameName, currentContinent, currentSubRegion);
+  }
+  return rankingsPlayerCounts[gameName] || playerCountMap[gameName] || 0;
+}
+
+function getCCULabel() {
+  if (currentView === 'continent' && currentSubRegion && currentSubRegion !== 'all') {
+    const subDef = (subRegionDefs[currentContinent] || []).find(d => d.id === currentSubRegion);
+    if (subDef) {
+      const rn = subDef.label[currentLang] || subDef.label.en;
+      return currentLang === 'ko' ? `${rn} 동접자` : `${rn} CCU`;
+    }
+  }
+  if (currentView === 'continent' && currentContinent && currentContinent !== 'global') {
+    const cLabel = t('continent')[currentContinent];
+    return currentLang === 'ko' ? `${cLabel} 동접자` : `${cLabel} CCU`;
+  }
+  return currentLang === 'ko' ? '주간 동접자' : currentLang === 'zh' ? '周同时在线' : currentLang === 'ja' ? '週間同時接続' : 'Weekly CCU';
+}
+
 function formatCCU(count) {
   if (!count || count === 0) return null;
   if (count >= 1000000) return (count/1000000).toFixed(1) + 'M';
@@ -4957,7 +4993,7 @@ function renderGames(rawList) {
     // 주간 동접자 뱃지
     const ccuCount = getGameCCU(game.name);
     const ccuFormatted = formatCCU(ccuCount);
-    const ccuLbl = currentLang === 'ko' ? '주간 동접자' : currentLang === 'zh' ? '周同时在线' : currentLang === 'ja' ? '週間同時接続' : 'Weekly CCU';
+    const ccuLbl = getCCULabel();
     const scoreHTML = ccuFormatted ? `
       <div class="ccu-row">
         <div class="ccu-badge">
@@ -5382,6 +5418,9 @@ async function loadRankings() {
 
     if (data.playerCounts) {
       rankingsPlayerCounts = data.playerCounts;
+    }
+    if (data.regionalPlayerCounts) {
+      rankingsRegionalPlayerCounts = data.regionalPlayerCounts;
     }
 
     for (const continent of ['asia','na','europe','global']) {
@@ -6133,7 +6172,7 @@ function renderDashboard() {
     const contLabel = t('continent')[cont];
     const items = top10.map((game, i) => {
       const rank = i + 1;
-      const ccuCount = getGameCCU(game.name);
+      const ccuCount = getRegionalCCU(game.name, cont, null);
       const ccuStr = formatCCU(ccuCount);
       const ccuBadge = ccuStr ? `<span class="dash-ccu">${ccuStr}</span>` : '';
       const trendHTML = getTrendHTML(game.name);
