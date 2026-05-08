@@ -471,6 +471,10 @@ footer{text-align:center;padding:30px;color:var(--footer-color);}
   border-color:transparent;color:#fff;
   box-shadow:0 2px 8px rgba(56,189,248,.35);
 }
+.filter-btn.active .sort-arrow{
+  display:inline-block;margin-left:3px;font-size:.8em;
+  opacity:.9;font-weight:900;
+}
 .filter-sep{width:1px;height:26px;background:var(--border);opacity:.5;margin:0 2px;}
 
 /* ── 햄버거 메뉴 버튼 ── */
@@ -3035,7 +3039,7 @@ const TRANS = {
     lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
     continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','출시예정':'출시예정'},
-    sortBy:'정렬', sortDefault:'기본순', sortScore:'동접자↓', sortName:'이름순', sortRelease:'출시연도↓',
+    sortBy:'정렬', sortDefault:'기본순', sortScore:'동접자수', sortName:'이름', sortRelease:'출시연도',
     pfLabel:'플랫폼', pfAll:'전체', pfPC:'PC', pfMobile:'모바일', pfConsole:'콘솔',
     critic:'평론가', user:'유저',
     sourceTop:'SteamSpy 동시접속자(CCU) + 지역 가중치 기반 | 매주 월요일 업데이트',
@@ -3074,7 +3078,7 @@ const TRANS = {
     lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
     continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','출시예정':'Upcoming 2026'},
-    sortBy:'Sort', sortDefault:'Default', sortScore:'Players↓', sortName:'Name', sortRelease:'Year↓',
+    sortBy:'Sort', sortDefault:'Default', sortScore:'Players', sortName:'Name', sortRelease:'Year',
     pfLabel:'Platform', pfAll:'All', pfPC:'PC', pfMobile:'Mobile', pfConsole:'Console',
     critic:'Critic', user:'User',
     sourceTop:'Based on SteamSpy CCU + regional weights | Updated every Monday',
@@ -3113,7 +3117,7 @@ const TRANS = {
     lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
     continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','출시예정':'2026即将发售'},
-    sortBy:'排序', sortDefault:'默认', sortScore:'在线↓', sortName:'名称', sortRelease:'年份↓',
+    sortBy:'排序', sortDefault:'默认', sortScore:'在线', sortName:'名称', sortRelease:'年份',
     pfLabel:'平台', pfAll:'全部', pfPC:'PC', pfMobile:'手游', pfConsole:'主机',
     critic:'评论家', user:'用户',
     sourceTop:'基于 SteamSpy 同时在线人数 + 地区权重 | 每周一更新',
@@ -3152,7 +3156,7 @@ const TRANS = {
     lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
     continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
     genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','출시예정':'2026年近日発売'},
-    sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'同接↓', sortName:'名前', sortRelease:'年度↓',
+    sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'同接数', sortName:'名前', sortRelease:'年度',
     pfLabel:'プラットフォーム', pfAll:'全て', pfPC:'PC', pfMobile:'モバイル', pfConsole:'コンソール',
     critic:'批評家', user:'ユーザー',
     sourceTop:'SteamSpy 同時接続者数 + 地域ウェイト | 毎週月曜日更新',
@@ -4922,7 +4926,11 @@ let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
 let currentSubRegion = 'all';
 let currentSort = 'default';
+let currentSortDir = 'desc'; // 'asc' | 'desc'
 let currentPlatformFilter = 'all';
+
+// 기본 정렬 방향: score·release는 desc(높은→낮은), name은 asc(A→Z)
+const DEFAULT_SORT_DIR = { score:'desc', name:'asc', release:'desc', default:'desc' };
 
 function applyFiltersAndSort(list) {
   let result = list.slice();
@@ -4938,18 +4946,26 @@ function applyFiltersAndSort(list) {
     });
   }
   // 정렬
+  const dir = currentSortDir === 'asc' ? 1 : -1;
   if (currentSort === 'score') {
-    result.sort((a, b) => getGameCCU(b.name) - getGameCCU(a.name));
+    result.sort((a, b) => (getGameCCU(a.name) - getGameCCU(b.name)) * dir * -1);
   } else if (currentSort === 'name') {
-    result.sort((a, b) => getLocalizedGameName(a.name).localeCompare(getLocalizedGameName(b.name)));
+    result.sort((a, b) => getLocalizedGameName(a.name).localeCompare(getLocalizedGameName(b.name)) * dir);
   } else if (currentSort === 'release') {
     result.sort((a, b) => {
       const ya = scoreMap[a.name] ? scoreMap[a.name].release : 0;
       const yb = scoreMap[b.name] ? scoreMap[b.name].release : 0;
-      return yb - ya;
+      return (ya - yb) * dir * -1;
     });
   }
   return result;
+}
+
+function getSortBtnLabel(key) {
+  const base = t('sort' + key.charAt(0).toUpperCase() + key.slice(1)) || key;
+  if (key === 'default' || key !== currentSort) return base;
+  const arrow = currentSortDir === 'desc' ? '↓' : '↑';
+  return `${base} <span class="sort-arrow">${arrow}</span>`;
 }
 
 function updateFilterRow() {
@@ -4959,10 +4975,10 @@ function updateFilterRow() {
   c.innerHTML = `
     <div class="filter-group">
       <span class="filter-label">${t('sortBy')}</span>
-      <button class="filter-btn${s==='default'?' active':''}" onclick="setSort('default')">${t('sortDefault')}</button>
-      <button class="filter-btn${s==='score'?' active':''}" onclick="setSort('score')">${t('sortScore')}</button>
-      <button class="filter-btn${s==='name'?' active':''}" onclick="setSort('name')">${t('sortName')}</button>
-      <button class="filter-btn${s==='release'?' active':''}" onclick="setSort('release')">${t('sortRelease')}</button>
+      <button class="filter-btn${s==='default'?' active':''}" onclick="setSort('default')">${getSortBtnLabel('default')}</button>
+      <button class="filter-btn${s==='score'?' active':''}" onclick="setSort('score')">${getSortBtnLabel('score')}</button>
+      <button class="filter-btn${s==='name'?' active':''}" onclick="setSort('name')">${getSortBtnLabel('name')}</button>
+      <button class="filter-btn${s==='release'?' active':''}" onclick="setSort('release')">${getSortBtnLabel('release')}</button>
     </div>
     <div class="filter-sep"></div>
     <div class="filter-group">
@@ -4975,7 +4991,13 @@ function updateFilterRow() {
 }
 
 function setSort(sort) {
-  currentSort = sort;
+  if (sort === currentSort && sort !== 'default') {
+    // 같은 버튼 재클릭 → 방향 토글
+    currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
+  } else {
+    currentSort = sort;
+    currentSortDir = DEFAULT_SORT_DIR[sort] || 'desc';
+  }
   currentPage = 1;
   updateFilterRow();
   renderGames(getActiveGameList());
