@@ -159,6 +159,10 @@ body.light .toggle-icon{transform:rotate(20deg);}
   object-fit:cover;object-position:center 20%;
   display:block;
 }
+/* 게임팩 세로형 박스아트용 */
+.game-banner.box-art{
+  object-fit:cover;object-position:center 15%;
+}
 /* 배너 하단 그라디언트 — 이미지 상단 일부만 노출 */
 .img-wrap::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:52%;
@@ -2278,30 +2282,53 @@ const bannerMap = {
   "Powerwash Simulator":       "https://cdn.cloudflare.steamstatic.com/steam/apps/1290000/header.jpg",
   "Zenless Zone Zero":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2406526/header.jpg",
   "Blue Archive":              "https://images.launchbox-app.com/c00ddbab-9b51-461b-a0ee-4b5e8e8e0512.jpg",
-  // ── PS5/PS4 타이틀 배너 ──
-  "Spider-Man 2":              "https://cdn.cloudflare.steamstatic.com/steam/apps/2166950/header.jpg",
-  "God of War: Ragnarök":      "https://image.api.playstation.com/vulcan/ap/rnd/202207/1410/jd7zFLGe9HRjbEpBjkNvkOSg.png",
-  "Astro Bot":                 "https://image.api.playstation.com/vulcan/ap/rnd/202407/3118/e5fe9e0b57bc56ef8508fe45dab445da6b8f3e64e89a2c88.png",
-  "Final Fantasy XVI":         "https://image.api.playstation.com/vulcan/ap/rnd/202309/0714/dc462538f92d96f1cad7b96e6dcea43ce3fbe64c69db3ad3.png",
-  "Gran Turismo 7":            "https://image.api.playstation.com/vulcan/ap/rnd/202109/1321/VlRalHbCIQ0BbJJGCRKYJLMH.png",
-  "Ghost of Yōtei":            "https://image.api.playstation.com/vulcan/ap/rnd/202409/2400/5fb0ceca1c014011d7eb36a1b9d90d98fa38b1e5c4a5c0ee.png",
-  "Returnal":                  "https://image.api.playstation.com/vulcan/ap/rnd/202101/2921/CdLqE4B27XPLGM5J3JNYS5TQ.png",
-  "Demon's Souls":             "https://image.api.playstation.com/vulcan/ap/rnd/202011/0402/P2BYIqXEjKJDLFJqENAQqJjn.png",
-  "The Last of Us Part II":    "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA07820_00/7/i_dce47b0be3f54bab18b39e36a1fb9f7b5a6c7ce93ea58e90d6c3b8a2e94d0a4b/i/icon0.png",
-  "Marvel's Spider-Man":       "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA02299_00/6/i_c0b0e3d09534cbdf5e89fdee4f1cebcc/i/icon0.png",
-  "Bloodborne":                "https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA00900_00/6/i_c4b24e4f6a8a4f3c5f04c0fd44b3f52e/i/icon0.png",
-  "Horizon Zero Dawn":         "https://cdn.cloudflare.steamstatic.com/steam/apps/1151640/header.jpg",
-  "Horizon Forbidden West":    "https://image.api.playstation.com/vulcan/ap/rnd/202107/3100/HO8vkO9pfXhwbHi5WHECQJdN.png",
-  "Ghost of Tsushima":         "https://cdn.cloudflare.steamstatic.com/steam/apps/2215430/header.jpg",
-  "Death Stranding":           "https://cdn.cloudflare.steamstatic.com/steam/apps/1190460/header.jpg",
-  // ── 닌텐도 스위치 타이틀 배너 ──
-  "Mario Kart World":          "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch-2/70010000081985/e7348e45ce83cabb7de3f2fe8cde41cbebaaff7e7cc6a0ef9c0ab2be40f3d3b3",
-  "Animal Crossing: New Horizons": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000025130/2a9f17bde9e77e1d5c0fc4e219ef92cf3d4f0ebf1b1f5f1cc6985fdfc59ca6e2",
-  "Mario Kart 8 Deluxe":       "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000000153/5454a2b17b03264c6a06bd8d3c65b3dc5d5e9e4e6e4e6e4e6",
-  "Super Smash Bros. Ultimate":"https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000012398/aab4c5c3a6e4f5e3e4e3e4e3e4e3e4e3e4e3e4e3e4e3e4e3e",
-  "Splatoon 3":                "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000053657/e22e28c0c5e2d53c5e2d53c5e2d53c5e2d53c5e2d53c5e2d5",
-  "The Legend of Zelda: Tears of the Kingdom": "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch/70010000063714/5ce9e32c37b12ffd02b09b0f94f5d8c8abc23c1f10b8fa1e6",
-  "Metroid Prime 4: Beyond":   "https://assets.nintendo.com/image/upload/f_auto/q_auto/dpr_2.0/c_scale,w_400/ncom/software/switch-2/70010000081986/e7348e45ce83cabb7de3f2fe8cde41cbebaaff7e7cc6a0ef9c",
+};
+
+// ── 콘솔 게임 박스아트 (게임팩 패키지 사진) ──────────────────────────────────
+const boxArtMap = {
+  // PS5
+  "Spider-Man 2":              "https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Marvels_Spider-Man_2_cover.jpg/220px-Marvels_Spider-Man_2_cover.jpg",
+  "God of War: Ragnarök":      "https://upload.wikimedia.org/wikipedia/en/thumb/2/21/God_of_War_Ragnar%C3%B6k_cover.jpg/220px-God_of_War_Ragnar%C3%B6k_cover.jpg",
+  "Astro Bot":                 "https://upload.wikimedia.org/wikipedia/en/thumb/4/42/Astro_Bot_cover_art.jpg/220px-Astro_Bot_cover_art.jpg",
+  "Final Fantasy XVI":         "https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Final_Fantasy_XVI_cover_art.png/220px-Final_Fantasy_XVI_cover_art.png",
+  "Gran Turismo 7":            "https://upload.wikimedia.org/wikipedia/en/thumb/0/0f/Gran_Turismo_7_cover.jpg/220px-Gran_Turismo_7_cover.jpg",
+  "Ratchet & Clank: Rift Apart":"https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Ratchet_%26_Clank_-_Rift_Apart.png/220px-Ratchet_%26_Clank_-_Rift_Apart.png",
+  "The Last of Us Part II Remastered":"https://upload.wikimedia.org/wikipedia/en/thumb/9/97/The_Last_of_Us_Part_II_Remastered.jpg/220px-The_Last_of_Us_Part_II_Remastered.jpg",
+  "Returnal":                  "https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Returnal_cover_art.jpg/220px-Returnal_cover_art.jpg",
+  "Demon's Souls":             "https://upload.wikimedia.org/wikipedia/en/thumb/7/78/Demons_Souls_remake_cover_art.jpg/220px-Demons_Souls_remake_cover_art.jpg",
+  "Like a Dragon: Infinite Wealth":"https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/Like_a_Dragon_Infinite_Wealth.jpg/220px-Like_a_Dragon_Infinite_Wealth.jpg",
+  "Final Fantasy VII Rebirth": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c9/Boxart_for_Final_Fantasy_VII_Rebirth.png/220px-Boxart_for_Final_Fantasy_VII_Rebirth.png",
+  "Horizon Forbidden West":    "https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/Horizon_Forbidden_West_cover_art.jpg/220px-Horizon_Forbidden_West_cover_art.jpg",
+  // PS4
+  "The Last of Us Part II":    "https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/The_Last_of_Us_Part_II.jpg/220px-The_Last_of_Us_Part_II.jpg",
+  "Ghost of Tsushima":         "https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Ghost_of_Tsushima.jpg/220px-Ghost_of_Tsushima.jpg",
+  "Marvel's Spider-Man":       "https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/Marvels-Spider-Man-cover.jpg/220px-Marvels-Spider-Man-cover.jpg",
+  "Bloodborne":                "https://upload.wikimedia.org/wikipedia/en/thumb/5/5e/Bloodborne_Cover_Wallpaper.jpg/220px-Bloodborne_Cover_Wallpaper.jpg",
+  "Horizon Zero Dawn":         "https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Horizon_Zero_Dawn.jpeg/220px-Horizon_Zero_Dawn.jpeg",
+  "Death Stranding":           "https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Death_Stranding.jpg/220px-Death_Stranding.jpg",
+  "Detroit: Become Human":     "https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Detroit_Become_Human_cover_artwork.jpg/220px-Detroit_Become_Human_cover_artwork.jpg",
+  "Persona 5 Royal":           "https://upload.wikimedia.org/wikipedia/en/thumb/c/ce/Persona_5_Royal_cover_art.jpg/220px-Persona_5_Royal_cover_art.jpg",
+  "Uncharted 4":               "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Uncharted_4_cover.jpg/220px-Uncharted_4_cover.jpg",
+  "The Last of Us Part I":     "https://upload.wikimedia.org/wikipedia/en/thumb/4/46/The_Last_of_Us_Part_I.jpg/220px-The_Last_of_Us_Part_I.jpg",
+  "Nioh 2":                    "https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Nioh_2_cover_art.jpg/220px-Nioh_2_cover_art.jpg",
+  // Switch 2
+  "Mario Kart World":          "https://upload.wikimedia.org/wikipedia/en/thumb/e/e4/Mario_Kart_World_cover.jpg/220px-Mario_Kart_World_cover.jpg",
+  "Metroid Prime 4: Beyond":   "https://upload.wikimedia.org/wikipedia/en/thumb/2/2f/Metroid_Prime_4_Beyond_cover.jpg/220px-Metroid_Prime_4_Beyond_cover.jpg",
+  // Switch 1
+  "Animal Crossing: New Horizons": "https://upload.wikimedia.org/wikipedia/en/thumb/1/1a/Animal_Crossing_New_Horizons.jpg/220px-Animal_Crossing_New_Horizons.jpg",
+  "Mario Kart 8 Deluxe":       "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Mario_Kart_8_Deluxe.jpg/220px-Mario_Kart_8_Deluxe.jpg",
+  "The Legend of Zelda: Tears of the Kingdom": "https://upload.wikimedia.org/wikipedia/en/thumb/0/0f/The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg/220px-The_Legend_of_Zelda_Tears_of_the_Kingdom_cover.jpg",
+  "Super Smash Bros. Ultimate":"https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Super_Smash_Bros._Ultimate.jpg/220px-Super_Smash_Bros._Ultimate.jpg",
+  "Pokémon Scarlet/Violet":    "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Pokemon_Scarlet_and_Violet_banner.png/220px-Pokemon_Scarlet_and_Violet_banner.png",
+  "Splatoon 3":                "https://upload.wikimedia.org/wikipedia/en/thumb/3/31/Splatoon_3_key_art.jpg/220px-Splatoon_3_key_art.jpg",
+  "The Legend of Zelda: Breath of the Wild": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/The_Legend_of_Zelda_Breath_of_the_Wild.jpg/220px-The_Legend_of_Zelda_Breath_of_the_Wild.jpg",
+  "Super Mario Odyssey":       "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Super_Mario_Odyssey.jpg/220px-Super_Mario_Odyssey.jpg",
+  "Super Mario Bros. Wonder":  "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Super_Mario_Bros._Wonder.jpg/220px-Super_Mario_Bros._Wonder.jpg",
+  "Pokémon Legends: Arceus":   "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Pok%C3%A9mon_Legends_Arceus_cover.jpg/220px-Pok%C3%A9mon_Legends_Arceus_cover.jpg",
+  "Monster Hunter Rise":       "https://upload.wikimedia.org/wikipedia/en/thumb/5/55/Monster_Hunter_Rise_cover_art.jpg/220px-Monster_Hunter_Rise_cover_art.jpg",
+  "Xenoblade Chronicles 3":    "https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Xenoblade_Chronicles_3_cover_art.jpg/220px-Xenoblade_Chronicles_3_cover_art.jpg",
+  "Fire Emblem: Three Houses": "https://upload.wikimedia.org/wikipedia/en/thumb/8/8d/Fire_Emblem_Three_Houses.jpg/220px-Fire_Emblem_Three_Houses.jpg",
+  "Pikmin 4":                  "https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Pikmin_4_cover_art.jpg/220px-Pikmin_4_cover_art.jpg",
 };
 
 // ── 2025 인기 신작 게임 (출시 완료) ─────────────────────────────────────────
@@ -5737,7 +5764,7 @@ function renderConsolePage() {
     const rank = start + i + 1;
     const displayName = getLocalizedGameName(game.name);
     const initials = game.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();
-    const banner = bannerMap[game.name] || '';
+    const banner = boxArtMap[game.name] || bannerMap[game.name] || '';
     const logo   = game.logo || '';
     const desc   = currentLang === 'en' ? (descMapEn[game.name] || game.desc)
                  : currentLang === 'zh' ? (descMapZh[game.name] || descMapEn[game.name] || game.desc)
@@ -5749,7 +5776,7 @@ function renderConsolePage() {
     const ccuHTML = ccuFormatted ? `<div class="ccu-row"><div class="ccu-badge"><span class="ccu-val">${ccuFormatted}</span><span class="ccu-lbl">${ccuLbl}</span></div></div>` : '';
 
     const imgInner = banner
-      ? `<img src="${banner}" class="game-banner" alt="${displayName}" loading="lazy"
+      ? `<img src="${banner}" class="game-banner box-art" alt="${displayName}" loading="lazy"
             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="logo-layer" style="display:none">
             <img src="${logo}" class="logo-in-layer" alt="${displayName}" loading="lazy"
