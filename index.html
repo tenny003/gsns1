@@ -3038,7 +3038,7 @@ const TRANS = {
     loading:'순위 불러오는 중...', loadFail:'순위 불러오기 실패',
     lastUpdated:'마지막 업데이트', updating:'업데이트 중...', refresh:'↻ 새로고침',
     continent:{asia:'아시아',na:'북미',europe:'유럽',global:'글로벌'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','출시예정':'출시예정'},
+    genre:{'전체':'전체','TOP 10':'TOP 10','롤플레잉':'롤플레잉','슈팅':'슈팅','전략':'전략','액션':'액션','스포츠 및 레이싱':'스포츠 및 레이싱','어드벤처':'어드벤처','시뮬레이션':'시뮬레이션','출시예정':'출시예정'},
     sortBy:'정렬', sortDefault:'기본순', sortScore:'동접자수', sortName:'이름', sortRelease:'출시연도',
     pfLabel:'플랫폼', pfAll:'전체', pfPC:'PC', pfMobile:'모바일', pfConsole:'콘솔',
     critic:'평론가', user:'유저',
@@ -3077,7 +3077,7 @@ const TRANS = {
     loading:'Loading rankings...', loadFail:'Failed to load rankings',
     lastUpdated:'Last updated', updating:'Updating...', refresh:'↻ Refresh',
     continent:{asia:'Asia',na:'North America',europe:'Europe',global:'Global'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','출시예정':'Upcoming 2026'},
+    genre:{'전체':'All','TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'Shooter','전략':'Strategy','액션':'Action','스포츠 및 레이싱':'Sports & Racing','어드벤처':'Adventure','시뮬레이션':'Simulation','출시예정':'Upcoming 2026'},
     sortBy:'Sort', sortDefault:'Default', sortScore:'Players', sortName:'Name', sortRelease:'Year',
     pfLabel:'Platform', pfAll:'All', pfPC:'PC', pfMobile:'Mobile', pfConsole:'Console',
     critic:'Critic', user:'User',
@@ -3116,7 +3116,7 @@ const TRANS = {
     loading:'加载排名中...', loadFail:'加载排名失败',
     lastUpdated:'最后更新', updating:'更新中...', refresh:'↻ 刷新',
     continent:{asia:'亚洲',na:'北美',europe:'欧洲',global:'全球'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','출시예정':'2026即将发售'},
+    genre:{'전체':'全部','TOP 10':'TOP 10','롤플레잉':'角色扮演','슈팅':'射击','전략':'策略','액션':'动作','스포츠 및 레이싱':'体育与竞速','어드벤처':'冒险','시뮬레이션':'模拟','출시예정':'2026即将发售'},
     sortBy:'排序', sortDefault:'默认', sortScore:'在线', sortName:'名称', sortRelease:'年份',
     pfLabel:'平台', pfAll:'全部', pfPC:'PC', pfMobile:'手游', pfConsole:'主机',
     critic:'评论家', user:'用户',
@@ -3155,7 +3155,7 @@ const TRANS = {
     loading:'ランキングを読み込み中...', loadFail:'ランキングの読み込みに失敗しました',
     lastUpdated:'最終更新', updating:'更新中...', refresh:'↻ 更新',
     continent:{asia:'アジア',na:'北米',europe:'ヨーロッパ',global:'グローバル'},
-    genre:{'TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','출시예정':'2026年近日発売'},
+    genre:{'전체':'全て','TOP 10':'TOP 10','롤플레잉':'RPG','슈팅':'シューター','전략':'ストラテジー','액션':'アクション','스포츠 및 레이싱':'スポーツ＆レーシング','어드벤처':'アドベンチャー','시뮬레이션':'シミュレーション','출시예정':'2026年近日発売'},
     sortBy:'並び替え', sortDefault:'デフォルト', sortScore:'同接数', sortName:'名前', sortRelease:'年度',
     pfLabel:'プラットフォーム', pfAll:'全て', pfPC:'PC', pfMobile:'モバイル', pfConsole:'コンソール',
     critic:'批評家', user:'ユーザー',
@@ -4921,7 +4921,7 @@ function updateTimeDisplay() {
     : `${diffH}${currentLang==='ko'?'시간 전':'h ago'}`;
   document.getElementById('updateInfo').textContent = `${t('lastUpdated')}: ${timeStr}`;
 }
-let currentGenre = '롤플레잉';
+let currentGenre = '전체';
 let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
 let currentSubRegion = 'all';
@@ -5109,8 +5109,21 @@ function renderPagination(totalPages, total) {
 function getActiveGameList() {
   if (currentSubRegion !== 'all') {
     const all = countryData[`${currentContinent}-${currentSubRegion}`] || [];
-    if (!currentGenre || currentGenre === 'TOP 10') return all;
+    if (!currentGenre || currentGenre === 'TOP 10' || currentGenre === '전체') return all;
     return all.filter(g => genreToTabMap[g.genre] === currentGenre);
+  }
+  if (currentGenre === '전체') {
+    const seen = new Set();
+    const combined = [];
+    const contData = gameData[currentContinent] || {};
+    Object.keys(contData).forEach(genre => {
+      if (genre === '출시예정' || genre === 'TOP 10') return;
+      (contData[genre] || []).forEach(g => {
+        if (!seen.has(g.name)) { seen.add(g.name); combined.push(g); }
+      });
+    });
+    combined.sort((a, b) => getGameCCU(b.name) - getGameCCU(a.name));
+    return combined;
   }
   const list = gameData[currentContinent][currentGenre] || [];
   return currentGenre === 'TOP 10' ? list.slice(0, 10) : list;
@@ -5130,7 +5143,8 @@ function updateGenreTabs() {
   if (!container) return;
   const genres = Object.keys(gameData[currentContinent]).filter(g => g !== '출시예정' && g !== 'TOP 10');
   const genreTrans = t('genre');
-  container.innerHTML = genres.map(g =>
+  const allBtn = `<button class="tab-btn${'전체' === currentGenre ? ' active' : ''}" onclick="setGenre('전체')">${genreTrans['전체']||'전체'}</button>`;
+  container.innerHTML = allBtn + genres.map(g =>
     `<button class="tab-btn${g === currentGenre ? ' active' : ''}" onclick="setGenre('${g}')">${genreTrans[g]||g}</button>`
   ).join('');
 }
@@ -5147,7 +5161,7 @@ function updateSubRegionTabs() {
 function setSubRegion(id) {
   currentSubRegion = id;
   currentPage = 1;
-  currentGenre = '롤플레잉';
+  currentGenre = '전체';
   document.getElementById('searchInput').value = '';
   document.getElementById('genreTabs').style.display = 'flex';
   updateSubRegionTabs();
@@ -5246,6 +5260,7 @@ function updateSectionTitle() {
   document.getElementById('rankSource').textContent =
     currentGenre === '출시예정' ? t('source2025')
     : currentGenre === 'TOP 10' ? t('sourceTop')
+    : currentGenre === '전체' ? t('sourceTop')
     : t('sourceGenre');
 }
 
@@ -5253,7 +5268,7 @@ function setContinent(region) {
   currentContinent = region;
   currentSubRegion = 'all';
   const genres = Object.keys(gameData[region]);
-  currentGenre = genres.includes(currentGenre) ? currentGenre : '롤플레잉';
+  currentGenre = genres.includes(currentGenre) ? currentGenre : '전체';
   currentPage = 1;
   document.getElementById('searchInput').value = '';
   document.getElementById('genreTabs').style.display = 'flex';
@@ -6050,7 +6065,7 @@ function navigateToContinent(continent) {
   closeDrawer();
   currentContinent = continent;
   currentSubRegion = 'all';
-  currentGenre = 'TOP 10';
+  currentGenre = '전체';
   currentPage = 1;
   currentSort = 'default';
   currentPlatformFilter = 'all';
