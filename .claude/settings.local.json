@@ -57,7 +57,8 @@
       "Bash(node \"C:\\\\Users\\\\user\\\\Desktop\\\\AI 작업\\\\방송\\\\새폴더2\\\\edit_character.js\")",
       "Bash(npm install *)",
       "Bash(node -e \"const sharp = require\\('sharp'\\); sharp\\('두캐릭터_합본_1778252102638.png'\\).metadata\\(\\).then\\(m => console.log\\(m.width, m.height\\)\\)\")",
-      "Bash(node add_logo.js)"
+      "Bash(node add_logo.js)",
+      "Bash(node generate_character.js)"
     ],
     "additionalDirectories": [
       "c:\\Users\\user\\Desktop\\AI 작업\\방송\\새폴더1",
