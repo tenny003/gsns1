@@ -392,6 +392,11 @@ body.light .cta-section{background:linear-gradient(135deg,#dbeafe,#eff6ff);}
   border:1.5px solid rgba(99,102,241,.3);color:#a78bfa;
 }
 .drawer-nav-btn.console-btn:hover{background:rgba(99,102,241,.2);}
+.drawer-nav-btn.mobile-btn{
+  background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(5,150,105,.1));
+  border:1.5px solid rgba(16,185,129,.3);color:#34d399;
+}
+.drawer-nav-btn.mobile-btn:hover{background:rgba(16,185,129,.2);}
 
 footer{text-align:center;padding:30px;color:var(--footer-color);}
 .ad-slot{width:100%;max-width:1400px;margin:0 auto;padding:10px 24px;text-align:center;overflow:hidden;}
@@ -777,6 +782,10 @@ header{padding:22px 80px;}
     </button>
     <button class="drawer-nav-btn console-btn" onclick="navigateToPlatform('switch1')">
       <span class="nav-icon">🟡</span><span id="navSwitch1">닌텐도 스위치1</span>
+    </button>
+    <div class="drawer-nav-divider"></div>
+    <button class="drawer-nav-btn mobile-btn" onclick="navigateToContinent('mobile')">
+      <span class="nav-icon">📱</span><span id="navMobile">모바일 게임 랭킹</span>
     </button>
     <div class="drawer-nav-divider"></div>
     <button class="drawer-nav-btn new-games" onclick="navigateToNewGames()">
@@ -2405,12 +2414,10 @@ const gameData = {
       L('Lies of P','Action RPG','PC/Console','https://store.steampowered.com/app/1627700/'),
       L('Tales of Arise','Action RPG','PC/Console','https://www.bandainamcoent.com/games/tales-of-arise'),
       L('Zenless Zone Zero','Action RPG','PC/Mobile','https://zenless.hoyoverse.com/'),
-      L('Blue Archive','Strategy RPG','Mobile','https://bluearchive.nexon.com/'),
       L('V Rising','Action RPG','PC','https://store.steampowered.com/app/1604030/'),
       L('Nioh 2','Action RPG','PC/Console','https://store.steampowered.com/app/1325200/'),
       L('Dungeon & Fighter','MMORPG','PC','https://df.nexon.com/','Neople'),
       L('Throne and Liberty','MMORPG','PC','https://www.playthroneandliberty.com/','NCSoft'),
-      L('Uma Musume Pretty Derby','RPG','Mobile','https://umamusume.jp/','Cygames')
     ],
     '슈팅': [
       L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
@@ -2418,7 +2425,6 @@ const gameData = {
       L('Sudden Attack','FPS','PC','https://sa.nexon.com/'),
       L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/ko-kr/'),
       L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
-      L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
       L('Apex Legends','Battle Royale','PC/Console','https://www.ea.com/games/apex-legends'),
       L('Call of Duty','FPS','PC/Console','https://www.callofduty.com/'),
       L('Rainbow Six Siege','FPS','PC/Console','https://www.ubisoft.com/en-us/game/rainbow-six/siege'),
@@ -2441,7 +2447,6 @@ const gameData = {
       L('Dota 2','MOBA','PC','https://www.dota2.com/'),
       L('StarCraft II','RTS','PC','https://starcraft2.com/'),
       L('Eternal Return','Strategy/Survival','PC','https://eternalreturn.com/'),
-      L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
       L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
       L('Civilization VI','Turn-Based','PC','https://civilization.2k.com/civ-vi/'),
       L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
@@ -2451,8 +2456,6 @@ const gameData = {
       L('Stellaris','4X Strategy','PC','https://store.steampowered.com/app/281990/'),
       L('World of Tanks','Action Strategy','PC','https://worldoftanks.com/'),
       L('Victoria 3','Grand Strategy','PC','https://store.steampowered.com/app/529340/'),
-      L('Honor of Kings','MOBA','Mobile','https://www.honorofkings.com/','TiMi Studio Group'),
-      L('Mobile Legends: Bang Bang','MOBA','Mobile','https://www.mobilelegends.com/','Moonton'),
       L('Hearthstone','Card Strategy','PC/Mobile','https://hearthstone.blizzard.com/','Blizzard')
     ],
     '액션': [
@@ -2619,7 +2622,6 @@ const gameData = {
       L('Hearts of Iron IV','Grand Strategy','PC','https://www.paradoxinteractive.com/games/hearts-of-iron-iv/'),
       L('Dota 2','MOBA','PC','https://www.dota2.com/'),
       L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
-      L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
       L('Crusader Kings III','Grand Strategy','PC','https://store.steampowered.com/app/1158310/'),
       L('Stellaris','4X Strategy','PC','https://store.steampowered.com/app/281990/'),
       L('Victoria 3','Grand Strategy','PC','https://store.steampowered.com/app/529340/'),
@@ -2786,7 +2788,6 @@ const gameData = {
       L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
       L('World of Tanks','Action Strategy','PC','https://worldoftanks.com/'),
       L('XCOM 2','Turn-Based','PC','https://firaxis.com/games/xcom-2'),
-      L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
       L('Hearthstone','Card Strategy','PC/Mobile','https://hearthstone.blizzard.com/','Blizzard')
     ],
     '액션': [
@@ -2921,7 +2922,6 @@ const gameData = {
       L('Remnant II','Action RPG','PC/Console','https://store.steampowered.com/app/1903620/'),
       L('Dungeon & Fighter','MMORPG','PC','https://df.nexon.com/','Neople'),
       L('Throne and Liberty','MMORPG','PC','https://www.playthroneandliberty.com/','NCSoft'),
-      L('Uma Musume Pretty Derby','RPG','Mobile','https://umamusume.jp/','Cygames')
     ],
     '슈팅': [
       L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
@@ -2933,7 +2933,6 @@ const gameData = {
       L('Overwatch 2','FPS','PC/Console','https://overwatch.blizzard.com/'),
       L('Destiny 2','FPS','PC/Console','https://www.bungie.net/7/en/Destiny/NewLight'),
       L('Rainbow Six Siege','FPS','PC/Console','https://www.ubisoft.com/en-us/game/rainbow-six/siege'),
-      L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
       L('Halo Infinite','FPS','PC/Console','https://www.halowaypoint.com/'),
       L('Battlefield 2042','FPS','PC/Console','https://www.ea.com/games/battlefield/battlefield-2042'),
       L('Escape from Tarkov','FPS','PC','https://www.escapefromtarkov.com/'),
@@ -2952,7 +2951,6 @@ const gameData = {
       L('StarCraft II','RTS','PC','https://starcraft2.com/'),
       L('Civilization VI','Turn-Based','PC','https://civilization.2k.com/civ-vi/'),
       L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
-      L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
       L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
       L('Hearts of Iron IV','Grand Strategy','PC','https://www.paradoxinteractive.com/games/hearts-of-iron-iv/'),
       L('Crusader Kings III','Grand Strategy','PC','https://store.steampowered.com/app/1158310/'),
@@ -2961,8 +2959,6 @@ const gameData = {
       L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
       L('World of Tanks','Action Strategy','PC','https://worldoftanks.com/'),
       L('XCOM 2','Turn-Based','PC','https://firaxis.com/games/xcom-2'),
-      L('Honor of Kings','MOBA','Mobile','https://www.honorofkings.com/','TiMi Studio Group'),
-      L('Mobile Legends: Bang Bang','MOBA','Mobile','https://www.mobilelegends.com/','Moonton'),
       L('Hearthstone','Card Strategy','PC/Mobile','https://hearthstone.blizzard.com/','Blizzard')
     ],
     '액션': [
@@ -3058,6 +3054,53 @@ const gameData = {
       L('Phantom Blade Zero','Action RPG','PC/Console','https://www.phantomblade.com/','S-GAME'),
       L('The Outer Worlds 2','RPG','PC/Console','https://www.xbox.com/games/the-outer-worlds-2','Obsidian Entertainment / Xbox'),
     ]
+  },
+  mobile: {
+    '롤플레잉': [
+      L('Genshin Impact','Open World RPG','Mobile','https://genshin.hoyoverse.com/','HoYoverse'),
+      L('Honkai: Star Rail','Turn-Based RPG','Mobile','https://hsr.hoyoverse.com/','HoYoverse'),
+      L('Wuthering Waves','Action RPG','Mobile','https://wutheringwaves.kurogames.com/','Kuro Games'),
+      L('Zenless Zone Zero','Action RPG','Mobile','https://zenless.hoyoverse.com/','HoYoverse'),
+      L('Uma Musume Pretty Derby','Sports RPG','Mobile','https://umamusume.jp/','Cygames'),
+      L('Blue Archive','Strategy RPG','Mobile','https://bluearchive.nexon.com/','Nexon / Yostar'),
+      L('Arknights','Strategy RPG','Mobile','https://www.arknights.global/','HyperGryph'),
+      L('NIKKE: Goddess of Victory','Action RPG','Mobile','https://nikke-en.nexon.com/','Shift Up / Nexon'),
+      L('Punishing: Gray Raven','Action RPG','Mobile','https://pgr.kurogames.com/','Kuro Games'),
+    ],
+    '슈팅': [
+      L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/','Garena'),
+      L('PUBG Mobile','Battle Royale','Mobile','https://www.pubgmobile.com/','Krafton / Tencent'),
+      L('Call of Duty Mobile','FPS','Mobile','https://www.callofduty.com/mobile','Activision / TiMi'),
+      L('CrossFire Mobile','FPS','Mobile','https://crossfiremobile.com/','Smilegate'),
+      L('Fortnite','Battle Royale','Mobile','https://www.fortnite.com/','Epic Games'),
+    ],
+    '전략': [
+      L('Honor of Kings','MOBA','Mobile','https://www.honorofkings.com/','TiMi Studio Group'),
+      L('Mobile Legends: Bang Bang','MOBA','Mobile','https://www.mobilelegends.com/','Moonton'),
+      L('League of Legends: Wild Rift','MOBA','Mobile','https://wildrift.leagueoflegends.com/','Riot Games'),
+      L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/','Supercell'),
+      L('Clash Royale','Card Strategy','Mobile','https://clashroyale.com/','Supercell'),
+      L('Hearthstone','Card Strategy','Mobile','https://hearthstone.blizzard.com/','Blizzard'),
+      L('Brawl Stars','Action Strategy','Mobile','https://supercell.com/en/games/brawlstars/','Supercell'),
+    ],
+    '액션': [
+      L('Brawl Stars','Action','Mobile','https://supercell.com/en/games/brawlstars/','Supercell'),
+      L('Punishing: Gray Raven','Action RPG','Mobile','https://pgr.kurogames.com/','Kuro Games'),
+      L('Genshin Impact','Action','Mobile','https://genshin.hoyoverse.com/','HoYoverse'),
+    ],
+    '스포츠 및 레이싱': [
+      L('eFootball 2025','Sports','Mobile','https://www.konami.com/efootball/','Konami'),
+      L('FIFA Mobile','Sports','Mobile','https://www.ea.com/games/fifa/fifa-mobile','EA Sports'),
+      L('NBA 2K Mobile','Sports','Mobile','https://nba.2k.com/','2K'),
+    ],
+    '시뮬레이션': [
+      L('Roblox','Sandbox/Social','Mobile','https://www.roblox.com/','Roblox Corporation'),
+      L('Minecraft','Sandbox','Mobile','https://www.minecraft.net/','Mojang / Microsoft'),
+      L('Among Us','Social Deduction','Mobile','https://www.innersloth.com/games/among-us/','Innersloth'),
+      L('Pokémon GO','AR Adventure','Mobile','https://pokemongolive.com/','Niantic'),
+      L('Candy Crush Saga','Puzzle','Mobile','https://www.king.com/game/candycrush','King'),
+      L('Subway Surfers','Runner','Mobile','https://subwaysurfers.com/','SYBO Games'),
+    ],
   }
 };
 
@@ -3268,7 +3311,6 @@ const countryData = {
     L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
     L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
     L('Zenless Zone Zero','Action RPG','PC/Mobile','https://zenless.hoyoverse.com/'),
-    L('Blue Archive','Action RPG','Mobile','https://bluearchive.nexon.com/'),
     L('Elden Ring','RPG','PC/Console','https://en.bandainamcoent.eu/elden-ring/'),
     L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
     L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
@@ -3300,7 +3342,6 @@ const countryData = {
     L('The Witcher 3','Open World RPG','PC/Console','https://www.thewitcher.com/'),
     L('Dungeon & Fighter','MMORPG','PC','https://df.nexon.com/','Neople'),
     L('Throne and Liberty','MMORPG','PC','https://www.playthroneandliberty.com/','NCSoft'),
-    L('Uma Musume Pretty Derby','RPG','Mobile','https://umamusume.jp/','Cygames'),
     // ── 슈팅 ──
     L('Valorant','FPS','PC','https://playvalorant.com/ko-kr/'),
     L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/ko/'),
@@ -3321,7 +3362,6 @@ const countryData = {
     L('Escape from Tarkov','FPS','PC','https://www.escapefromtarkov.com/'),
     L('Halo Infinite','FPS','PC/Console','https://www.halowaypoint.com/'),
     L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
-    L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
     L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
     L('CrossFire','FPS','PC','https://crossfire.nexon.com/','Smilegate'),
     L('Naraka: Bladepoint','Battle Royale','PC/Console','https://www.narakathegame.com/','NetEase'),
@@ -3330,7 +3370,6 @@ const countryData = {
     L('Dota 2','MOBA','PC','https://www.dota2.com/'),
     L('StarCraft II','RTS','PC','https://starcraft2.com/'),
     L('Eternal Return','Strategy','PC','https://playeternalreturn.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
     L('Civilization VI','Strategy','PC','https://civilization.2k.com/civ-vi/'),
     L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
@@ -3417,7 +3456,6 @@ const countryData = {
     L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
     L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
     L('Zenless Zone Zero','Action RPG','PC/Mobile','https://zenless.hoyoverse.com/'),
-    L('Blue Archive','Action RPG','Mobile','https://bluearchive.nexon.com/'),
     L('Persona 5 Royal','RPG','PC/Console','https://atlus.com/p5r/'),
     L('Like a Dragon: Infinite Wealth','RPG','PC/Console','https://store.steampowered.com/app/2072450/'),
     L('Lies of P','Action RPG','PC/Console','https://store.steampowered.com/app/1627700/'),
@@ -3446,7 +3484,6 @@ const countryData = {
     L('The Witcher 3','Open World RPG','PC/Console','https://www.thewitcher.com/'),
     L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
     L('Dungeon & Fighter','MMORPG','PC','https://df.nexon.com/','Neople'),
-    L('Uma Musume Pretty Derby','RPG','Mobile','https://umamusume.jp/','Cygames'),
     // ── 슈팅 ──
     L('Valorant','FPS','PC','https://playvalorant.com/'),
     L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
@@ -3466,13 +3503,11 @@ const countryData = {
     L('Escape from Tarkov','FPS','PC','https://www.escapefromtarkov.com/'),
     L('Halo Infinite','FPS','PC/Console','https://www.halowaypoint.com/'),
     L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
-    L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
     L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
     L('Naraka: Bladepoint','Battle Royale','PC/Console','https://www.narakathegame.com/','NetEase'),
     // ── 전략 ──
     L('Dota 2','MOBA','PC','https://www.dota2.com/'),
     L('StarCraft II','RTS','PC','https://starcraft2.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
     L('Civilization VI','Strategy','PC','https://civilization.2k.com/civ-vi/'),
     L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
@@ -3581,7 +3616,6 @@ const countryData = {
     L('God of War','Action RPG','PC/Console','https://www.playstation.com/en-us/games/god-of-war/'),
     L('Horizon Zero Dawn','Action RPG','PC/Console','https://store.steampowered.com/app/1151640/'),
     L('The Witcher 3','Open World RPG','PC/Console','https://www.thewitcher.com/'),
-    L('Blue Archive','Action RPG','Mobile','https://bluearchive.nexon.com/'),
     L('Dungeon & Fighter','MMORPG','PC','https://dnf.qq.com/','Neople'),
     // ── 슈팅 ──
     L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.qq.com/'),
@@ -3594,14 +3628,12 @@ const countryData = {
     L('Hunt: Showdown','FPS','PC','https://store.steampowered.com/app/594650/'),
     L('War Thunder','FPS','PC','https://warthunder.com/'),
     L('Doom: The Dark Ages','FPS','PC/Console','https://store.steampowered.com/app/2716300/'),
-    L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
     L('Fortnite','Battle Royale','PC/Console','https://www.fortnite.com/'),
     L('CrossFire','FPS','PC','https://www.crossfire.z8games.com/','Smilegate'),
     L('Naraka: Bladepoint','Battle Royale','PC/Console','https://www.narakathegame.com/','NetEase'),
     // ── 전략 ──
     L('Dota 2','MOBA','PC','https://www.dota2.com/'),
     L('StarCraft II','RTS','PC','https://starcraft2.com.cn/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
     L('Civilization VI','Strategy','PC','https://civilization.2k.com/civ-vi/'),
     L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
@@ -3609,7 +3641,6 @@ const countryData = {
     L('Stellaris','Strategy','PC','https://store.steampowered.com/app/281990/'),
     L('World of Tanks','Strategy','PC','https://worldoftanks.com/'),
     L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
-    L('Honor of Kings','MOBA','Mobile','https://www.honorofkings.com/','TiMi Studio Group'),
     // ── 액션 ──
     L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
     L('Sekiro','Action','PC/Console','https://www.sekirothegame.com/'),
@@ -3670,7 +3701,6 @@ const countryData = {
     L('Honkai: Star Rail','RPG','PC/Mobile','https://hsr.hoyoverse.com/'),
     L('Wuthering Waves','Action RPG','PC/Mobile','https://wutheringwaves.kurogames.com/'),
     L('Zenless Zone Zero','Action RPG','PC/Mobile','https://zenless.hoyoverse.com/'),
-    L('Blue Archive','Action RPG','Mobile','https://bluearchive.nexon.com/'),
     L('Ragnarok Online','MMORPG','PC','https://ro.gnjoy.com/'),
     L('MapleStory','MMORPG','PC','https://maplestory.nexon.com/'),
     L('Lost Ark','MMORPG','PC','https://lostark.game.onstove.com/'),
@@ -3699,7 +3729,6 @@ const countryData = {
     L('World of Warcraft','MMORPG','PC','https://worldofwarcraft.blizzard.com/'),
     L('Dungeon & Fighter','MMORPG','PC','https://df.nexon.com/','Neople'),
     // ── 슈팅 ──
-    L('Free Fire','Battle Royale','Mobile','https://ff.garena.com/'),
     L('PUBG: Battlegrounds','Battle Royale','PC','https://pubg.com/'),
     L('Valorant','FPS','PC','https://playvalorant.com/'),
     L('Counter-Strike 2','FPS','PC','https://www.counter-strike.net/cs2'),
@@ -3721,14 +3750,11 @@ const countryData = {
     L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
     L('Dota 2','MOBA','PC','https://www.dota2.com/'),
     L('StarCraft II','RTS','PC','https://starcraft2.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Age of Empires IV','RTS','PC','https://www.ageofempires.com/games/aoe4/'),
     L('Civilization VI','Strategy','PC','https://civilization.2k.com/civ-vi/'),
     L('Total War: Warhammer III','Strategy','PC','https://www.totalwar.com/games/warhammer-iii/'),
     L('World of Tanks','Strategy','PC','https://worldoftanks.com/'),
     L('Stellaris','Strategy','PC','https://store.steampowered.com/app/281990/'),
-    L('Mobile Legends: Bang Bang','MOBA','Mobile','https://www.mobilelegends.com/','Moonton'),
-    L('Honor of Kings','MOBA','Mobile','https://www.honorofkings.com/','TiMi Studio Group'),
     // ── 액션 ──
     L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
     L('Sekiro','Action','PC/Console','https://www.sekirothegame.com/'),
@@ -3851,7 +3877,6 @@ const countryData = {
     L('Hearts of Iron IV','Grand Strategy','PC','https://www.paradoxinteractive.com/games/hearts-of-iron-iv/'),
     L('Dota 2','MOBA','PC','https://www.dota2.com/'),
     L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Crusader Kings III','Grand Strategy','PC','https://store.steampowered.com/app/1158310/'),
     L('Stellaris','Strategy','PC','https://store.steampowered.com/app/281990/'),
     L('Victoria 3','Grand Strategy','PC','https://store.steampowered.com/app/529340/'),
@@ -4004,7 +4029,6 @@ const countryData = {
     L('Victoria 3','Grand Strategy','PC','https://store.steampowered.com/app/529340/'),
     L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
     L('World of Tanks','Strategy','PC','https://worldoftanks.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     // ── 액션 ──
     L('Devil May Cry 5','Action','PC/Console','https://www.capcom-europe.com/'),
     L('Sekiro','Action','PC/Console','https://www.sekirothegame.com/'),
@@ -4141,7 +4165,6 @@ const countryData = {
     L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
     L('World of Tanks','Strategy','PC','https://worldoftanks.com/'),
     L('XCOM 2','Strategy','PC','https://firaxis.com/games/xcom-2'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     L('Hearthstone','Card Strategy','PC/Mobile','https://hearthstone.blizzard.com/','Blizzard'),
     // ── 액션 ──
     L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
@@ -4286,7 +4309,6 @@ const countryData = {
     L('League of Legends','MOBA','PC','https://www.leagueoflegends.com/'),
     L('Company of Heroes 3','RTS','PC','https://store.steampowered.com/app/1677280/'),
     L('World of Tanks','Strategy','PC','https://worldoftanks.com/'),
-    L('Clash of Clans','Strategy','Mobile','https://supercell.com/en/games/clashofclans/'),
     // ── 액션 ──
     L('Monster Hunter Wilds','Action RPG','PC/Console','https://www.monsterhunter.com/wilds/'),
     L('Elden Ring: Nightreign','Action RPG','PC/Console','https://store.steampowered.com/app/2622380/'),
@@ -6106,8 +6128,11 @@ function navigateToContinent(continent) {
   currentGenre = '전체';
   currentPage = 1;
   currentPlatformFilter = 'all';
-  const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
-  document.getElementById('continentViewTitle').textContent = emojis[continent] + ' ' + t('continent')[continent];
+  const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐',mobile:'📱'};
+  const title = continent === 'mobile'
+    ? '📱 모바일 게임 랭킹'
+    : emojis[continent] + ' ' + t('continent')[continent];
+  document.getElementById('continentViewTitle').textContent = title;
   document.getElementById('searchInput').value = '';
   updateSubRegionTabs();
   updateGenreTabs();
