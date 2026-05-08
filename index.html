@@ -4925,16 +4925,10 @@ let currentGenre = '전체';
 let currentPage = 1;
 let currentLang = localStorage.getItem('lang') || 'ko';
 let currentSubRegion = 'all';
-let currentSort = 'default';
-let currentSortDir = 'desc'; // 'asc' | 'desc'
 let currentPlatformFilter = 'all';
-
-// 기본 정렬 방향: score·release는 desc(높은→낮은), name은 asc(A→Z)
-const DEFAULT_SORT_DIR = { score:'desc', name:'asc', release:'desc', default:'desc' };
 
 function applyFiltersAndSort(list) {
   let result = list.slice();
-  // 플랫폼 필터
   if (currentPlatformFilter !== 'all') {
     const pf = currentPlatformFilter;
     result = result.filter(g => {
@@ -4945,42 +4939,15 @@ function applyFiltersAndSort(list) {
       return true;
     });
   }
-  // 정렬
-  const dir = currentSortDir === 'asc' ? 1 : -1;
-  if (currentSort === 'score') {
-    result.sort((a, b) => (getGameCCU(a.name) - getGameCCU(b.name)) * dir * -1);
-  } else if (currentSort === 'name') {
-    result.sort((a, b) => getLocalizedGameName(a.name).localeCompare(getLocalizedGameName(b.name)) * dir);
-  } else if (currentSort === 'release') {
-    result.sort((a, b) => {
-      const ya = scoreMap[a.name] ? scoreMap[a.name].release : 0;
-      const yb = scoreMap[b.name] ? scoreMap[b.name].release : 0;
-      return (ya - yb) * dir * -1;
-    });
-  }
+  result.sort((a, b) => getGameCCU(b.name) - getGameCCU(a.name));
   return result;
-}
-
-function getSortBtnLabel(key) {
-  const base = t('sort' + key.charAt(0).toUpperCase() + key.slice(1)) || key;
-  if (key === 'default' || key !== currentSort) return base;
-  const arrow = currentSortDir === 'desc' ? '↓' : '↑';
-  return `${base} <span class="sort-arrow">${arrow}</span>`;
 }
 
 function updateFilterRow() {
   const c = document.getElementById('filterRow');
   if (!c) return;
-  const s = currentSort, p = currentPlatformFilter;
+  const p = currentPlatformFilter;
   c.innerHTML = `
-    <div class="filter-group">
-      <span class="filter-label">${t('sortBy')}</span>
-      <button class="filter-btn${s==='default'?' active':''}" onclick="setSort('default')">${getSortBtnLabel('default')}</button>
-      <button class="filter-btn${s==='score'?' active':''}" onclick="setSort('score')">${getSortBtnLabel('score')}</button>
-      <button class="filter-btn${s==='name'?' active':''}" onclick="setSort('name')">${getSortBtnLabel('name')}</button>
-      <button class="filter-btn${s==='release'?' active':''}" onclick="setSort('release')">${getSortBtnLabel('release')}</button>
-    </div>
-    <div class="filter-sep"></div>
     <div class="filter-group">
       <span class="filter-label">${t('pfLabel')}</span>
       <button class="filter-btn${p==='all'?' active':''}" onclick="setPlatform('all')">${t('pfAll')}</button>
@@ -4988,19 +4955,6 @@ function updateFilterRow() {
       <button class="filter-btn${p==='Mobile'?' active':''}" onclick="setPlatform('Mobile')">${t('pfMobile')}</button>
       <button class="filter-btn${p==='Console'?' active':''}" onclick="setPlatform('Console')">${t('pfConsole')}</button>
     </div>`;
-}
-
-function setSort(sort) {
-  if (sort === currentSort && sort !== 'default') {
-    // 같은 버튼 재클릭 → 방향 토글
-    currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
-  } else {
-    currentSort = sort;
-    currentSortDir = DEFAULT_SORT_DIR[sort] || 'desc';
-  }
-  currentPage = 1;
-  updateFilterRow();
-  renderGames(getActiveGameList());
 }
 
 function setPlatform(pf) {
@@ -5272,7 +5226,6 @@ function setContinent(region) {
   currentPage = 1;
   document.getElementById('searchInput').value = '';
   document.getElementById('genreTabs').style.display = 'flex';
-  currentSort = 'default';
   currentPlatformFilter = 'all';
   updateContinentTabs();
   updateSubRegionTabs();
@@ -5285,7 +5238,6 @@ function setContinent(region) {
 function setGenre(genre) {
   currentGenre = genre;
   currentPage = 1;
-  currentSort = 'default';
   currentPlatformFilter = 'all';
   updateGenreTabs();
   updateSectionTitle();
@@ -6067,7 +6019,6 @@ function navigateToContinent(continent) {
   currentSubRegion = 'all';
   currentGenre = '전체';
   currentPage = 1;
-  currentSort = 'default';
   currentPlatformFilter = 'all';
   const emojis = {asia:'🌏',na:'🌎',europe:'🌍',global:'🌐'};
   document.getElementById('continentViewTitle').textContent = emojis[continent] + ' ' + t('continent')[continent];
